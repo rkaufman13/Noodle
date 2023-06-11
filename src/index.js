@@ -3,13 +3,18 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import ErrorPage from "./error-page";
+import { EventPage, loader as eventLoader } from "./EventPage";
 import reportWebVitals from "./reportWebVitals";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   { path: "/", element: <App></App>, errorElement: <ErrorPage /> },
-  { path: "/test", element: <div>Hello World</div> },
+  {
+    path: "/event/:eventUUID",
+    element: <EventPage />,
+    loader: eventLoader,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
