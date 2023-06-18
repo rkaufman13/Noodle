@@ -16,45 +16,46 @@ export const loader = ({ params }) => {
 };
 
 const reverseObject = (event) => {
-  const participants = [];
-  event.dates.forEach((date) => {
-    date.participants.forEach((participant) => {
-      const participantIndex = participants.findIndex(
-        (participantToSearch) => participant.name == participantToSearch.name
-      );
-      if (participantIndex > -1) {
-        participants[participantIndex][date.date] = "yes";
+  const participantsObj = {};
+
+  const datesArray = Object.keys(event.dates);
+
+  datesArray.forEach((date) => {
+    event.dates[date].participants.forEach((participant) => {
+      if (participantsObj[participant]?.dates) {
+        participantsObj[participant].dates[date] = "yes";
       } else {
-        participants.push(
-          Object.fromEntries([
-            ["name", participant.name],
-            [date.date, "yes"],
-          ])
-        );
+        participantsObj[participant] = {};
+        participantsObj[participant]["dates"] = {};
+        participantsObj[participant]["dates"][date] = "yes";
       }
     });
   });
-  return participants;
+  console.log(participantsObj);
+  return participantsObj;
 };
 
 const EventChild = () => {
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
   //we're not storing this in a smart, relational database sort of way because we want the participants' names and identities to completely disappear when the event is closed/deleted. #privacy!
+  const datesArray = Object.keys(resolvedSingleEvent.dates);
 
   const participants = reverseObject(resolvedSingleEvent);
-
+  console.log(participants);
   //  because of the above silly way we're storing data, we now have to map over the participants object and insert the dates that the participant *can't* attend, for use later when we build the table
-  resolvedSingleEvent.dates.forEach((date) => {
+
+  datesArray.forEach((date) => {
     participants.forEach((participant) => {
-      if (date.date in participant) {
+      if (Object.keys(participant).includes(date)) {
         //do nothing
       } else {
-        participant[date.date] = "no";
+        participant[date] = "no";
       }
     });
   });
 
+  console.log(participants);
   const params = useParams();
 
   return (
