@@ -5,15 +5,22 @@ import App from "./App";
 import ErrorPage from "./error-page";
 import { EventPage, loader as eventLoader } from "./EventPage";
 import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
-  { path: "/", element: <App></App>, errorElement: <ErrorPage /> },
   {
-    path: "/event/:eventUUID",
-    element: <EventPage />,
-    loader: eventLoader,
+    path: "/",
+    element: <App></App>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/event/:eventUUID",
+        element: <EventPage />,
+        loader: eventLoader,
+      },
+    ],
   },
 ]);
 
