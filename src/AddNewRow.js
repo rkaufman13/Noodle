@@ -1,6 +1,8 @@
 import React from "react";
 
 export const AddNewRow = (props) => {
+  const datesArray = Object.keys(props.dates);
+
   const handleClick = (e) => {
     let newArray = [];
     if (!props.availableDates.includes(e.target.value)) {
@@ -23,18 +25,18 @@ export const AddNewRow = (props) => {
           required
         ></input>
       </td>
-      {props.dates.map((date, idx) => {
+      {datesArray.map((date) => {
         return (
-          <td key={idx} className="checkboxlabel">
+          <td key={date} className="checkboxlabel">
             <input
               type="checkbox"
-              value={date.date}
+              value={date}
               name="attendeedates"
-              id={date.date}
+              id={date}
               onClick={handleClick}
             />
-            <label className="checkboxlabel" htmlFor={date.date} id={date.date}>
-              {date.date}
+            <label className="checkboxlabel" htmlFor={date} id={date}>
+              {date}
             </label>
           </td>
         );

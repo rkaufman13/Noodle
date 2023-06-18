@@ -7,7 +7,7 @@ import { submitPayload } from "./firebase/index";
 export const DateTable = ({ participants, dates, eventUUID }) => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
-
+  const participantsArray = Object.keys(participants);
   const handleSubmit = () => {
     const payload = { eventUUID: eventUUID, name: name, dates: availableDates };
     submitPayload(payload);
@@ -26,10 +26,10 @@ export const DateTable = ({ participants, dates, eventUUID }) => {
           <Table responsive="lg">
             <thead></thead>
             <tbody>
-              {participants.map((participant, idx) => {
+              {participantsArray.map((participant, idx) => {
                 return (
                   <PersonRow
-                    participant={participant}
+                    participant={participants[participant]}
                     dates={dates}
                     key={idx}
                   />

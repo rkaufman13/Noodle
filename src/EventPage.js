@@ -31,7 +31,6 @@ const reverseObject = (event) => {
       }
     });
   });
-  console.log(participantsObj);
   return participantsObj;
 };
 
@@ -42,20 +41,19 @@ const EventChild = () => {
   const datesArray = Object.keys(resolvedSingleEvent.dates);
 
   const participants = reverseObject(resolvedSingleEvent);
-  console.log(participants);
+  const participantsArray = Object.keys(participants);
   //  because of the above silly way we're storing data, we now have to map over the participants object and insert the dates that the participant *can't* attend, for use later when we build the table
 
   datesArray.forEach((date) => {
-    participants.forEach((participant) => {
-      if (Object.keys(participant).includes(date)) {
+    participantsArray.forEach((participant) => {
+      if (participants[participant].dates[date] === "yes") {
         //do nothing
       } else {
-        participant[date] = "no";
+        participants[participant].dates[date] = "no";
       }
     });
   });
 
-  console.log(participants);
   const params = useParams();
 
   return (
