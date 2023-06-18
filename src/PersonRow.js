@@ -1,10 +1,12 @@
 import React from "react";
+import { convertTimeStampToDate } from "./util";
 
 export const PersonRow = (props) => {
   const datesArray = Object.keys(props.dates);
+  console.log(props);
   return (
     <tr>
-      <td>{props.participant.name}</td>
+      <td>{props.participantName}</td>
       {datesArray.map((date, idx) => {
         const selected = props.participant.dates[date] === "yes";
         return (
@@ -12,7 +14,7 @@ export const PersonRow = (props) => {
             style={{ backgroundColor: selected ? "green" : "gray" }}
             key={idx}
           >
-            {date}
+            {selected ? "Going" : "Not going"}
           </td>
         );
       })}

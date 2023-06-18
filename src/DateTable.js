@@ -3,6 +3,7 @@ import { Stack, Table, Button } from "react-bootstrap";
 import { PersonRow } from "./PersonRow";
 import { AddNewRow } from "./AddNewRow";
 import { submitPayload } from "./firebase/index";
+import { convertTimeStampToDate } from "./util";
 
 export const DateTable = ({ participants, dates, eventUUID }) => {
   const [name, setName] = useState("");
@@ -19,6 +20,8 @@ export const DateTable = ({ participants, dates, eventUUID }) => {
     setName(e.target.value);
   };
 
+  const datesArray = Object.keys(dates);
+
   return (
     <>
       <Stack>
@@ -26,10 +29,17 @@ export const DateTable = ({ participants, dates, eventUUID }) => {
           <Table responsive="lg">
             <thead></thead>
             <tbody>
+              <tr>
+                <td></td>
+                {datesArray.map((date) => {
+                  return <td key={date}>{convertTimeStampToDate(date)}</td>;
+                })}
+              </tr>
               {participantsArray.map((participant, idx) => {
                 return (
                   <PersonRow
                     participant={participants[participant]}
+                    participantName={participant}
                     dates={dates}
                     key={idx}
                   />
