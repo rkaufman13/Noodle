@@ -1,6 +1,7 @@
 import React from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
+
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
 
 export const loader = ({ params }) => {
@@ -56,7 +57,6 @@ const EventChild = () => {
           participants={participants}
           dates={resolvedSingleEvent.dates}
         />
-        ;
       </div>
     </>
   );
