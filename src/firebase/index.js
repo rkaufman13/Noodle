@@ -1,16 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue, get, child } from "firebase/database";
+import { getDatabase, ref, get, set } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA3zGmpfw0x2tn6VR0JN1okdw4j05rMq3w",
-  authDomain: "noodle-1556a.firebaseapp.com",
-  projectId: "noodle-1556a",
-  storageBucket: "noodle-1556a.appspot.com",
-  messagingSenderId: "807317013842",
-  appId: "1:807317013842:web:8c3d718910263c09dc668b",
-  databaseURL: "https://noodle-1556a-default-rtdb.firebaseio.com/",
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: "noodle-390216",
+  storageBucket: "noodle-390216.appspot.com",
+  messagingSenderId: "293031501671",
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  databaseURL: process.env.REACT_APP_DATABASEURL,
 };
 
 // Initialize Firebase
@@ -26,4 +26,13 @@ export const getSingleEvent = (eventID) => {
     }
     return null;
   });
+};
+
+//submit a response
+export const submitPayload = (payload) => {
+  console.log(payload);
+  for (let date of payload.dates) {
+  }
+  const db = getDatabase();
+  set(ref(db, "event/" + payload.eventUUID), {});
 };

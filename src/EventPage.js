@@ -2,7 +2,13 @@ import React from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
 
-import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
+import {
+  useLoaderData,
+  Await,
+  defer,
+  useAsyncValue,
+  useParams,
+} from "react-router-dom";
 
 export const loader = ({ params }) => {
   const singleEventPromise = getSingleEvent(params.eventUUID);
@@ -49,6 +55,8 @@ const EventChild = () => {
     });
   });
 
+  const params = useParams();
+
   return (
     <>
       <h1>{resolvedSingleEvent.eventname}</h1>
@@ -56,6 +64,7 @@ const EventChild = () => {
         <DateTable
           participants={participants}
           dates={resolvedSingleEvent.dates}
+          eventUUID={params.eventUUID}
         />
       </div>
     </>

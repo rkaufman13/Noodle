@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { Stack, Table, Button } from "react-bootstrap";
 import { PersonRow } from "./PersonRow";
 import { AddNewRow } from "./AddNewRow";
+import { submitPayload } from "./firebase/index";
 
-export const DateTable = ({ participants, dates }) => {
-  const [availableDates, setAvailableDates] = useState();
+export const DateTable = ({ participants, dates, eventUUID }) => {
+  const [name, setName] = useState("");
+  const [availableDates, setAvailableDates] = useState([]);
 
   const handleSubmit = () => {
-    console.log("button clicked");
+    const payload = { eventUUID: eventUUID, name: name, dates: availableDates };
+    submitPayload(payload);
+
+    //clearForm()
   };
 
-  const handleUpdate = () => {
-    console.log("dude idk");
+  const handleNameUpdate = (e) => {
+    setName(e.target.value);
   };
 
   return (
@@ -21,12 +26,19 @@ export const DateTable = ({ participants, dates }) => {
           <Table responsive="lg">
             <thead></thead>
             <tbody>
-              {participants.map((participant) => {
-                return <PersonRow participant={participant} dates={dates} />;
+              {participants.map((participant, idx) => {
+                return (
+                  <PersonRow
+                    participant={participant}
+                    dates={dates}
+                    key={idx}
+                  />
+                );
               })}
               <AddNewRow
                 dates={dates}
-                handleUpdate={handleUpdate}
+                name={name}
+                handleNameUpdate={handleNameUpdate}
                 availableDates={availableDates}
                 setAvailableDates={setAvailableDates}
               />
