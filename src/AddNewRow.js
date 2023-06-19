@@ -5,10 +5,11 @@ export const AddNewRow = (props) => {
 
   const handleClick = (e) => {
     let newArray = [];
-    if (!props.availableDates.includes(e.target.value)) {
-      newArray = [...props.availableDates, e.target.value];
+    let targetDate = e.target.name ?? e.target.htmlFor;
+    if (!props.availableDates.includes(targetDate)) {
+      newArray = [...props.availableDates, targetDate];
     } else {
-      newArray = props.availableDates.filter((item) => item !== e.target.value);
+      newArray = props.availableDates.filter((item) => item !== targetDate);
     }
     props.setAvailableDates(newArray);
   };
@@ -21,7 +22,7 @@ export const AddNewRow = (props) => {
           type="text"
           placeholder="Your Name"
           onChange={props.handleNameUpdate}
-          value={props.name}
+          value={props.name || ""}
           required
         ></input>
       </td>
@@ -30,13 +31,17 @@ export const AddNewRow = (props) => {
           <td key={date} className="checkboxlabel">
             <input
               type="checkbox"
-              value={date}
-              name="attendeedates"
-              id={date}
-              onClick={handleClick}
+              name={date}
+              onChange={handleClick}
+              checked={props.availableDates.includes(date)}
             />
-            <label className="checkboxlabel" htmlFor={date} id={date}>
-              {date}
+            <label
+              className="checkboxlabel"
+              htmlFor={date}
+              onClick={handleClick}
+              name={date}
+            >
+              {props.availableDates.includes(date) ? "Going" : "not going"}
             </label>
           </td>
         );

@@ -30,9 +30,10 @@ export const getSingleEvent = (eventID) => {
 
 //submit a response
 export const submitPayload = (payload) => {
-  console.log(payload);
-  for (let date of payload.dates) {
-  }
+  console.log(payload); //this is going to be the entire event object, which sucks--figure out a way to only update the dates that have had updates
   const db = getDatabase();
-  set(ref(db, "event/" + payload.eventUUID), {});
+
+  set(ref(db, "event/" + payload.eventUUID), {
+    dates: payload.dates,
+  });
 };

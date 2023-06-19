@@ -1,9 +1,7 @@
 import React from "react";
-import { convertTimeStampToDate } from "./util";
 
 export const PersonRow = (props) => {
   const datesArray = Object.keys(props.dates);
-  console.log(props);
   return (
     <tr>
       <td>{props.participantName}</td>
