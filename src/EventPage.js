@@ -1,6 +1,7 @@
 import React from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
+import { EmptyEvent } from "./EmptyEvent";
 
 import {
   useLoaderData,
@@ -21,7 +22,7 @@ const reverseObject = (event) => {
   const datesArray = Object.keys(event.dates);
 
   datesArray.forEach((date) => {
-    event.dates[date].participants.forEach((participant) => {
+    event.dates[date].participants?.forEach((participant) => {
       if (participantsObj[participant]?.dates) {
         participantsObj[participant].dates[date] = "yes";
       } else {
@@ -41,6 +42,7 @@ const EventChild = () => {
   const datesArray = Object.keys(resolvedSingleEvent.dates);
 
   const participants = reverseObject(resolvedSingleEvent);
+
   const participantsArray = Object.keys(participants);
   //  because of the above silly way we're storing data, we now have to map over the participants object and insert the dates that the participant *can't* attend, for use later when we build the table
 
@@ -60,11 +62,15 @@ const EventChild = () => {
     <>
       <h1>{resolvedSingleEvent.eventname}</h1>
       <div>
-        <DateTable
-          participants={participants}
-          dates={resolvedSingleEvent.dates}
-          eventUUID={params.eventUUID}
-        />
+        {Object.keys(participants).length > 0 ? (
+          <DateTable
+            participants={participants}
+            dates={resolvedSingleEvent.dates}
+            eventUUID={params.eventUUID}
+          />
+        ) : (
+          <EmptyEvent dates={resolvedSingleEvent.dates} />
+        )}
       </div>
     </>
   );
