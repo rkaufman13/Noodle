@@ -13,3 +13,22 @@ export const convertDateToTimestamp = (date) => {
 export const generateUUID = () => {
   return uuidv4();
 };
+
+export const reverseObject = (event) => {
+  const participantsObj = {};
+
+  const datesArray = Object.keys(event.dates);
+
+  datesArray.forEach((date) => {
+    event.dates[date].participants?.forEach((participant) => {
+      if (participantsObj[participant]?.dates) {
+        participantsObj[participant].dates[date] = "yes";
+      } else {
+        participantsObj[participant] = {};
+        participantsObj[participant]["dates"] = {};
+        participantsObj[participant]["dates"][date] = "yes";
+      }
+    });
+  });
+  return participantsObj;
+};

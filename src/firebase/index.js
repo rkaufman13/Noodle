@@ -71,6 +71,7 @@ export const getSingleAdminEvent = (eventID) => {
     endAt(eventID),
     limitToLast(1)
   );
+
   return get(queryRef).then((snapshot) => {
     if (snapshot.exists()) {
       return snapshot.val();

@@ -2,6 +2,7 @@ import React from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
+import { reverseObject } from "./util";
 
 import {
   useLoaderData,
@@ -14,25 +15,6 @@ import {
 export const loader = ({ params }) => {
   const singleEventPromise = getSingleEvent(params.eventUUID);
   return defer({ singleEvent: singleEventPromise });
-};
-
-const reverseObject = (event) => {
-  const participantsObj = {};
-
-  const datesArray = Object.keys(event.dates);
-
-  datesArray.forEach((date) => {
-    event.dates[date].participants?.forEach((participant) => {
-      if (participantsObj[participant]?.dates) {
-        participantsObj[participant].dates[date] = "yes";
-      } else {
-        participantsObj[participant] = {};
-        participantsObj[participant]["dates"] = {};
-        participantsObj[participant]["dates"][date] = "yes";
-      }
-    });
-  });
-  return participantsObj;
 };
 
 const EventChild = () => {
