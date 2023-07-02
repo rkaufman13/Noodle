@@ -20,6 +20,7 @@ export const DateTable = ({ participants, dates, eventUUID }) => {
   };
 
   const handleSubmit = () => {
+    //todo disallow duplicates
     for (const date of availableDates) {
       dates[date].participants.push(name);
     }
