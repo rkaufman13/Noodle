@@ -29,7 +29,7 @@ const AdminChild = () => {
       </div>
       <div>
         From here you can:
-        <Stack>
+        <Stack direction="horizontal">
           <Button variant="primary">Share your Nood</Button>
           <Button variant="primary">Close your Nood</Button>
           <Button variant="primary">Delete your Nood</Button>
