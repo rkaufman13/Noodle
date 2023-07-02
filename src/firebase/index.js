@@ -9,6 +9,8 @@ import {
   orderByChild,
   endAt,
   limitToLast,
+  update,
+  remove,
 } from "firebase/database";
 
 // Your web app's Firebase configuration
@@ -50,7 +52,6 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  console.log(payload);
   set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
@@ -58,6 +59,9 @@ export const submitNewEvent = (payload) => {
     hostEmail: payload.hostEmail,
     dates: payload.eventDates,
     admin: payload.secretUuid,
+    status: "active",
+    created: Date.now(),
+    deleteAt: Date.now() + 60 * 60 * 24 * 60, //60 days from day of creation
   });
 };
 
@@ -78,4 +82,20 @@ export const getSingleAdminEvent = (eventID) => {
     }
     return null;
   });
+};
+
+//close an event
+export const closeEvent = (eventId) => {
+  const database = getDatabase();
+  const singleEventRef = ref(database, "event/" + eventId);
+  const updates = {};
+  updates["/status/"] = "inactive";
+  return update(singleEventRef, updates);
+};
+
+//immediately delete an event
+export const deleteEvent = (eventId) => {
+  const database = getDatabase();
+  const singleEventRef = ref(database, "event/" + eventId);
+  return remove(singleEventRef);
 };
