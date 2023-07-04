@@ -4,8 +4,6 @@ import { Stack, Table, Button } from "react-bootstrap";
 import { convertTimeStampToDate } from "./util";
 
 export const EmptyEvent = ({ dates }) => {
-  const datesArray = Object.keys(dates);
-
   return (
     <>
       <Stack>
@@ -16,7 +14,7 @@ export const EmptyEvent = ({ dates }) => {
           <tbody>
             <tr>
               <td></td>
-              {datesArray.map((date) => {
+              {dates.map((date) => {
                 return <td key={date}>{convertTimeStampToDate(date)}</td>;
               })}
             </tr>

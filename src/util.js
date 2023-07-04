@@ -1,9 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const convertTimeStampToDate = (timestamp) => {
-  const date = new Date(parseInt(timestamp * 1000));
-
-  return date.getMonth() + 1 + "/" + date.getDay() + "/" + date.getFullYear();
+  const newDate = new Date(parseInt(timestamp * 1000));
+  return (
+    newDate.getMonth() +
+    1 +
+    "/" +
+    newDate.getDate() +
+    "/" +
+    newDate.getFullYear()
+  );
 };
 
 export const convertDateToTimestamp = (date) => {
@@ -31,4 +37,11 @@ export const reverseObject = (event) => {
     });
   });
   return participantsObj;
+};
+
+export const generateExpirationDate = (timestampArray) => {
+  const thirtyDaysFromLastDate =
+    timestampArray.sort()[timestampArray.length - 1] + 60 * 60 * 24 * 30; //30 days;
+  const sixtyDaysFromNow = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60; //60 days; we divide by 1000 so this timestamp conforms with the others that we've already converted to "JS time"
+  return Math.min(thirtyDaysFromLastDate, sixtyDaysFromNow);
 };

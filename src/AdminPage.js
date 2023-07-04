@@ -6,6 +6,7 @@ import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject } from "./util";
 import { useNavigate } from "react-router";
+import { convertTimeStampToDate } from "./util";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -137,7 +138,12 @@ const AdminChild = () => {
           <Modal.Title>Delete your Nood?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Deleting your Nood is immediate and irreversible!
+          Your Nood will auto-delete on{" "}
+          {convertTimeStampToDate(finalAdminEvent.deleteAt)}.
+          <br />
+          If you'd like to delete it sooner, you may.
+          <br />
+          Warning: Deleting your Nood is immediate and irreversible!
         </Modal.Body>
         <Modal.Footer>
           <Button

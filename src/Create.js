@@ -2,27 +2,22 @@ import React, { useState } from "react";
 import { Calendar } from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { Stack, Button } from "react-bootstrap";
-import { convertDateToTimestamp, generateUUID } from "./util";
+import {
+  convertDateToTimestamp,
+  generateUUID,
+  generateExpirationDate,
+} from "./util";
 import { useNavigate } from "react-router";
 import { submitNewEvent } from "./firebase";
 
-export const Create = ({ setErrorMessage }) => {
+export const Create = ({ setErrorMessage, setSuccessMessage }) => {
   const [eventName, setEventName] = useState("");
+  const [eventDesc, setEventDesc] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [hostName, setHostName] = useState("");
   const [hostEmail, setHostEmail] = useState("");
   const [eventDates, setEventDates] = useState([]);
   const navigate = useNavigate();
-
-  const resetForm = () => {
-    setEventName("");
-    setEventLocation("");
-    setHostName("");
-    setHostEmail("");
-    setEventDates([]);
-    //refresh the page
-    navigate(0);
-  };
 
   const handleSubmit = (e) => {
     setErrorMessage("");
@@ -33,16 +28,17 @@ export const Create = ({ setErrorMessage }) => {
       const convertedEventDates = eventDates.map((date) =>
         convertDateToTimestamp(date)
       );
-      const uuid = generateUUID();
       const secretUuid = generateUUID();
       const payload = {
-        uuid,
+        uuid: generateUUID(),
         secretUuid,
         eventName,
+        eventDesc,
         eventLocation,
         hostName,
         hostEmail,
         eventDates: convertedEventDates,
+        deleteAt: generateExpirationDate(convertedEventDates),
       };
       submitNewEvent(payload);
       navigate("admin/" + secretUuid);
@@ -63,6 +59,15 @@ export const Create = ({ setErrorMessage }) => {
               onChange={(e) => setEventName(e.target.value)}
               placeholder="Name your Nood"
               required
+            ></input>
+          </div>
+          <div className="p-2">
+            <label htmlFor="eventDesc">Optional: Describe your Nood</label>
+            <input
+              type="text"
+              name="eventDesc"
+              value={eventDesc}
+              onChange={(e) => setEventDesc(e.target.value)}
             ></input>
           </div>
           <div className="p-2">
