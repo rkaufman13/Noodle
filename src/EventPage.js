@@ -5,7 +5,7 @@ import { reverseObject, convertTimeStampToDate } from "./util";
 import { AddNewRow } from "./AddNewRow";
 import { useNavigate } from "react-router";
 import { submitPayload } from "./firebase/index";
-import { Button, Table, Stack } from "react-bootstrap";
+import { Button, Table, Stack, Alert } from "react-bootstrap";
 
 import {
   useLoaderData,
@@ -78,6 +78,9 @@ const EventChild = () => {
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
       <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
+      {resolvedSingleEvent.status === "inactive" && (
+        <Alert variant="warning">This Noodle is closed.</Alert>
+      )}
       <Stack>
         <form>
           <Table responsive="lg" bordered>
@@ -97,21 +100,25 @@ const EventChild = () => {
                   eventUUID={params.eventUUID}
                 />
               )}
-              <AddNewRow
-                dates={datesArray}
-                name={name}
-                handleNameUpdate={handleNameUpdate}
-                availableDates={availableDates}
-                setAvailableDates={setAvailableDates}
-              />
+              {resolvedSingleEvent.status === "active" && (
+                <AddNewRow
+                  dates={datesArray}
+                  name={name}
+                  handleNameUpdate={handleNameUpdate}
+                  availableDates={availableDates}
+                  setAvailableDates={setAvailableDates}
+                />
+              )}
             </tbody>
           </Table>
 
-          <div id="submitButtonContainer">
-            <Button variant="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </div>
+          {resolvedSingleEvent.status === "active" && (
+            <div id="submitButtonContainer">
+              <Button variant="primary" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </div>
+          )}
         </form>
       </Stack>
     </>
