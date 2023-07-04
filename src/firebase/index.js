@@ -43,7 +43,7 @@ export const getSingleEvent = (eventID) => {
 export const submitPayload = (payload) => {
   //todo only update the dates that have had updates
   const db = getDatabase();
-  set(ref(db, "event/" + payload.eventUUID), {
+  update(ref(db, "event/" + payload.eventUUID), {
     dates: payload.dates,
   });
 };

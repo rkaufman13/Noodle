@@ -28,6 +28,11 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
       const convertedEventDates = eventDates.map((date) =>
         convertDateToTimestamp(date)
       );
+      const dateEntries = convertedEventDates.map((date) => {
+        const participantObj = { participants: [0] }; //we have to add a truthy-but-falsy value here or firebase loses its mind
+        return [date, participantObj];
+      });
+      const finalDates = Object.fromEntries(dateEntries);
       const secretUuid = generateUUID();
       const payload = {
         uuid: generateUUID(),
@@ -37,7 +42,7 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
         eventLocation,
         hostName,
         hostEmail,
-        eventDates: convertedEventDates,
+        eventDates: finalDates,
         deleteAt: generateExpirationDate(convertedEventDates),
       };
       submitNewEvent(payload);

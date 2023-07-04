@@ -63,19 +63,6 @@ const EventChild = () => {
 
   const handleSubmit = () => {
     //todo disallow duplicates
-    if (Array.isArray(resolvedSingleEvent.dates)) {
-      /*we have an array of timestamps, because if you try to insert an empty object into firebase, it explodes.
-      So we can't create the db structure we want when the event is created; we have to create it when the event is first responded to.
-        But before we write to this, we need to convert this array into an object where each timestamp is a key
-    */
-
-      const dateEntries = resolvedSingleEvent.dates.map((date) => {
-        const participantObj = { participants: [] };
-        return [date, participantObj];
-      });
-      resolvedSingleEvent.dates = Object.fromEntries(dateEntries);
-    }
-    debugger;
     for (let selectedDate of availableDates) {
       resolvedSingleEvent.dates[selectedDate].participants.push(name);
     }
