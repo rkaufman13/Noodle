@@ -7,7 +7,6 @@ export const AddNewRow = ({
   handleNameUpdate,
   name,
 }) => {
-  console.log("what i'm passing to addnewrow", dates);
   const handleClick = (e) => {
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;

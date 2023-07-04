@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getSingleAdminEvent, closeEvent, deleteEvent } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import { Button, Stack, Modal } from "react-bootstrap";
+import { Button, Stack, Modal, Alert } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject } from "./util";
@@ -22,6 +22,7 @@ const AdminChild = () => {
   const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const toggleShare = () => {
@@ -31,6 +32,7 @@ const AdminChild = () => {
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
+    setSuccessMessage("Noodle successfully closed.");
   };
 
   const toggleDelete = () => {
@@ -58,7 +60,7 @@ const AdminChild = () => {
   return (
     <>
       <h1>{finalAdminEvent.eventname}</h1>
-
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
       <div>
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url: {`${baseUrl}/admin/${finalAdminEvent.admin}`}
@@ -68,27 +70,29 @@ const AdminChild = () => {
         Your Nood is currently{" "}
         {finalAdminEvent.status.toUpperCase() ?? "Unknown"}.{" "}
       </div>
+
+      {shareUrlVisible && (
+        <>
+          <div>Share this link with your friends.</div>
+          <input type="text" value={`${baseUrl}/event/${eventKey}`} disabled />
+          <Button variant="secondary" onClick={copyLink}>
+            Copy Link
+          </Button>
+        </>
+      )}
+
       <div>
         From here you can:
-        <Stack>
+        <Stack direction="horizontal" gap={3}>
           <Button variant="primary" onClick={toggleShare}>
             Share your Nood
           </Button>
-          {shareUrlVisible && (
-            <>
-              <div>Share this link with your friends.</div>
-              <input
-                type="text"
-                value={`${baseUrl}/event/${eventKey}`}
-                disabled
-              />
-              <Button variant="secondary" onClick={copyLink}>
-                Copy Link
-              </Button>
-            </>
-          )}
-          <Button variant="primary" onClick={toggleClose}>
-            Close your Nood
+          <Button
+            variant="primary"
+            onClick={toggleClose}
+            disabled={finalAdminEvent.status === "inactive"}
+          >
+            Close Your Nood
           </Button>
           <Button variant="primary" onClick={toggleDelete}>
             Delete your Nood
