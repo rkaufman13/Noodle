@@ -27,12 +27,16 @@ export const reverseObject = (event) => {
 
   datesArray.forEach((date) => {
     event.dates[date].participants?.forEach((participant) => {
-      if (participantsObj[participant]?.dates) {
-        participantsObj[participant].dates[date] = "yes";
+      if (participant === 0) {
+        //do nothing
       } else {
-        participantsObj[participant] = {};
-        participantsObj[participant]["dates"] = {};
-        participantsObj[participant]["dates"][date] = "yes";
+        if (participantsObj[participant]?.dates) {
+          participantsObj[participant].dates[date] = "yes";
+        } else {
+          participantsObj[participant] = {};
+          participantsObj[participant]["dates"] = {};
+          participantsObj[participant]["dates"][date] = "yes";
+        }
       }
     });
   });
