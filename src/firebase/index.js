@@ -41,10 +41,9 @@ export const getSingleEvent = (eventID) => {
 
 //submit a response to an existing event
 export const submitPayload = (payload) => {
-  console.log(payload); //this is going to be the entire event object, which sucks--figure out a way to only update the dates that have had updates
+  //todo only update the dates that have had updates
   const db = getDatabase();
-
-  set(ref(db, "event/" + payload.eventUUID), {
+  update(ref(db, "event/" + payload.eventUUID), {
     dates: payload.dates,
   });
 };
@@ -61,7 +60,7 @@ export const submitNewEvent = (payload) => {
     admin: payload.secretUuid,
     status: "active",
     created: Date.now(),
-    deleteAt: Date.now() + 60 * 60 * 24 * 60, //60 days from day of creation
+    deleteAt: payload.deleteAt,
   });
 };
 

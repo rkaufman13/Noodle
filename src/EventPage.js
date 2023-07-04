@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
-import { EmptyEvent } from "./EmptyEvent";
-import { reverseObject } from "./util";
+import { reverseObject, convertTimeStampToDate } from "./util";
+import { AddNewRow } from "./AddNewRow";
+import { useNavigate } from "react-router";
+import { submitPayload } from "./firebase/index";
+import { Button, Table, Stack } from "react-bootstrap";
 
 import {
   useLoaderData,
@@ -18,11 +21,18 @@ export const loader = ({ params }) => {
 };
 
 const EventChild = () => {
+  const [name, setName] = useState("");
+  const [availableDates, setAvailableDates] = useState([]);
+  const navigate = useNavigate();
+
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
   //we're not storing this in a smart, relational database sort of way because we want the participants' names and identities to completely disappear when the event is closed/deleted. #privacy!
-  const datesArray = Object.keys(resolvedSingleEvent.dates);
 
+  let datesArray = resolvedSingleEvent.dates;
+  if (!Array.isArray(resolvedSingleEvent.dates)) {
+    datesArray = Object.keys(resolvedSingleEvent.dates);
+  }
   const participants = reverseObject(resolvedSingleEvent);
 
   const participantsArray = Object.keys(participants);
@@ -40,20 +50,70 @@ const EventChild = () => {
 
   const params = useParams();
 
+  const clearForm = () => {
+    setName("");
+    setAvailableDates([]);
+    //refresh the page
+    navigate(0);
+  };
+
+  const handleNameUpdate = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    //todo disallow duplicates
+    for (let selectedDate of availableDates) {
+      resolvedSingleEvent.dates[selectedDate].participants.push(name);
+    }
+    const payload = {
+      eventUUID: params.eventUUID,
+      dates: resolvedSingleEvent.dates,
+    };
+    submitPayload(payload);
+    clearForm();
+  };
+
   return (
     <>
-      <h1>{resolvedSingleEvent.eventname}</h1>
-      <div>
-        {Object.keys(participants).length > 0 ? (
-          <DateTable
-            participants={participants}
-            dates={resolvedSingleEvent.dates}
-            eventUUID={params.eventUUID}
-          />
-        ) : (
-          <EmptyEvent dates={resolvedSingleEvent.dates} />
-        )}
-      </div>
+      <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
+      <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
+      <Stack>
+        <form>
+          <Table responsive="lg" bordered>
+            <thead>
+              <tr>
+                <td></td>
+                {datesArray.map((date) => {
+                  return <td key={date}>{convertTimeStampToDate(date)}</td>;
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(participants).length > 0 && (
+                <DateTable
+                  participants={participants}
+                  dates={resolvedSingleEvent.dates}
+                  eventUUID={params.eventUUID}
+                />
+              )}
+              <AddNewRow
+                dates={datesArray}
+                name={name}
+                handleNameUpdate={handleNameUpdate}
+                availableDates={availableDates}
+                setAvailableDates={setAvailableDates}
+              />
+            </tbody>
+          </Table>
+
+          <div id="submitButtonContainer">
+            <Button variant="primary" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </div>
+        </form>
+      </Stack>
     </>
   );
 };

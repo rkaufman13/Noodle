@@ -1,17 +1,23 @@
 import React from "react";
 
-export const AddNewRow = (props) => {
-  const datesArray = Object.keys(props.dates);
-
+export const AddNewRow = ({
+  dates,
+  availableDates,
+  setAvailableDates,
+  handleNameUpdate,
+  name,
+}) => {
+  console.log("what i'm passing to addnewrow", dates);
   const handleClick = (e) => {
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
-    if (!props.availableDates.includes(targetDate)) {
-      newArray = [...props.availableDates, targetDate];
+    targetDate = parseInt(targetDate);
+    if (!availableDates.includes(targetDate)) {
+      newArray = [...availableDates, targetDate];
     } else {
-      newArray = props.availableDates.filter((item) => item !== targetDate);
+      newArray = availableDates.filter((item) => item !== targetDate);
     }
-    props.setAvailableDates(newArray);
+    setAvailableDates(newArray);
   };
 
   return (
@@ -21,19 +27,19 @@ export const AddNewRow = (props) => {
           name="attendeename"
           type="text"
           placeholder="Your Name"
-          onChange={props.handleNameUpdate}
-          value={props.name || ""}
+          onChange={handleNameUpdate}
+          value={name || ""}
           required
         ></input>
       </td>
-      {datesArray.map((date) => {
+      {dates.map((date) => {
         return (
           <td key={date} className="checkboxlabel">
             <input
               type="checkbox"
               name={date}
               onChange={handleClick}
-              checked={props.availableDates.includes(date)}
+              checked={availableDates.includes(date)}
             />
             <label
               className="checkboxlabel"
@@ -41,7 +47,7 @@ export const AddNewRow = (props) => {
               onClick={handleClick}
               name={date}
             >
-              {props.availableDates.includes(date) ? "Going" : "not going"}
+              {availableDates.includes(date) ? "Going" : "not going"}
             </label>
           </td>
         );
