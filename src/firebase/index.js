@@ -68,7 +68,7 @@ export const submitNewEvent = (payload) => {
   const queryRef = query(
     dbRef,
     orderByChild("deleteAt"),
-    endAt(Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 30)
+    endAt(Math.floor(Date.now() / 1000))
   );
   get(queryRef).then((snapshot) => {
     if (snapshot.exists()) {
