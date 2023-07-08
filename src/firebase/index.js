@@ -8,6 +8,7 @@ import {
   query,
   orderByChild,
   endAt,
+  startAt,
   limitToLast,
   update,
   remove,
@@ -61,6 +62,23 @@ export const submitNewEvent = (payload) => {
     status: "active",
     created: Date.now(),
     deleteAt: payload.deleteAt,
+  });
+  //perform housekeeping on db
+  const dbRef = ref(db, "event");
+  const queryRef = query(
+    dbRef,
+    orderByChild("deleteAt"),
+    endAt(Math.floor(Date.now() / 1000) - 60 * 60 * 24 * 30)
+  );
+  get(queryRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+      const keysToDelete = Object.keys(snapshot.val());
+      for (let key of keysToDelete) {
+        const singleEventRef = ref(db, "event/" + key);
+        return remove(singleEventRef);
+      }
+    }
   });
 };
 
