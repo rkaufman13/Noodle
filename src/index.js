@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
 import ErrorPage from "./error-page";
 import { EventPage, loader as eventLoader } from "./EventPage";
 import { AdminPage, adminLoader } from "./AdminPage";
 import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.scss";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
