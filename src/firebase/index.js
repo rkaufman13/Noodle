@@ -72,7 +72,6 @@ export const submitNewEvent = (payload) => {
   );
   get(queryRef).then((snapshot) => {
     if (snapshot.exists()) {
-      console.log(snapshot.val());
       const keysToDelete = Object.keys(snapshot.val());
       for (let key of keysToDelete) {
         const singleEventRef = ref(db, "event/" + key);
