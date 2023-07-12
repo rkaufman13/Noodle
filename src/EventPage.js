@@ -33,6 +33,7 @@ const EventChild = () => {
   if (!Array.isArray(resolvedSingleEvent.dates)) {
     datesArray = Object.keys(resolvedSingleEvent.dates);
   }
+  datesArray = datesArray.map(date=>parseInt(date));
   const participants = reverseObject(resolvedSingleEvent);
 
   const participantsArray = Object.keys(participants);

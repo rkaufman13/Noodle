@@ -8,7 +8,11 @@ function App() {
   const [successMessage, setSuccessMessage] = useState("");
 
   return (
+    
     <div className="App">
+      <style>
+  @import url('https://fonts.googleapis.com/css2?family=Coiny&display=swap');
+</style>
       <div className="header">
         <h1>Noodle</h1>
         Scheduling events should be easy. That's using your Noodle.
