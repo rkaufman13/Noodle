@@ -9,6 +9,7 @@ import {
 } from "./util";
 import { useNavigate } from "react-router";
 import { submitNewEvent } from "./firebase";
+import { sendConfirmationEmail } from "./aws_helpers";
 
 export const Create = ({ setErrorMessage, setSuccessMessage }) => {
   const [eventName, setEventName] = useState("");
@@ -45,8 +46,15 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
         eventDates: finalDates,
         deleteAt: generateExpirationDate(convertedEventDates),
       };
-      submitNewEvent(payload);
-      navigate("admin/" + secretUuid);
+      const result = submitNewEvent(payload);
+      if (result) {
+        if (!!payload.hostEmail) {
+          sendConfirmationEmail(payload);
+        }
+        navigate("admin/" + secretUuid);
+      } else {
+        setErrorMessage("An unknown error occurred, please try again");
+      }
     }
   };
 

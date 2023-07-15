@@ -145,7 +145,7 @@ const AdminChild = () => {
           Your Nood will auto-delete on{" "}
           {convertTimeStampToDate(finalAdminEvent.deleteAt)}.
           <br />
-          If you'd like to delete it sooner, you may.
+          If you'd like to delete it sooner, you may do so below.
           <br />
           Warning: Deleting your Nood is immediate and irreversible!
         </Modal.Body>

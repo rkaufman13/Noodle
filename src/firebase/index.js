@@ -52,7 +52,7 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  set(ref(db, "event/" + payload.uuid), {
+  const result = set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
     hostName: payload.hostName,
@@ -75,10 +75,11 @@ export const submitNewEvent = (payload) => {
       const keysToDelete = Object.keys(snapshot.val());
       for (let key of keysToDelete) {
         const singleEventRef = ref(db, "event/" + key);
-        return remove(singleEventRef);
+        remove(singleEventRef);
       }
     }
   });
+  return result;
 };
 
 //retrieve the event via secret ID
