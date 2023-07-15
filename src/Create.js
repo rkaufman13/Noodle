@@ -34,6 +34,7 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
       });
       const finalDates = Object.fromEntries(dateEntries);
       const secretUuid = generateUUID();
+
       const payload = {
         uuid: generateUUID(),
         secretUuid,
@@ -45,9 +46,22 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
         eventDates: finalDates,
         deleteAt: generateExpirationDate(convertedEventDates),
       };
-      submitNewEvent(payload);
-      navigate("admin/" + secretUuid);
+      submitNewEvent(payload).then(
+        () => {
+          navigate("admin/" + secretUuid);
+        },
+        (error) => {
+          console.log(error);
+          setErrorMessage(
+            "An unknown error occurred; please wait a few minutes and try again!"
+          );
+        }
+      );
     }
+  };
+
+  const formIsInvalid = () => {
+    return !eventDates.length > 0 || !eventName || !hostName;
   };
 
   return (
@@ -76,7 +90,7 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
             ></input>
           </div>
           <div className="p-2">
-            <label htmlFor="eventLocation">Event address?</label>
+            <label htmlFor="eventLocation">Optional: Event address?</label>
             <input
               type="text"
               name="eventLocation"
@@ -124,7 +138,9 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
             />
           </div>
           <div id="submitButtonContainer">
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={formIsInvalid()} variant="primary">
+              Submit
+            </Button>
           </div>
         </form>
       </Stack>

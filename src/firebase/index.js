@@ -52,7 +52,7 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  set(ref(db, "event/" + payload.uuid), {
+  console.log({
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
     hostName: payload.hostName,
@@ -61,6 +61,18 @@ export const submitNewEvent = (payload) => {
     admin: payload.secretUuid,
     status: "active",
     created: Date.now(),
+    deleteAt: payload.deleteAt,
+  });
+
+  const createdEvent = set(ref(db, "event/" + payload.uuid), {
+    eventname: payload.eventName,
+    eventLocation: payload.eventLocation,
+    hostName: payload.hostName,
+    hostEmail: payload.hostEmail,
+    dates: payload.eventDates,
+    admin: payload.secretUuid,
+    status: "active",
+    created: Math.floor(Date.now() / 1000),
     deleteAt: payload.deleteAt,
   });
   //perform housekeeping on db
@@ -75,10 +87,11 @@ export const submitNewEvent = (payload) => {
       const keysToDelete = Object.keys(snapshot.val());
       for (let key of keysToDelete) {
         const singleEventRef = ref(db, "event/" + key);
-        return remove(singleEventRef);
+        remove(singleEventRef);
       }
     }
   });
+  return createdEvent;
 };
 
 //retrieve the event via secret ID
