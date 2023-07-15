@@ -59,8 +59,8 @@ export const submitNewEvent = (payload) => {
     hostEmail: payload.hostEmail,
     dates: payload.eventDates,
     admin: payload.secretUuid,
-    status: "active",
-    created: Date.now(),
+    active: true,
+    created: Math.floor(Date.now() / 1000),
     deleteAt: payload.deleteAt,
   });
   //perform housekeeping on db
@@ -106,7 +106,7 @@ export const closeEvent = (eventId) => {
   const database = getDatabase();
   const singleEventRef = ref(database, "event/" + eventId);
   const updates = {};
-  updates["/status/"] = "inactive";
+  updates["/active/"] = false;
   return update(singleEventRef, updates);
 };
 

@@ -33,7 +33,7 @@ const EventChild = () => {
   if (!Array.isArray(resolvedSingleEvent.dates)) {
     datesArray = Object.keys(resolvedSingleEvent.dates);
   }
-  datesArray = datesArray.map(date=>parseInt(date));
+  datesArray = datesArray.map((date) => parseInt(date));
   const participants = reverseObject(resolvedSingleEvent);
 
   const participantsArray = Object.keys(participants);
@@ -101,7 +101,7 @@ const EventChild = () => {
                   eventUUID={params.eventUUID}
                 />
               )}
-              {resolvedSingleEvent.status === "active" && (
+              {resolvedSingleEvent.active && (
                 <AddNewRow
                   dates={datesArray}
                   name={name}
@@ -113,7 +113,7 @@ const EventChild = () => {
             </tbody>
           </Table>
 
-          {resolvedSingleEvent.status === "active" && (
+          {resolvedSingleEvent.active && (
             <div id="submitButtonContainer">
               <Button variant="primary" onClick={handleSubmit}>
                 Submit

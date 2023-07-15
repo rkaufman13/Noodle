@@ -32,7 +32,6 @@ const AdminChild = () => {
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
-    setSuccessMessage("Noodle successfully closed.");
   };
 
   const toggleDelete = () => {
@@ -43,6 +42,7 @@ const AdminChild = () => {
   const handleCloseEvent = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
+    setSuccessMessage("Noodle successfully closed.");
   };
 
   const handleDeleteEvent = () => {
@@ -67,8 +67,7 @@ const AdminChild = () => {
         DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
       </div>
       <div>
-        Your Nood is currently{" "}
-        {finalAdminEvent.status.toUpperCase() ?? "Unknown"}.{" "}
+        Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
       </div>
 
       {shareUrlVisible && (
@@ -90,7 +89,7 @@ const AdminChild = () => {
           <Button
             variant="primary"
             onClick={toggleClose}
-            disabled={finalAdminEvent.status === "inactive"}
+            disabled={finalAdminEvent.active === false}
           >
             Close Your Nood
           </Button>
