@@ -47,6 +47,16 @@ export const submitPayload = (payload) => {
   update(ref(db, "event/" + payload.eventUUID), {
     dates: payload.dates,
   });
+  //retrieve email address of event host
+  const singleEventHostEmail = ref(
+    db,
+    "event/" + payload.eventUUID + "/hostEmail"
+  );
+  get(singleEventHostEmail).then((snapshot) => {
+    if (snapshot.exists() && snapshot.val() !== "") {
+      console.log("the host's email is " + snapshot.val());
+    }
+  });
 };
 
 //create a new event

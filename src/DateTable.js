@@ -1,21 +1,22 @@
 import React from "react";
+import { Table } from "react-bootstrap";
+import { convertTimeStampToDate } from "./util";
 
-import { PersonRow } from "./PersonRow";
-
-export const DateTable = ({ participants, dates }) => {
-  const participantsArray = Object.keys(participants);
+export const DateTable = (props) => {
+  const datesArray = Object.keys(props.dates);
   return (
     <>
-      {participantsArray.map((participant, idx) => {
-        return (
-          <PersonRow
-            participant={participants[participant]}
-            participantName={participant}
-            dates={dates}
-            key={idx}
-          />
-        );
-      })}
+      <Table responsive="lg" bordered>
+        <thead>
+          <tr>
+            <td></td>
+            {datesArray.map((date) => {
+              return <td key={date}>{convertTimeStampToDate(date)}</td>;
+            })}
+          </tr>
+        </thead>
+        <tbody>{props.children}</tbody>
+      </Table>
     </>
   );
 };

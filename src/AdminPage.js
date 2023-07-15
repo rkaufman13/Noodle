@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { getSingleAdminEvent, closeEvent, deleteEvent } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import { Button, Stack, Modal, Alert } from "react-bootstrap";
+import {
+  Button,
+  Stack,
+  Modal,
+  Alert,
+  Row,
+  Container,
+  Spinner,
+} from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject } from "./util";
@@ -59,31 +67,46 @@ const AdminChild = () => {
 
   return (
     <>
-      <h1>{finalAdminEvent.eventname}</h1>
-      {successMessage && <Alert variant="success">{successMessage}</Alert>}
-      <div>
+      <Row>
+        <h1>{finalAdminEvent.eventname}</h1>
+      </Row>
+      <Row>
+        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      </Row>
+      <Row>
+        {" "}
         This is your admin page for your Nood. You can visit this page at any
-        time by visiting this url: {`${baseUrl}/admin/${finalAdminEvent.admin}`}
-        DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
-      </div>
-      <div>
+        time by visiting this url:
+      </Row>
+      <Alert variant="info">
+        {" "}
+        {`${baseUrl}/admin/${finalAdminEvent.admin}`}
+      </Alert>
+      <Row>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</Row>
+      <Row>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
-      </div>
-
+      </Row>
       {shareUrlVisible && (
         <>
-          <div>Share this link with your friends.</div>
-          <input type="text" value={`${baseUrl}/event/${eventKey}`} disabled />
-          <Button variant="secondary" onClick={copyLink}>
-            Copy Link
-          </Button>
+          <Container fluid>
+            <Row>
+              Share this link with your friends.
+              <input
+                type="text"
+                value={`${baseUrl}/event/${eventKey}`}
+                disabled
+              />
+              <Button variant="secondary" onClick={copyLink}>
+                Copy Link
+              </Button>
+            </Row>
+          </Container>
         </>
       )}
-
-      <div>
+      <Row>
         From here you can:
         <Stack direction="horizontal" gap={3}>
-          <Button variant="primary" onClick={toggleShare}>
+          <Button variant="primary" onClick={toggleShare} className="ms-auto">
             Share your Nood
           </Button>
           <Button
@@ -93,24 +116,26 @@ const AdminChild = () => {
           >
             Close Your Nood
           </Button>
-          <Button variant="primary" onClick={toggleDelete}>
+          <Button variant="primary" onClick={toggleDelete} className="me-auto">
             Delete your Nood
           </Button>
         </Stack>
-      </div>
-      <div>
-        <div>
-          {Object.keys(participants).length > 0 ? (
+      </Row>
+      <hr className="p-2 invisible" />
+      <Row>
+        {Object.keys(participants).length > 0 ? (
+          <>
+            <h2>Your Nood So Far</h2>
             <DateTable
               participants={participants}
               dates={finalAdminEvent.dates}
               eventUUID={finalAdminEvent.uuid}
             />
-          ) : (
-            <EmptyEvent dates={finalAdminEvent.dates} />
-          )}
-        </div>
-      </div>
+          </>
+        ) : (
+          <EmptyEvent dates={finalAdminEvent.dates} />
+        )}
+      </Row>
       <Modal
         show={closeModalVisible}
         onHide={() => setCloseModalVisible(false)}
@@ -169,14 +194,24 @@ export const AdminPage = () => {
 
   return (
     <>
-      <React.Suspense fallback={<p>Loading...</p>}>
-        <Await
-          resolve={data.singleEvent}
-          errorElement={<p>An error occurred</p>}
-        >
-          <AdminChild />
-        </Await>
-      </React.Suspense>
+      <Container>
+        <Row className="justify-content-center">
+          <React.Suspense
+            fallback={
+              <p>
+                <Spinner></Spinner>Loading...
+              </p>
+            }
+          >
+            <Await
+              resolve={data.singleEvent}
+              errorElement={<p>An error occurred</p>}
+            >
+              <AdminChild />
+            </Await>
+          </React.Suspense>
+        </Row>
+      </Container>
     </>
   );
 };
