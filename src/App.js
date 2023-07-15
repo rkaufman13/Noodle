@@ -1,7 +1,8 @@
 import "./App.css";
 import React, { useState } from "react";
 import { Create } from "./Create";
-import { Alert } from "react-bootstrap";
+import { Alert, Container, Row, Col } from "react-bootstrap";
+import { Route } from "react-router";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -10,13 +11,16 @@ function App() {
   return (
     
     <div className="App">
-      <style>
-  @import url('https://fonts.googleapis.com/css2?family=Coiny&display=swap');
-</style>
-      <div className="header">
-        <h1>Noodle</h1>
-        Scheduling events should be easy. That's using your Noodle.
-      </div>
+      <header>
+        <Container>
+          <Row className="justify-content-center">
+            <Col xl={8}>
+              <h1>Noodle</h1>
+              <p>Scheduling events should be easy. That's using your Noodle.</p>
+            </Col>
+          </Row>
+        </Container>
+      </header>
       {errorMessage && (
         <Alert variant={"info"}>
           It may seem impastable, but something's gone wrong.
@@ -24,10 +28,18 @@ function App() {
         </Alert>
       )}
       {successMessage && <Alert variant={"success"}>{successMessage}</Alert>}
-      <Create
-        setErrorMessage={setErrorMessage}
-        setSuccessMessage={setSuccessMessage}
-      />
+      <main>
+        <Container>
+          <Row className="justify-content-center">
+            <Col xl={8}>
+              <Create
+                setErrorMessage={setErrorMessage}
+                setSuccessMessage={setSuccessMessage}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </main>
     </div>
   );
 }

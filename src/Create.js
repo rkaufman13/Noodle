@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Calendar } from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
-import { Stack, Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import {
   convertDateToTimestamp,
   generateUUID,
@@ -60,69 +60,71 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
 
   return (
     <div className="create">
-      <Stack gap={3} className="col-md-5 mx-auto">
-        Create a Nood. It's free, and we respect your privacy.
-        <form onSubmit={handleSubmit}>
-          <div className="p-2">
-            <label htmlFor="eventName">What's your event called?</label>
-            <input
+        <p>Create a Nood. It's free, and we respect your privacy.</p>
+        <Form className="vstack gap-3" onSubmit={handleSubmit}>
+          <Form.Group controlId="eventName">
+            <Form.Label>
+              What's your event called?
+            </Form.Label>
+            <Form.Control
               type="text"
+              placeholder="Name your Nood"
               name="eventName"
               value={eventName}
-              onChange={(e) => setEventName(e.target.value)}
-              placeholder="Name your Nood"
-              required
-            ></input>
-          </div>
-          <div className="p-2">
-            <label htmlFor="eventDesc">Optional: Describe your Nood</label>
-            <input
+              onChange={(e) => setEventName(e.target.value)} // It might be better to get all of these working with an "onBlur" instead of "onChange"
+              required />
+          </Form.Group>
+          <Form.Group controlId="eventDesc">
+            <Form.Label>
+              Optional: Describe your Nood
+            </Form.Label>
+            <Form.Control
               type="text"
-              name="eventDesc"
               value={eventDesc}
               onChange={(e) => setEventDesc(e.target.value)}
-            ></input>
-          </div>
-          <div className="p-2">
-            <label htmlFor="eventLocation">Event address?</label>
-            <input
+            />
+          </Form.Group>
+          <Form.Group controlId="eventLocation">
+            <Form.Label>
+              Event address?
+            </Form.Label>
+            <Form.Control 
               type="text"
-              name="eventLocation"
               value={eventLocation}
-              onChange={(e) => setEventLocation(e.target.value)}
               placeholder="Where's your Nood"
-            ></input>
-          </div>
-          <div className="p-2">
-            <label htmlFor="hostName">What's your name?</label>
-            <input
+              onChange={(e) => setEventLocation(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="hostName">
+            <Form.Label>
+              What's your name?
+            </Form.Label>
+            <Form.Control 
               type="text"
-              name="hostName"
               value={hostName}
-              onChange={(e) => setHostName(e.target.value)}
               placeholder="Your name; no impastas, please"
+              onChange={(e) => setHostName(e.target.value)}
               required
-            ></input>
-          </div>{" "}
-          <div className="p-2">
-            <label htmlFor="hostContact">
+            />
+          </Form.Group>
+          <Form.Group controlId="hostContact">
+            <Form.Label className="w-75">
               What's your email? This is optional, but if you provide it, we'll
               email you a link to manage your Nood, as well as notify you
               whenever anyone fills it out. We won't email you for any other
               purpose.
-            </label>
-            <input
+            </Form.Label>
+            <Form.Control 
               type="email"
-              name="hostEmail"
               value={hostEmail}
-              onChange={(e) => setHostEmail(e.target.value)}
               placeholder="you@mail.com"
-            ></input>
-          </div>
-          <div className="p-2">
-            <label htmlFor="dates">
+              onChange={(e) => setHostEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group controlId="dates">
+            <Form.Label>
               What dates would you like to offer as options?
-            </label>
+            </Form.Label>
             <Calendar
               value={eventDates}
               onChange={setEventDates}
@@ -130,12 +132,11 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
               multiple
               highlightToday={false}
             />
-          </div>
-          <div id="submitButtonContainer">
-            <Button type="submit">Submit</Button>
-          </div>
-        </form>
-      </Stack>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
     </div>
   );
 };
