@@ -52,18 +52,6 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  console.log({
-    eventname: payload.eventName,
-    eventLocation: payload.eventLocation,
-    hostName: payload.hostName,
-    hostEmail: payload.hostEmail,
-    dates: payload.eventDates,
-    admin: payload.secretUuid,
-    status: "active",
-    created: Date.now(),
-    deleteAt: payload.deleteAt,
-  });
-
   const createdEvent = set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
