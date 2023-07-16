@@ -1,15 +1,13 @@
 import "./App.css";
 import React, { useState } from "react";
-import { Create } from "./Create";
 import { Alert, Container, Row, Col } from "react-bootstrap";
-import { Route } from "react-router";
+import { Outlet } from "react-router";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   return (
-    
     <div className="App">
       <header>
         <Container>
@@ -32,10 +30,7 @@ function App() {
         <Container>
           <Row className="justify-content-center">
             <Col xl={8}>
-              <Create
-                setErrorMessage={setErrorMessage}
-                setSuccessMessage={setSuccessMessage}
-              />
+              <Outlet />
             </Col>
           </Row>
         </Container>

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import ErrorPage from "./error-page";
+import { Create } from "./Create";
 import { EventPage, loader as eventLoader } from "./EventPage";
 import { AdminPage, adminLoader } from "./AdminPage";
 import reportWebVitals from "./reportWebVitals";
@@ -14,13 +15,20 @@ const router = createBrowserRouter([
     path: "/",
     element: <App></App>,
     errorElement: <ErrorPage />,
+    children: [
+      { path: "", element: <Create /> },
+      {
+        path: "/event/:eventUUID",
+        element: <EventPage />,
+        loader: eventLoader,
+      },
+      {
+        path: "/admin/:secretUUID",
+        element: <AdminPage />,
+        loader: adminLoader,
+      },
+    ],
   },
-  {
-    path: "/event/:eventUUID",
-    element: <EventPage />,
-    loader: eventLoader,
-  },
-  { path: "/admin/:secretUUID", element: <AdminPage />, loader: adminLoader },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
