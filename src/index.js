@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import ErrorPage from "./error-page";
 import { Create } from "./Create";
+import { About } from "./About";
 import { EventPage, loader as eventLoader } from "./EventPage";
 import { AdminPage, adminLoader } from "./AdminPage";
 import reportWebVitals from "./reportWebVitals";
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: "", element: <Create /> },
+      { path: "/about", element: <About /> },
       {
         path: "/event/:eventUUID",
         element: <EventPage />,

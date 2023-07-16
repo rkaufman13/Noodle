@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import { Alert, Container, Row, Col } from "react-bootstrap";
 import { Outlet } from "react-router";
+import { Footer } from "./Footer";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -42,6 +43,11 @@ function App() {
           </Row>
         </Container>
       </main>
+      <Container className="footer">
+        <Row>
+          <Footer />
+        </Row>
+      </Container>
     </div>
   );
 }
