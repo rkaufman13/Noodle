@@ -13,7 +13,6 @@ import {
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject } from "./util";
-import { useNavigate } from "react-router";
 import { convertTimeStampToDate } from "./util";
 
 export const adminLoader = ({ params }) => {
@@ -22,19 +21,33 @@ export const adminLoader = ({ params }) => {
 };
 
 const AdminChild = () => {
-  const resolvedAdminEvent = useAsyncValue();
-  const eventKey = Object.keys(resolvedAdminEvent);
-  const finalAdminEvent = resolvedAdminEvent[eventKey[0]];
-  const baseUrl = process.env.REACT_APP_BASE_URL;
-  const participants = reverseObject(finalAdminEvent);
   const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+
+  const [finalAdminEvent, eventKey] = useAsyncValue();
+
+  if (!finalAdminEvent) {
+    return (
+      <p>
+        {" "}
+        There's nothing here! Either you've entered in an incorrect URL, or
+        tried to access a Noodle after it was deleted, or something else went
+        wrong. If you think there should be something here, get in touch.
+      </p>
+    );
+  }
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const participants = reverseObject(finalAdminEvent);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
+    if (shareUrlVisible) {
+      setCopyButtonText("Copy Link");
+    }
   };
 
   const toggleClose = () => {
@@ -56,12 +69,14 @@ const AdminChild = () => {
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
-    navigate("/");
+    setSuccessMessage(
+      "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
+    );
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${baseUrl}/event/${eventKey}`).then(() => {
-      //popup "copied" message
+      setCopyButtonText("Copied!");
     });
   };
 
@@ -97,7 +112,7 @@ const AdminChild = () => {
                 disabled
               />
               <Button variant="secondary" onClick={copyLink}>
-                Copy Link
+                {copyButtonText}
               </Button>
             </Row>
           </Container>
