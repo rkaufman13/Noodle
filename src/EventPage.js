@@ -84,25 +84,23 @@ const EventChild = () => {
       )}
       <Stack>
         <form>
-          {Object.keys(participants).length > 0 && (
-            <DateTable
-              participants={participants}
-              dates={resolvedSingleEvent.dates}
-              eventUUID={params.eventUUID}
-              resolvedSingleEvent={resolvedSingleEvent}
-            >
-              <Participants participants={participants} dates={datesArray} />
-              {resolvedSingleEvent.active && (
-                <AddNewRow
-                  dates={datesArray}
-                  name={name}
-                  handleNameUpdate={handleNameUpdate}
-                  availableDates={availableDates}
-                  setAvailableDates={setAvailableDates}
-                />
-              )}
-            </DateTable>
-          )}
+          <DateTable
+            participants={participants}
+            dates={resolvedSingleEvent.dates}
+            eventUUID={params.eventUUID}
+            resolvedSingleEvent={resolvedSingleEvent}
+          >
+            <Participants participants={participants} dates={datesArray} />
+            {resolvedSingleEvent.active && (
+              <AddNewRow
+                dates={datesArray}
+                name={name}
+                handleNameUpdate={handleNameUpdate}
+                availableDates={availableDates}
+                setAvailableDates={setAvailableDates}
+              />
+            )}
+          </DateTable>
 
           {resolvedSingleEvent.active && (
             <div id="submitButtonContainer">

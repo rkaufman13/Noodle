@@ -38,7 +38,7 @@ export const AddNewRow = ({
               type="checkbox"
               name={date}
               onChange={handleClick}
-              // checked={availableDates.includes(date)}
+              checked={availableDates.includes(date)}
             />
             <label
               className="checkboxlabel"

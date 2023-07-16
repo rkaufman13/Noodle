@@ -30,7 +30,14 @@ function App() {
         <Container>
           <Row className="justify-content-center">
             <Col xl={8}>
-              <Outlet />
+              <Outlet
+                context={[
+                  errorMessage,
+                  setErrorMessage,
+                  successMessage,
+                  setSuccessMessage,
+                ]}
+              />
             </Col>
           </Row>
         </Container>
