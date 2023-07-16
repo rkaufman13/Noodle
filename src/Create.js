@@ -35,6 +35,7 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
       });
       const finalDates = Object.fromEntries(dateEntries);
       const secretUuid = generateUUID();
+
       const payload = {
         uuid: generateUUID(),
         secretUuid,
@@ -46,16 +47,26 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
         eventDates: finalDates,
         deleteAt: generateExpirationDate(convertedEventDates),
       };
-      const result = submitNewEvent(payload);
-      if (result) {
-        if (!!payload.hostEmail) {
+      submitNewEvent(payload).then(
+        () => {
+                  if (!!payload.hostEmail) {
           sendConfirmationEmail(payload);
         }
-        navigate("admin/" + secretUuid);
-      } else {
-        setErrorMessage("An unknown error occurred, please try again");
-      }
+
+          navigate("admin/" + secretUuid);
+        },
+        (error) => {
+          console.log(error);
+          setErrorMessage(
+            "An unknown error occurred; please wait a few minutes and try again!"
+          );
+        }
+      );
     }
+  };
+
+  const formIsInvalid = () => {
+    return !eventDates.length > 0 || !eventName || !hostName;
   };
 
   return (
@@ -86,7 +97,7 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
           </Form.Group>
           <Form.Group controlId="eventLocation">
             <Form.Label>
-              Event address?
+              Optional: Event address?
             </Form.Label>
             <Form.Control 
               type="text"
@@ -133,9 +144,9 @@ export const Create = ({ setErrorMessage, setSuccessMessage }) => {
               highlightToday={false}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
+           <Button type="submit" disabled={formIsInvalid()} variant="primary">
+              Submit
+            </Button>
         </Form>
     </div>
   );

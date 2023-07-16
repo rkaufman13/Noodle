@@ -52,7 +52,7 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  const result = set(ref(db, "event/" + payload.uuid), {
+  const createdEvent = set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
     hostName: payload.hostName,
@@ -60,7 +60,7 @@ export const submitNewEvent = (payload) => {
     dates: payload.eventDates,
     admin: payload.secretUuid,
     status: "active",
-    created: Date.now(),
+    created: Math.floor(Date.now() / 1000),
     deleteAt: payload.deleteAt,
   });
   //perform housekeeping on db
@@ -79,7 +79,7 @@ export const submitNewEvent = (payload) => {
       }
     }
   });
-  return result;
+  return createdEvent;
 };
 
 //retrieve the event via secret ID
