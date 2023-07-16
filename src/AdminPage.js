@@ -194,24 +194,20 @@ export const AdminPage = () => {
 
   return (
     <>
-      <Container>
-        <Row className="justify-content-center">
-          <React.Suspense
-            fallback={
-              <p>
-                <Spinner></Spinner>Loading...
-              </p>
-            }
-          >
-            <Await
-              resolve={data.singleEvent}
-              errorElement={<p>An error occurred</p>}
-            >
-              <AdminChild />
-            </Await>
-          </React.Suspense>
-        </Row>
-      </Container>
+      <React.Suspense
+        fallback={
+          <p>
+            <Spinner></Spinner>Loading...
+          </p>
+        }
+      >
+        <Await
+          resolve={data.singleEvent}
+          errorElement={<p>An error occurred</p>}
+        >
+          <AdminChild />
+        </Await>
+      </React.Suspense>
     </>
   );
 };

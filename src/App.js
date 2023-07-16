@@ -44,7 +44,7 @@ function App() {
         </Container>
       </main>
       <Container className="footer">
-        <Row>
+        <Row className="justify-content-center">
           <Footer />
         </Row>
       </Container>
