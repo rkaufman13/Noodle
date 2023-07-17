@@ -68,11 +68,12 @@ const AdminChild = () => {
   return (
     <>
       <Row>
-        <h1>{finalAdminEvent.eventname}</h1>
+        <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
+        <h2>{finalAdminEvent.eventDesc ?? ""}</h2>
       </Row>
-      <Row>
-        {successMessage && <Alert variant="success">{successMessage}</Alert>}
-      </Row>
+
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
       <Row>
         {" "}
         This is your admin page for your Nood. You can visit this page at any
@@ -198,9 +199,9 @@ export const AdminPage = () => {
         <Row className="justify-content-center">
           <React.Suspense
             fallback={
-              <p>
+              <>
                 <Spinner></Spinner>Loading...
-              </p>
+              </>
             }
           >
             <Await
