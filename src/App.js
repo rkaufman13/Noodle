@@ -1,4 +1,3 @@
-import "./App.css";
 import React, { useState } from "react";
 import { Alert, Container, Row, Col } from "react-bootstrap";
 import { Outlet } from "react-router";
