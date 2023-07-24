@@ -9,7 +9,7 @@ export const PersonRow = (props) => {
         const selected = props.participant.dates[date] === "yes";
         return (
           <td
-            style={{ backgroundColor: selected ? "green" : "blue" }}
+            style={{ backgroundColor: selected ? "green" : "gray" }}
             key={idx}
           >
             {selected ? "Going" : "Not going"}
