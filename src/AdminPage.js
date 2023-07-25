@@ -74,7 +74,6 @@ const AdminChild = () => {
         {successMessage && <Alert variant="success">{successMessage}</Alert>}
       </Row>
       <Row>
-        {" "}
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
       </Row>
@@ -82,7 +81,9 @@ const AdminChild = () => {
         {" "}
         {`${baseUrl}/admin/${finalAdminEvent.admin}`}
       </Alert>
-      <Row>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</Row>
+      <Row>
+        <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
+      </Row>
       <Row>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
       </Row>
