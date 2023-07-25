@@ -15,6 +15,7 @@ import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject } from "./util";
 import { useNavigate } from "react-router";
 import { convertTimeStampToDate } from "./util";
+import { sendConfirmationEmail } from "./aws_helpers";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);

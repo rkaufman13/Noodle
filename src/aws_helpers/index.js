@@ -1,15 +1,3 @@
-import AWS from "aws-sdk";
-
-const SESConfig = {
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-  region: "us-east-2",
-  apiVersion: "latest",
-};
-
-AWS.config.update(SESConfig);
-const ses = new AWS.SES();
-
 export const sendConfirmationEmail = (vars) => {
   const templateData =
     '{"name":"' +
@@ -32,12 +20,12 @@ export const sendConfirmationEmail = (vars) => {
     ReplyToAddresses: ["rkaufman13+receive@gmail.com"],
   };
 
-  var sendPromise = ses.sendTemplatedEmail(params).promise();
-  sendPromise
-    .then(function (data) {
-      console.log(data);
-    })
-    .catch(function (err) {
-      console.error(err, err.stack);
-    });
+  fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then((response) => response.json());
 };
