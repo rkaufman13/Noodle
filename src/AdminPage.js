@@ -89,7 +89,6 @@ const AdminChild = () => {
         {successMessage && <Alert variant="success">{successMessage}</Alert>}
       </Row>
       <Row>
-        {" "}
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
       </Row>
@@ -97,7 +96,9 @@ const AdminChild = () => {
         {" "}
         {`${baseUrl}/admin/${finalAdminEvent.admin}`}
       </Alert>
-      <Row>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</Row>
+      <Row>
+        <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
+      </Row>
       <Row>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
       </Row>
@@ -209,24 +210,20 @@ export const AdminPage = () => {
 
   return (
     <>
-      <Container>
-        <Row className="justify-content-center">
-          <React.Suspense
-            fallback={
-              <p>
-                <Spinner></Spinner>Loading...
-              </p>
-            }
-          >
-            <Await
-              resolve={data.singleEvent}
-              errorElement={<p>An error occurred</p>}
-            >
-              <AdminChild />
-            </Await>
-          </React.Suspense>
-        </Row>
-      </Container>
+      <React.Suspense
+        fallback={
+          <p>
+            <Spinner></Spinner>Loading...
+          </p>
+        }
+      >
+        <Await
+          resolve={data.singleEvent}
+          errorElement={<p>An error occurred</p>}
+        >
+          <AdminChild />
+        </Await>
+      </React.Suspense>
     </>
   );
 };
