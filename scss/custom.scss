@@ -191,7 +191,7 @@ $oranges: (
 ) !default;
 
 // scss-docs-start theme-color-variables
-$primary:       $blue !default;
+$primary:       $orange;
 $secondary:     $gray-600 !default;
 $success:       $green !default;
 $info:          $cyan !default;
@@ -533,5 +533,38 @@ $input-focus-border-color:  transparent;
 header h1 {
   margin-top: $spacer
 }
+
+#error-page {
+  margin:auto;
+  width: 30%;
+}
+
+
+#addnewrow input[type=checkbox]{
+  display:none;
+  }
+  
+label.checkboxlabel {
+    display: inline-block;
+    width:100%;
+    height:100%;
+    background-color: $secondary;
+  }
+
+input[type=checkbox]:checked + .checkboxlabel{
+    background-color: $primary;
+    }
+  
+#submitButtonContainer {
+      width:100%;
+      margin:auto;
+      display: flex;
+      justify-content: center;
+    }
+  
+  
+.goingPrimary {
+      background-color: $primary;
+    }
 
 @import "node_modules/bootstrap/scss/bootstrap";

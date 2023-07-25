@@ -47,6 +47,16 @@ export const submitPayload = (payload) => {
   update(ref(db, "event/" + payload.eventUUID), {
     dates: payload.dates,
   });
+  //retrieve email address of event host
+  const singleEventHostEmail = ref(
+    db,
+    "event/" + payload.eventUUID + "/hostEmail"
+  );
+  get(singleEventHostEmail).then((snapshot) => {
+    if (snapshot.exists() && snapshot.val() !== "") {
+      console.log("the host's email is " + snapshot.val());
+    }
+  });
 };
 
 //create a new event
@@ -59,7 +69,7 @@ export const submitNewEvent = (payload) => {
     hostEmail: payload.hostEmail,
     dates: payload.eventDates,
     admin: payload.secretUuid,
-    status: "active",
+    active: true,
     created: Math.floor(Date.now() / 1000),
     deleteAt: payload.deleteAt,
   });
@@ -106,7 +116,7 @@ export const closeEvent = (eventId) => {
   const database = getDatabase();
   const singleEventRef = ref(database, "event/" + eventId);
   const updates = {};
-  updates["/status/"] = "inactive";
+  updates["/active/"] = false;
   return update(singleEventRef, updates);
 };
 

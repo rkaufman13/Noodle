@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
-import { reverseObject, convertTimeStampToDate } from "./util";
+import { reverseObject } from "./util";
+import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
 import { useNavigate } from "react-router";
 import { submitPayload } from "./firebase/index";
-import { Button, Table, Stack, Alert } from "react-bootstrap";
+import { Button, Stack, Alert, Spinner } from "react-bootstrap";
 
 import {
   useLoaderData,
@@ -33,7 +34,7 @@ const EventChild = () => {
   if (!Array.isArray(resolvedSingleEvent.dates)) {
     datesArray = Object.keys(resolvedSingleEvent.dates);
   }
-  datesArray = datesArray.map(date=>parseInt(date));
+  datesArray = datesArray.map((date) => parseInt(date));
   const participants = reverseObject(resolvedSingleEvent);
 
   const participantsArray = Object.keys(participants);
@@ -74,46 +75,34 @@ const EventChild = () => {
     submitPayload(payload);
     clearForm();
   };
-
   return (
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
       <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
-      {resolvedSingleEvent.status === "inactive" && (
+      {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
       <Stack>
         <form>
-          <Table responsive="lg" bordered>
-            <thead>
-              <tr>
-                <td></td>
-                {datesArray.map((date) => {
-                  return <td key={date}>{convertTimeStampToDate(date)}</td>;
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(participants).length > 0 && (
-                <DateTable
-                  participants={participants}
-                  dates={resolvedSingleEvent.dates}
-                  eventUUID={params.eventUUID}
-                />
-              )}
-              {resolvedSingleEvent.status === "active" && (
-                <AddNewRow
-                  dates={datesArray}
-                  name={name}
-                  handleNameUpdate={handleNameUpdate}
-                  availableDates={availableDates}
-                  setAvailableDates={setAvailableDates}
-                />
-              )}
-            </tbody>
-          </Table>
+          <DateTable
+            participants={participants}
+            dates={resolvedSingleEvent.dates}
+            eventUUID={params.eventUUID}
+            resolvedSingleEvent={resolvedSingleEvent}
+          >
+            <Participants participants={participants} dates={datesArray} />
+            {resolvedSingleEvent.active && (
+              <AddNewRow
+                dates={datesArray}
+                name={name}
+                handleNameUpdate={handleNameUpdate}
+                availableDates={availableDates}
+                setAvailableDates={setAvailableDates}
+              />
+            )}
+          </DateTable>
 
-          {resolvedSingleEvent.status === "active" && (
+          {resolvedSingleEvent.active && (
             <div id="submitButtonContainer">
               <Button variant="primary" onClick={handleSubmit}>
                 Submit
@@ -131,7 +120,13 @@ export const EventPage = () => {
 
   return (
     <>
-      <React.Suspense fallback={<p>Loading...</p>}>
+      <React.Suspense
+        fallback={
+          <p>
+            <Spinner></Spinner>Loading...
+          </p>
+        }
+      >
         <Await
           resolve={data.singleEvent}
           errorElement={<p>An error occurred</p>}
