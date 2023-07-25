@@ -61,7 +61,7 @@ export const submitPayload = (payload) => {
 //create a new event
 export const submitNewEvent = (payload) => {
   const db = getDatabase();
-  const result = set(ref(db, "event/" + payload.uuid), {
+  const createdEvent = set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
     hostName: payload.hostName,
@@ -88,7 +88,7 @@ export const submitNewEvent = (payload) => {
       }
     }
   });
-  return result;
+  return createdEvent;
 };
 
 //retrieve the event via secret ID
