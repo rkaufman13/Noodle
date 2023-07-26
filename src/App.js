@@ -12,7 +12,7 @@ function App() {
         <Container>
           <Row className="justify-content-center">
             <Col xl={8}>
-              <h1>Noodle</h1>
+              <p className="h1 mt-3">Noodle</p>
               <p>Scheduling events should be easy. That's using your Noodle.</p>
             </Col>
           </Row>
