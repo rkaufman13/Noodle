@@ -25,11 +25,19 @@ const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
   const navigate = useNavigate();
-
+  const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
   //we're not storing this in a smart, relational database sort of way because we want the participants' names and identities to completely disappear when the event is closed/deleted. #privacy!
-
+  if (!resolvedSingleEvent) {
+    return (
+      <p>
+        There's nothing here! Either you've entered in an incorrect URL, or
+        tried to access a Noodle after it was deleted, or something else went
+        wrong. If you think there should be something here, get in touch.
+      </p>
+    );
+  }
   let datesArray = resolvedSingleEvent.dates;
   if (!Array.isArray(resolvedSingleEvent.dates)) {
     datesArray = Object.keys(resolvedSingleEvent.dates);
@@ -49,8 +57,6 @@ const EventChild = () => {
       }
     });
   });
-
-  const params = useParams();
 
   const clearForm = () => {
     setName("");
