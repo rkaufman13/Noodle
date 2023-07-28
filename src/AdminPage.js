@@ -84,7 +84,7 @@ const AdminChild = () => {
     <>
       <Row>
         <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
-        <h2>{finalAdminEvent.eventDesc ?? ""}</h2>
+        {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
       </Row>
 
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
