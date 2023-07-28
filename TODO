@@ -1,0 +1,22 @@
+[in progress] Backend to protect secrets
+[] Slightly more styling tweaks
+[in progress] Email on event update
+[x] Footer
+[] Mobile testing
+[in progress] Buy and configure domain
+[x] Soft deletes
+[] Firebase rules: create new app user that can do hard deletes
+[] Prevent modification of deleteAt property unless it is to a smaller number (tried; failed, try again?)
+[] Set rules for participants object
+[] Check that description is being written and passed
+[] Frontend tests 
+[] Google app secure whatever
+[] best day calculator
+[in progress] AFTER soft deletes PR merged, update admin page to only return snapshot val if exact match
+
+
+Todo full release:
+[] Keyboard controls of calendar
+[] Migrate from firebase to real db
+[] style dates to look less shitty (Doodle does: day of week, BIG DATE, month)
+[] style going/not going to look less shitty

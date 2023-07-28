@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { getSingleAdminEvent, closeEvent, deleteEvent } from "./firebase";
-import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
+import {
+  useLoaderData,
+  Await,
+  defer,
+  useAsyncValue,
+  useNavigate,
+} from "react-router-dom";
 import {
   Button,
   Stack,
@@ -26,7 +32,7 @@ const AdminChild = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
-
+  const navigate = useNavigate();
   const [finalAdminEvent, eventKey] = useAsyncValue();
 
   if (!finalAdminEvent) {
@@ -54,13 +60,13 @@ const AdminChild = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
     setSuccessMessage("Noodle successfully closed.");
-    setTabFocus('.modal');
+    setTabFocus(".modal");
   };
 
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
     setCloseModalVisible(false);
-    setTabFocus('.modal');
+    setTabFocus(".modal");
   };
 
   const handleCloseEvent = () => {
@@ -160,7 +166,10 @@ const AdminChild = () => {
       </Row>
       <Modal
         show={closeModalVisible}
-        onHide={() => {setCloseModalVisible(false); clearTabFocus();}}
+        onHide={() => {
+          setCloseModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Close your Nood?</Modal.Title>
@@ -171,7 +180,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {setCloseModalVisible(false); clearTabFocus();}}
+            onClick={() => {
+              setCloseModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Cancel
           </Button>
@@ -182,7 +194,10 @@ const AdminChild = () => {
       </Modal>
       <Modal
         show={deleteModalVisible}
-        onHide={() => {setDeleteModalVisible(false); clearTabFocus()}}
+        onHide={() => {
+          setDeleteModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete your Nood?</Modal.Title>
@@ -198,7 +213,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {setDeleteModalVisible(false); clearTabFocus()}}
+            onClick={() => {
+              setDeleteModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Never Mind
           </Button>
