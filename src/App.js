@@ -27,7 +27,7 @@ function App() {
       )}
       {successMessage && <Alert variant={"success"}>{successMessage}</Alert>}
       <main>
-        <Container>
+        <Container className="py-3">
           <Row className="justify-content-center">
             <Col xl={8}>
               <Outlet
@@ -42,15 +42,11 @@ function App() {
           </Row>
         </Container>
       </main>
-      <Container>
-        <Row className="justify-content-center">
-          <Col xl={8}>
-            <footer>
-              <Footer />
-            </footer>
-          </Col>
-        </Row>
-      </Container>
+      <footer>
+        <Container className="pt-5">
+          <Footer />
+        </Container>
+      </footer>
     </div>
   );
 }
