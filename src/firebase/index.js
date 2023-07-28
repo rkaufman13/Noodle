@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {
   getDatabase,
@@ -8,10 +7,8 @@ import {
   query,
   orderByChild,
   endAt,
-  startAt,
   limitToLast,
   update,
-  remove,
 } from "firebase/database";
 
 // Your web app's Firebase configuration
@@ -33,7 +30,10 @@ export const getSingleEvent = (eventID) => {
   const database = getDatabase();
   const singleEventRef = ref(database, "event/" + eventID);
   return get(singleEventRef).then((snapshot) => {
-    if (snapshot.exists()) {
+    if (
+      snapshot.exists() &&
+      snapshot.val().deleteAt >= Math.floor(Date.now() / 1000)
+    ) {
       return snapshot.val();
     }
     return null;
@@ -65,6 +65,7 @@ export const submitNewEvent = (payload) => {
   const createdEvent = set(ref(db, "event/" + payload.uuid), {
     eventname: payload.eventName,
     eventLocation: payload.eventLocation,
+    eventDesc: payload.eventDesc,
     hostName: payload.hostName,
     hostEmail: payload.hostEmail,
     dates: payload.eventDates,
@@ -72,22 +73,6 @@ export const submitNewEvent = (payload) => {
     active: true,
     created: Math.floor(Date.now() / 1000),
     deleteAt: payload.deleteAt,
-  });
-  //perform housekeeping on db
-  const dbRef = ref(db, "event");
-  const queryRef = query(
-    dbRef,
-    orderByChild("deleteAt"),
-    endAt(Math.floor(Date.now() / 1000))
-  );
-  get(queryRef).then((snapshot) => {
-    if (snapshot.exists()) {
-      const keysToDelete = Object.keys(snapshot.val());
-      for (let key of keysToDelete) {
-        const singleEventRef = ref(db, "event/" + key);
-        remove(singleEventRef);
-      }
-    }
   });
   return createdEvent;
 };
@@ -105,9 +90,15 @@ export const getSingleAdminEvent = (eventID) => {
 
   return get(queryRef).then((snapshot) => {
     if (snapshot.exists()) {
-      return snapshot.val();
+      const eventKey = Object.keys(snapshot.val());
+      const eventWeWant = snapshot.val()[eventKey];
+      if (eventWeWant.deleteAt >= Math.floor(Date.now() / 1000)) {
+        console.log(snapshot.val()[eventKey]);
+        return [snapshot.val()[eventKey], eventKey];
+      }
+      console.log(eventWeWant.deleteAt, Math.floor(Date.now() / 1000));
+      return [null, null];
     }
-    return null;
   });
 };
 
@@ -120,9 +111,12 @@ export const closeEvent = (eventId) => {
   return update(singleEventRef, updates);
 };
 
-//immediately delete an event
+//soft-delete an event
 export const deleteEvent = (eventId) => {
   const database = getDatabase();
   const singleEventRef = ref(database, "event/" + eventId);
-  return remove(singleEventRef);
+  const updates = {};
+  updates["/deleteAt"] = Math.floor(new Date() / 1000) - 10;
+
+  return update(singleEventRef, updates);
 };
