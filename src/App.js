@@ -1,21 +1,18 @@
-import "./App.css";
 import React, { useState } from "react";
-import { Create } from "./Create";
 import { Alert, Container, Row, Col } from "react-bootstrap";
-import { Route } from "react-router";
+import { Outlet } from "react-router";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   return (
-    
     <div className="App">
       <header>
         <Container>
           <Row className="justify-content-center">
             <Col xl={8}>
-              <h1>Noodle</h1>
+              <p className="h1 mt-3">Noodle</p>
               <p>Scheduling events should be easy. That's using your Noodle.</p>
             </Col>
           </Row>
@@ -32,9 +29,13 @@ function App() {
         <Container>
           <Row className="justify-content-center">
             <Col xl={8}>
-              <Create
-                setErrorMessage={setErrorMessage}
-                setSuccessMessage={setSuccessMessage}
+              <Outlet
+                context={[
+                  errorMessage,
+                  setErrorMessage,
+                  successMessage,
+                  setSuccessMessage,
+                ]}
               />
             </Col>
           </Row>

@@ -23,9 +23,7 @@ export const generateUUID = () => {
 
 export const reverseObject = (event) => {
   const participantsObj = {};
-
   const datesArray = Object.keys(event.dates);
-
   datesArray.forEach((date) => {
     event.dates[date].participants?.forEach((participant) => {
       if (participant === 0) {

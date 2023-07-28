@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { getSingleAdminEvent, closeEvent, deleteEvent } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import { Button, Stack, Modal, Alert } from "react-bootstrap";
+import {
+  Button,
+  Stack,
+  Modal,
+  Alert,
+  Row,
+  Container,
+  Spinner,
+} from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { reverseObject, setTabFocus, clearTabFocus } from "./util";
-import { useNavigate } from "react-router";
 import { convertTimeStampToDate } from "./util";
 
 export const adminLoader = ({ params }) => {
@@ -14,19 +21,33 @@ export const adminLoader = ({ params }) => {
 };
 
 const AdminChild = () => {
-  const resolvedAdminEvent = useAsyncValue();
-  const eventKey = Object.keys(resolvedAdminEvent);
-  const finalAdminEvent = resolvedAdminEvent[eventKey[0]];
-  const baseUrl = process.env.REACT_APP_BASE_URL;
-  const participants = reverseObject(finalAdminEvent);
   const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+
+  const [finalAdminEvent, eventKey] = useAsyncValue();
+
+  if (!finalAdminEvent) {
+    return (
+      <p>
+        {" "}
+        There's nothing here! Either you've entered in an incorrect URL, or
+        tried to access a Noodle after it was deleted, or something else went
+        wrong. If you think there should be something here, get in touch.
+      </p>
+    );
+  }
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const participants = reverseObject(finalAdminEvent);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
+    if (shareUrlVisible) {
+      setCopyButtonText("Copy Link");
+    }
   };
 
   const toggleClose = () => {
@@ -46,6 +67,7 @@ const AdminChild = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
     clearTabFocus();
+    setSuccessMessage("Noodle successfully closed.");
   };
 
   const handleDeleteEvent = () => {
@@ -53,69 +75,89 @@ const AdminChild = () => {
     deleteEvent(eventKey);
     navigate("/");
     clearTabFocus();
+    setSuccessMessage(
+      "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
+    );
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${baseUrl}/event/${eventKey}`).then(() => {
-      //popup "copied" message
+      setCopyButtonText("Copied!");
     });
   };
 
   return (
     <>
-      <h1>{finalAdminEvent.eventname}</h1>
-      {successMessage && <Alert variant="success">{successMessage}</Alert>}
-      <div>
+      <Row>
+        <h1>{finalAdminEvent.eventname}</h1>
+      </Row>
+      <Row>
+        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      </Row>
+      <Row>
         This is your admin page for your Nood. You can visit this page at any
-        time by visiting this url: {`${baseUrl}/admin/${finalAdminEvent.admin}`}
-        DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
-      </div>
-      <div>
-        Your Nood is currently{" "}
-        {finalAdminEvent.status.toUpperCase() ?? "Unknown"}.{" "}
-      </div>
-
+        time by visiting this url:
+      </Row>
+      <Alert variant="info">
+        {" "}
+        {`${baseUrl}/admin/${finalAdminEvent.admin}`}
+      </Alert>
+      <Row>
+        <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
+      </Row>
+      <Row>
+        Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
+      </Row>
       {shareUrlVisible && (
         <>
-          <div>Share this link with your friends.</div>
-          <input type="text" value={`${baseUrl}/event/${eventKey}`} disabled />
-          <Button variant="secondary" onClick={copyLink}>
-            Copy Link
-          </Button>
+          <Container fluid>
+            <Row>
+              Share this link with your friends.
+              <input
+                type="text"
+                value={`${baseUrl}/event/${eventKey}`}
+                disabled
+              />
+              <Button variant="secondary" onClick={copyLink}>
+                {copyButtonText}
+              </Button>
+            </Row>
+          </Container>
         </>
       )}
-
-      <div>
+      <Row>
         From here you can:
         <Stack direction="horizontal" gap={3}>
-          <Button variant="primary" onClick={toggleShare}>
+          <Button variant="primary" onClick={toggleShare} className="ms-auto">
             Share your Nood
           </Button>
           <Button
             variant="primary"
             onClick={toggleClose}
-            disabled={finalAdminEvent.status === "inactive"}
+            disabled={finalAdminEvent.active === false}
           >
             Close Your Nood
           </Button>
-          <Button variant="primary" onClick={toggleDelete}>
+          <Button variant="primary" onClick={toggleDelete} className="me-auto">
             Delete your Nood
           </Button>
         </Stack>
-      </div>
-      <div>
-        <div>
-          {Object.keys(participants).length > 0 ? (
+      </Row>
+      <hr className="p-2 invisible" />
+      <Row>
+        {Object.keys(participants).length > 0 ? (
+          <>
+            <h2>Your Nood So Far</h2>
             <DateTable
               participants={participants}
               dates={finalAdminEvent.dates}
               eventUUID={finalAdminEvent.uuid}
             />
-          ) : (
-            <EmptyEvent dates={finalAdminEvent.dates} />
-          )}
-        </div>
-      </div>
+          </>
+        ) : (
+          <EmptyEvent dates={finalAdminEvent.dates} />
+        )}
+      </Row>
       <Modal
         show={closeModalVisible}
         onHide={() => {setCloseModalVisible(false); clearTabFocus();}}
@@ -174,7 +216,13 @@ export const AdminPage = () => {
 
   return (
     <>
-      <React.Suspense fallback={<p>Loading...</p>}>
+      <React.Suspense
+        fallback={
+          <p>
+            <Spinner></Spinner>Loading...
+          </p>
+        }
+      >
         <Await
           resolve={data.singleEvent}
           errorElement={<p>An error occurred</p>}
