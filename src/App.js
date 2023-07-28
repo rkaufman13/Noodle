@@ -42,9 +42,13 @@ function App() {
           </Row>
         </Container>
       </main>
-      <Container className="footer">
+      <Container>
         <Row className="justify-content-center">
-          <Footer />
+          <Col xl={8}>
+            <footer>
+              <Footer />
+            </footer>
+          </Col>
         </Row>
       </Container>
     </div>
