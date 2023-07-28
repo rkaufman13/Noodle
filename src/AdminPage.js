@@ -212,9 +212,9 @@ export const AdminPage = () => {
   return (
     <React.Suspense
       fallback={
-        <p>
+        <>
           <Spinner></Spinner>Loading...
-        </p>
+        </>
       }
     >
       <Await resolve={data.singleEvent} errorElement={<p>An error occurred</p>}>

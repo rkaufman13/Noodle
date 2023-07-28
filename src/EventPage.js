@@ -24,15 +24,10 @@ export const loader = ({ params }) => {
 const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
-<<<<<<< HEAD
   const [activePerson, setActivePerson] = useState("");
   const [errorMessage, setErrorMessage, successMessage, setSuccessMessage] =
     useOutletContext();
-
-=======
-  const navigate = useNavigate();
   const params = useParams();
->>>>>>> master
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
   //we're not storing this in a smart, relational database sort of way because we want the participants' names and identities to completely disappear when the event is closed/deleted. #privacy!
@@ -94,7 +89,9 @@ const EventChild = () => {
   return (
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
-      <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
+      {resolvedSingleEvent.eventDesc && (
+        <h2>{resolvedSingleEvent.eventDesc}</h2>
+      )}
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
