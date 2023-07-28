@@ -20,12 +20,18 @@ function App() {
         </Container>
       </header>
       {errorMessage && (
-        <Alert variant={"info"}>
-          It may seem impastable, but something's gone wrong.
-          <p>{errorMessage}</p>
-        </Alert>
+        <Container>
+          <Alert variant="info">
+            It may seem impastable, but something's gone wrong.
+            <p>{errorMessage}</p>
+          </Alert>
+        </Container>
       )}
-      {successMessage && <Alert variant={"success"}>{successMessage}</Alert>}
+      {successMessage && (
+        <Container>
+          <Alert variant={"success"}>{successMessage}</Alert>
+        </Container>
+      )}
       <main>
         <Container className="py-3">
           <Row className="justify-content-center">
