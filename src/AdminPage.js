@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
-import { reverseObject } from "./util";
+import { reverseObject, setTabFocus, clearTabFocus } from "./util";
 import { convertTimeStampToDate } from "./util";
 
 export const adminLoader = ({ params }) => {
@@ -53,22 +53,28 @@ const AdminChild = () => {
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
+    setSuccessMessage("Noodle successfully closed.");
+    setTabFocus('.modal');
   };
 
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
     setCloseModalVisible(false);
+    setTabFocus('.modal');
   };
 
   const handleCloseEvent = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
+    clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
   };
 
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
+    navigate("/");
+    clearTabFocus();
     setSuccessMessage(
       "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
     );
@@ -154,7 +160,7 @@ const AdminChild = () => {
       </Row>
       <Modal
         show={closeModalVisible}
-        onHide={() => setCloseModalVisible(false)}
+        onHide={() => {setCloseModalVisible(false); clearTabFocus();}}
       >
         <Modal.Header closeButton>
           <Modal.Title>Close your Nood?</Modal.Title>
@@ -165,7 +171,7 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setCloseModalVisible(false)}
+            onClick={() => {setCloseModalVisible(false); clearTabFocus();}}
           >
             Cancel
           </Button>
@@ -176,7 +182,7 @@ const AdminChild = () => {
       </Modal>
       <Modal
         show={deleteModalVisible}
-        onHide={() => setDeleteModalVisible(false)}
+        onHide={() => {setDeleteModalVisible(false); clearTabFocus()}}
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete your Nood?</Modal.Title>
@@ -192,7 +198,7 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setDeleteModalVisible(false)}
+            onClick={() => {setDeleteModalVisible(false); clearTabFocus()}}
           >
             Never Mind
           </Button>

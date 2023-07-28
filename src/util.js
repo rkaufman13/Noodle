@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import tabFocus from 'ally.js/maintain/tab-focus';
 
 export const convertTimeStampToDate = (timestamp) => {
   const newDate = new Date(parseInt(timestamp * 1000));
@@ -47,3 +48,16 @@ export const generateExpirationDate = (timestampArray) => {
   const sixtyDaysFromNow = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 60; //60 days; we divide by 1000 so this timestamp conforms with the others that we've already converted to "JS time"
   return Math.min(thirtyDaysFromLastDate, sixtyDaysFromNow);
 };
+
+// Ally Tab Trapping
+let tabTrap;
+
+export const setTabFocus = (element) => {
+  tabTrap = tabFocus({
+    context: element
+  });
+};
+
+export const clearTabFocus = () => {
+  tabTrap.disengage();
+}
