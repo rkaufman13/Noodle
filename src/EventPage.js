@@ -74,17 +74,22 @@ const EventChild = () => {
   };
 
   const handleSubmit = () => {
-    //todo disallow duplicates
-    for (let selectedDate of availableDates) {
-      resolvedSingleEvent.dates[selectedDate].participants.push(name);
+    if (participantsArray.includes(name)) {
+      setErrorMessage("Looks like you already registered for this event!");
+    } else if (availableDates.length === 0) {
+      setErrorMessage("You must select at least one date.");
+    } else {
+      for (let selectedDate of availableDates) {
+        resolvedSingleEvent.dates[selectedDate].participants.push(name);
+      }
+      const payload = {
+        eventUUID: params.eventUUID,
+        dates: resolvedSingleEvent.dates,
+        name,
+      };
+      submitPayload(payload);
+      clearForm();
     }
-    const payload = {
-      eventUUID: params.eventUUID,
-      dates: resolvedSingleEvent.dates,
-      name,
-    };
-    submitPayload(payload);
-    clearForm();
   };
   return (
     <>
