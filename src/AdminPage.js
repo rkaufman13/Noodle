@@ -12,10 +12,12 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
-import { reverseObject } from "./util";
-import { useNavigate } from "react-router";
-import { convertTimeStampToDate } from "./util";
-import { sendConfirmationEmail } from "./aws_helpers";
+import {
+  reverseObject,
+  convertTimeStampToDate,
+  setTabFocus,
+  clearTabFocus,
+} from "./util";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -23,57 +25,77 @@ export const adminLoader = ({ params }) => {
 };
 
 const AdminChild = () => {
-  const resolvedAdminEvent = useAsyncValue();
-  const eventKey = Object.keys(resolvedAdminEvent);
-  const finalAdminEvent = resolvedAdminEvent[eventKey[0]];
-  const baseUrl = process.env.REACT_APP_BASE_URL;
-  const participants = reverseObject(finalAdminEvent);
   const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+  const [finalAdminEvent, eventKey] = useAsyncValue();
+
+  if (!finalAdminEvent) {
+    return (
+      <p>
+        There's nothing here! Either you've entered in an incorrect URL, or
+        tried to access a Noodle after it was deleted, or something else went
+        wrong. If you think there should be something here, get in touch.
+      </p>
+    );
+  }
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const participants = reverseObject(finalAdminEvent);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
+    if (shareUrlVisible) {
+      setCopyButtonText("Copy Link");
+    }
   };
 
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
+    setSuccessMessage("Noodle successfully closed.");
+    setTabFocus(".modal");
   };
 
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
     setCloseModalVisible(false);
+    setTabFocus(".modal");
   };
 
   const handleCloseEvent = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
+    clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
   };
 
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
-    navigate("/");
+    clearTabFocus();
+    setSuccessMessage(
+      "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
+    );
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${baseUrl}/event/${eventKey}`).then(() => {
-      //popup "copied" message
+      setCopyButtonText("Copied!");
     });
   };
 
   return (
     <>
       <Row>
-        <h1>{finalAdminEvent.eventname}</h1>
+        <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
+        {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
       </Row>
-      <Row>
-        {successMessage && <Alert variant="success">{successMessage}</Alert>}
-      </Row>
+
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
       <Row>
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
@@ -99,7 +121,7 @@ const AdminChild = () => {
                 disabled
               />
               <Button variant="secondary" onClick={copyLink}>
-                Copy Link
+                {copyButtonText}
               </Button>
             </Row>
           </Container>
@@ -140,7 +162,10 @@ const AdminChild = () => {
       </Row>
       <Modal
         show={closeModalVisible}
-        onHide={() => setCloseModalVisible(false)}
+        onHide={() => {
+          setCloseModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Close your Nood?</Modal.Title>
@@ -151,7 +176,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setCloseModalVisible(false)}
+            onClick={() => {
+              setCloseModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Cancel
           </Button>
@@ -162,7 +190,10 @@ const AdminChild = () => {
       </Modal>
       <Modal
         show={deleteModalVisible}
-        onHide={() => setDeleteModalVisible(false)}
+        onHide={() => {
+          setDeleteModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete your Nood?</Modal.Title>
@@ -178,7 +209,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setDeleteModalVisible(false)}
+            onClick={() => {
+              setDeleteModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Never Mind
           </Button>
@@ -195,21 +229,16 @@ export const AdminPage = () => {
   const data = useLoaderData();
 
   return (
-    <>
-      <React.Suspense
-        fallback={
-          <p>
-            <Spinner></Spinner>Loading...
-          </p>
-        }
-      >
-        <Await
-          resolve={data.singleEvent}
-          errorElement={<p>An error occurred</p>}
-        >
-          <AdminChild />
-        </Await>
-      </React.Suspense>
-    </>
+    <React.Suspense
+      fallback={
+        <>
+          <Spinner></Spinner>Loading...
+        </>
+      }
+    >
+      <Await resolve={data.singleEvent} errorElement={<p>An error occurred</p>}>
+        <AdminChild />
+      </Await>
+    </React.Suspense>
   );
 };
