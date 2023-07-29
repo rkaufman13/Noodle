@@ -13,6 +13,7 @@ import {
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
+import { BestDay } from "./BestDay";
 import {
   reverseObject,
   convertTimeStampToDate,
@@ -88,7 +89,6 @@ const AdminChild = () => {
       setCopyButtonText("Copied!");
     });
   };
-
   return (
     <>
       <Row>
@@ -163,6 +163,7 @@ const AdminChild = () => {
                 dates={datesArray}
                 activePerson={null}
               />
+              <BestDay dates={finalAdminEvent.dates} />
             </DateTable>
           </>
         ) : (
