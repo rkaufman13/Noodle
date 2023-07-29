@@ -99,7 +99,7 @@ const EventChild = () => {
         <form>
           <DateTable
             participants={participants}
-            dates={resolvedSingleEvent.dates}
+            dates={datesArray}
             eventUUID={params.eventUUID}
             resolvedSingleEvent={resolvedSingleEvent}
           >

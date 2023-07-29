@@ -45,6 +45,7 @@ const AdminChild = () => {
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const participants = reverseObject(finalAdminEvent);
+  const datesArray = Object.keys(finalAdminEvent.dates);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
@@ -153,13 +154,13 @@ const AdminChild = () => {
             <h2>Your Nood So Far</h2>
             <DateTable
               participants={participants}
-              dates={finalAdminEvent.dates}
+              dates={datesArray}
               eventUUID={finalAdminEvent.uuid}
             >
               {" "}
               <Participants
                 participants={participants}
-                dates={Object.keys(finalAdminEvent.dates)}
+                dates={datesArray}
                 activePerson={null}
               />
             </DateTable>
