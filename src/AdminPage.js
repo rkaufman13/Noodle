@@ -12,8 +12,12 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
-import { reverseObject } from "./util";
-import { convertTimeStampToDate } from "./util";
+import {
+  reverseObject,
+  convertTimeStampToDate,
+  setTabFocus,
+  clearTabFocus,
+} from "./util";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -51,20 +55,14 @@ const AdminChild = () => {
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
-<<<<<<< Updated upstream
-=======
     setSuccessMessage("Noodle successfully closed.");
     setTabFocus(".modal");
->>>>>>> Stashed changes
   };
 
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
     setCloseModalVisible(false);
-<<<<<<< Updated upstream
-=======
     setTabFocus(".modal");
->>>>>>> Stashed changes
   };
 
   const handleCloseEvent = () => {
@@ -76,10 +74,7 @@ const AdminChild = () => {
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
-<<<<<<< Updated upstream
-=======
     clearTabFocus();
->>>>>>> Stashed changes
     setSuccessMessage(
       "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
     );
@@ -166,14 +161,10 @@ const AdminChild = () => {
       </Row>
       <Modal
         show={closeModalVisible}
-<<<<<<< Updated upstream
-        onHide={() => setCloseModalVisible(false)}
-=======
         onHide={() => {
           setCloseModalVisible(false);
           clearTabFocus();
         }}
->>>>>>> Stashed changes
       >
         <Modal.Header closeButton>
           <Modal.Title>Close your Nood?</Modal.Title>
@@ -184,14 +175,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-<<<<<<< Updated upstream
-            onClick={() => setCloseModalVisible(false)}
-=======
             onClick={() => {
               setCloseModalVisible(false);
               clearTabFocus();
             }}
->>>>>>> Stashed changes
           >
             Cancel
           </Button>
@@ -202,14 +189,10 @@ const AdminChild = () => {
       </Modal>
       <Modal
         show={deleteModalVisible}
-<<<<<<< Updated upstream
-        onHide={() => setDeleteModalVisible(false)}
-=======
         onHide={() => {
           setDeleteModalVisible(false);
           clearTabFocus();
         }}
->>>>>>> Stashed changes
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete your Nood?</Modal.Title>
@@ -225,14 +208,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-<<<<<<< Updated upstream
-            onClick={() => setDeleteModalVisible(false)}
-=======
             onClick={() => {
               setDeleteModalVisible(false);
               clearTabFocus();
             }}
->>>>>>> Stashed changes
           >
             Never Mind
           </Button>
