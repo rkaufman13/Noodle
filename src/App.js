@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Container, Row, Col } from "react-bootstrap";
 import { Outlet } from "react-router";
+import { Footer } from "./Footer";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,14 +20,20 @@ function App() {
         </Container>
       </header>
       {errorMessage && (
-        <Alert variant={"info"}>
-          It may seem impastable, but something's gone wrong.
-          <p>{errorMessage}</p>
-        </Alert>
-      )}
-      {successMessage && <Alert variant={"success"}>{successMessage}</Alert>}
-      <main>
         <Container>
+          <Alert variant="info">
+            It may seem impastable, but something's gone wrong.
+            <p>{errorMessage}</p>
+          </Alert>
+        </Container>
+      )}
+      {successMessage && (
+        <Container>
+          <Alert variant={"success"}>{successMessage}</Alert>
+        </Container>
+      )}
+      <main>
+        <Container className="py-3">
           <Row className="justify-content-center">
             <Col xl={8}>
               <Outlet
@@ -41,6 +48,11 @@ function App() {
           </Row>
         </Container>
       </main>
+      <footer>
+        <Container className="pt-5">
+          <Footer />
+        </Container>
+      </footer>
     </div>
   );
 }
