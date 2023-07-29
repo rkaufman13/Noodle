@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
+import { Participants } from "./Participants";
 import {
   reverseObject,
   convertTimeStampToDate,
@@ -56,7 +57,7 @@ const AdminChild = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
     setSuccessMessage("Noodle successfully closed.");
-    setTabFocus('.modal');
+    setTabFocus(".modal");
   };
 
   const toggleDelete = () => {
@@ -154,7 +155,14 @@ const AdminChild = () => {
               participants={participants}
               dates={finalAdminEvent.dates}
               eventUUID={finalAdminEvent.uuid}
-            />
+            >
+              {" "}
+              <Participants
+                participants={participants}
+                dates={Object.keys(finalAdminEvent.dates)}
+                activePerson={null}
+              />
+            </DateTable>
           </>
         ) : (
           <EmptyEvent dates={finalAdminEvent.dates} />

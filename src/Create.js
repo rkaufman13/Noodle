@@ -25,45 +25,53 @@ export const Create = () => {
   const handleSubmit = (e) => {
     setErrorMessage("");
     e.preventDefault();
-    if (!eventDates.length >= 1) {
-      setErrorMessage("You must select at least one date!");
+    if (!eventDates.length >= 2) {
+      setErrorMessage("You must select at least two dates!");
     } else {
       const convertedEventDates = eventDates.map((date) =>
         convertDateToTimestamp(date)
       );
-      const dateEntries = convertedEventDates.map((date) => {
-        const participantObj = { participants: [0] }; //we have to add a truthy-but-falsy value here or firebase loses its mind
-        return [date, participantObj];
-      });
-      const finalDates = Object.fromEntries(dateEntries);
-      const secretUuid = generateUUID();
+      if (
+        !convertedEventDates.every(
+          (date) => date > Math.floor(new Date() / 1000)
+        )
+      ) {
+        setErrorMessage("Dates must be in the future!");
+      } else {
+        const dateEntries = convertedEventDates.map((date) => {
+          const participantObj = { participants: [0] }; //we have to add a truthy-but-falsy value here or firebase loses its mind
+          return [date, participantObj];
+        });
+        const finalDates = Object.fromEntries(dateEntries);
+        const secretUuid = generateUUID();
 
-      const payload = {
-        uuid: generateUUID(),
-        secretUuid,
-        eventName,
-        eventDesc,
-        eventLocation,
-        hostName,
-        hostEmail,
-        eventDates: finalDates,
-        deleteAt: generateExpirationDate(convertedEventDates),
-      };
-      submitNewEvent(payload).then(
-        () => {
-          if (!!payload.hostEmail) {
-            sendConfirmationEmail(payload);
+        const payload = {
+          uuid: generateUUID(),
+          secretUuid,
+          eventName,
+          eventDesc,
+          eventLocation,
+          hostName,
+          hostEmail,
+          eventDates: finalDates,
+          deleteAt: generateExpirationDate(convertedEventDates),
+        };
+        submitNewEvent(payload).then(
+          () => {
+            if (!!payload.hostEmail) {
+              sendConfirmationEmail(payload);
+            }
+
+            navigate("admin/" + secretUuid);
+          },
+          (error) => {
+            console.log(error);
+            setErrorMessage(
+              "An unknown error occurred; please wait a few minutes and try again!"
+            );
           }
-
-          navigate("admin/" + secretUuid);
-        },
-        (error) => {
-          console.log(error);
-          setErrorMessage(
-            "An unknown error occurred; please wait a few minutes and try again!"
-          );
-        }
-      );
+        );
+      }
     }
   };
 
