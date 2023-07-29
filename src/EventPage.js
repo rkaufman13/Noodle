@@ -4,7 +4,7 @@ import { DateTable } from "./DateTable";
 import { reverseObject } from "./util";
 import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
-import { useNavigate } from "react-router";
+import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
 import { Button, Stack, Alert, Spinner } from "react-bootstrap";
 
@@ -24,7 +24,9 @@ export const loader = ({ params }) => {
 const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
-  const navigate = useNavigate();
+  const [activePerson, setActivePerson] = useState("");
+  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage] =
+    useOutletContext();
   const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
@@ -59,10 +61,12 @@ const EventChild = () => {
   });
 
   const clearForm = () => {
+    setActivePerson(name);
     setName("");
     setAvailableDates([]);
-    //refresh the page
-    navigate(0);
+    const successMessage =
+      "You've successfully RSVPed to " + resolvedSingleEvent.eventname + "!";
+    setSuccessMessage(successMessage);
   };
 
   const handleNameUpdate = (e) => {
@@ -77,6 +81,7 @@ const EventChild = () => {
     const payload = {
       eventUUID: params.eventUUID,
       dates: resolvedSingleEvent.dates,
+      name,
     };
     submitPayload(payload);
     clearForm();
@@ -84,7 +89,9 @@ const EventChild = () => {
   return (
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
-      <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
+      {resolvedSingleEvent.eventDesc && (
+        <h2>{resolvedSingleEvent.eventDesc}</h2>
+      )}
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
@@ -96,7 +103,11 @@ const EventChild = () => {
             eventUUID={params.eventUUID}
             resolvedSingleEvent={resolvedSingleEvent}
           >
-            <Participants participants={participants} dates={datesArray} />
+            <Participants
+              participants={participants}
+              dates={datesArray}
+              activePerson={activePerson}
+            />
             {resolvedSingleEvent.active && (
               <AddNewRow
                 dates={datesArray}
@@ -128,9 +139,9 @@ export const EventPage = () => {
     <>
       <React.Suspense
         fallback={
-          <p>
+          <>
             <Spinner></Spinner>Loading...
-          </p>
+          </>
         }
       >
         <Await

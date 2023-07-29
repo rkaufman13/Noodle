@@ -12,8 +12,12 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
-import { reverseObject, setTabFocus, clearTabFocus } from "./util";
-import { convertTimeStampToDate } from "./util";
+import {
+  reverseObject,
+  convertTimeStampToDate,
+  setTabFocus,
+  clearTabFocus,
+} from "./util";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -26,13 +30,11 @@ const AdminChild = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
-
   const [finalAdminEvent, eventKey] = useAsyncValue();
 
   if (!finalAdminEvent) {
     return (
       <p>
-        {" "}
         There's nothing here! Either you've entered in an incorrect URL, or
         tried to access a Noodle after it was deleted, or something else went
         wrong. If you think there should be something here, get in touch.
@@ -60,7 +62,7 @@ const AdminChild = () => {
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
     setCloseModalVisible(false);
-    setTabFocus('.modal');
+    setTabFocus(".modal");
   };
 
   const handleCloseEvent = () => {
@@ -73,7 +75,6 @@ const AdminChild = () => {
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
-    navigate("/");
     clearTabFocus();
     setSuccessMessage(
       "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
@@ -89,11 +90,12 @@ const AdminChild = () => {
   return (
     <>
       <Row>
-        <h1>{finalAdminEvent.eventname}</h1>
+        <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
+        {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
       </Row>
-      <Row>
-        {successMessage && <Alert variant="success">{successMessage}</Alert>}
-      </Row>
+
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+
       <Row>
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
@@ -160,7 +162,10 @@ const AdminChild = () => {
       </Row>
       <Modal
         show={closeModalVisible}
-        onHide={() => {setCloseModalVisible(false); clearTabFocus();}}
+        onHide={() => {
+          setCloseModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Close your Nood?</Modal.Title>
@@ -171,7 +176,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {setCloseModalVisible(false); clearTabFocus();}}
+            onClick={() => {
+              setCloseModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Cancel
           </Button>
@@ -182,7 +190,10 @@ const AdminChild = () => {
       </Modal>
       <Modal
         show={deleteModalVisible}
-        onHide={() => {setDeleteModalVisible(false); clearTabFocus()}}
+        onHide={() => {
+          setDeleteModalVisible(false);
+          clearTabFocus();
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Delete your Nood?</Modal.Title>
@@ -198,7 +209,10 @@ const AdminChild = () => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {setDeleteModalVisible(false); clearTabFocus()}}
+            onClick={() => {
+              setDeleteModalVisible(false);
+              clearTabFocus();
+            }}
           >
             Never Mind
           </Button>
@@ -215,21 +229,16 @@ export const AdminPage = () => {
   const data = useLoaderData();
 
   return (
-    <>
-      <React.Suspense
-        fallback={
-          <p>
-            <Spinner></Spinner>Loading...
-          </p>
-        }
-      >
-        <Await
-          resolve={data.singleEvent}
-          errorElement={<p>An error occurred</p>}
-        >
-          <AdminChild />
-        </Await>
-      </React.Suspense>
-    </>
+    <React.Suspense
+      fallback={
+        <>
+          <Spinner></Spinner>Loading...
+        </>
+      }
+    >
+      <Await resolve={data.singleEvent} errorElement={<p>An error occurred</p>}>
+        <AdminChild />
+      </Await>
+    </React.Suspense>
   );
 };
