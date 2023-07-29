@@ -1,4 +1,5 @@
 import React from "react";
+import key from "ally.js/when/key";
 
 export const AddNewRow = ({
   dates,
@@ -18,6 +19,16 @@ export const AddNewRow = ({
     }
     setAvailableDates(newArray);
   };
+  const handleKey = (e) => {
+    if (e.target.className === "checkboxlabel") {
+      e.preventDefault();
+      e.target.click(); // This is a dirty way to code this but I'm too lazy to figure out a better way right now and we can fix later
+    }
+  };
+  key({
+    space: (e) => { handleKey(e) },
+    enter: (e) => { handleKey(e) }
+  });
 
   return (
     <tr id="addnewrow">
@@ -41,6 +52,7 @@ export const AddNewRow = ({
               checked={availableDates.includes(date)}
             />
             <label
+              tabIndex={0}
               className="checkboxlabel"
               htmlFor={date}
               onClick={handleClick}

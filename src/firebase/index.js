@@ -92,8 +92,10 @@ export const getSingleAdminEvent = (eventID) => {
     if (snapshot.exists()) {
       const eventKey = Object.keys(snapshot.val());
       const eventWeWant = snapshot.val()[eventKey];
-      if (eventWeWant.deleteAt >= Math.floor(Date.now() / 1000)) {
-        console.log(snapshot.val()[eventKey]);
+      if (
+        eventWeWant.deleteAt >= Math.floor(Date.now() / 1000) &&
+        eventWeWant.admin === eventID
+      ) {
         return [snapshot.val()[eventKey], eventKey];
       }
       console.log(eventWeWant.deleteAt, Math.floor(Date.now() / 1000));

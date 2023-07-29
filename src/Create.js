@@ -76,18 +76,18 @@ export const Create = () => {
       <p>Create a Nood. It's free, and we respect your privacy.</p>
       <Form className="vstack gap-3" onSubmit={handleSubmit}>
         <Form.Group controlId="eventName">
-          <Form.Label>What's your event called?</Form.Label>
+          <Form.Label>What's your event called? *</Form.Label>
           <Form.Control
             type="text"
             placeholder="Name your Nood"
             name="eventName"
             value={eventName}
-            onChange={(e) => setEventName(e.target.value)} // It might be better to get all of these working with an "onBlur" instead of "onChange"
+            onChange={(e) => setEventName(e.target.value)}
             required
           />
         </Form.Group>
         <Form.Group controlId="eventDesc">
-          <Form.Label>Optional: Describe your Nood</Form.Label>
+          <Form.Label>Describe your Nood</Form.Label>
           <Form.Control
             type="text"
             value={eventDesc}
@@ -95,7 +95,7 @@ export const Create = () => {
           />
         </Form.Group>
         <Form.Group controlId="eventLocation">
-          <Form.Label>Optional: Event address?</Form.Label>
+          <Form.Label>Event address?</Form.Label>
           <Form.Control
             type="text"
             value={eventLocation}
@@ -104,7 +104,7 @@ export const Create = () => {
           />
         </Form.Group>
         <Form.Group controlId="hostName">
-          <Form.Label>What's your name?</Form.Label>
+          <Form.Label>What's your name? *</Form.Label>
           <Form.Control
             type="text"
             value={hostName}
@@ -128,7 +128,7 @@ export const Create = () => {
         </Form.Group>
         <Form.Group controlId="dates">
           <Form.Label>
-            What dates would you like to offer as options?
+            What dates would you like to offer as options? *
           </Form.Label>
           <Calendar
             value={eventDates}

@@ -56,7 +56,7 @@ const AdminChild = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
     setSuccessMessage("Noodle successfully closed.");
-    setTabFocus(".modal");
+    setTabFocus('.modal');
   };
 
   const toggleDelete = () => {
@@ -68,6 +68,7 @@ const AdminChild = () => {
   const handleCloseEvent = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
+    clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
   };
 
