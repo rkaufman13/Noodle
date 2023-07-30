@@ -11,9 +11,9 @@ function App() {
     <div className="App">
       <header>
         <Container>
-          <Row className="justify-content-center">
-            <Col xl={8}>
-              <p className="h1 mt-3">Noodle</p>
+          <Row>
+            <Col>
+              <p className="h1 py-3">Noodle</p>
               <p>Scheduling events should be easy. That's using your Noodle.</p>
             </Col>
           </Row>
@@ -22,8 +22,8 @@ function App() {
       {errorMessage && (
         <Container>
           <Alert variant="info">
-            It may seem impastable, but something's gone wrong.
-            <p>{errorMessage}</p>
+            <p className="m-0">It may seem impastable, but something's gone wrong.</p>
+            <p className="m-0">{errorMessage}</p>
           </Alert>
         </Container>
       )}
@@ -34,8 +34,8 @@ function App() {
       )}
       <main>
         <Container className="py-3">
-          <Row className="justify-content-center">
-            <Col xl={8}>
+          <Row>
+            <Col>
               <Outlet
                 context={[
                   errorMessage,
@@ -49,7 +49,7 @@ function App() {
         </Container>
       </main>
       <footer>
-        <Container className="pt-5">
+        <Container className="py-3">
           <Footer />
         </Container>
       </footer>
