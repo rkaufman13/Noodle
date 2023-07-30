@@ -1,5 +1,5 @@
 import React from "react";
-import key from "ally.js/when/key";
+import { convertTimeStampToDate } from "./util";
 
 export const AddNewRow = ({
   dates,
@@ -9,6 +9,9 @@ export const AddNewRow = ({
   name,
 }) => {
   const handleClick = (e) => {
+    if (e.type === "keydown" && !(e.keyCode === 32 || e.keyCode === 13)) {
+      return;
+    };
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
     targetDate = parseInt(targetDate);
@@ -19,26 +22,19 @@ export const AddNewRow = ({
     }
     setAvailableDates(newArray);
   };
-  const handleKey = (e) => {
-    if (e.target.className === "checkboxlabel") {
-      e.preventDefault();
-      e.target.click(); // This is a dirty way to code this but I'm too lazy to figure out a better way right now and we can fix later
-    }
-  };
-  key({
-    space: (e) => { handleKey(e) },
-    enter: (e) => { handleKey(e) }
-  });
 
   return (
     <tr id="addnewrow">
       <td>
+        <label for="attendeename" className="visually-hidden">Enter your name</label>
         <input
           name="attendeename"
+          id="attendeename"
           type="text"
           placeholder="Your Name"
           onChange={handleNameUpdate}
           value={name || ""}
+          className="rounded p-1"
           required
         ></input>
       </td>
@@ -53,12 +49,16 @@ export const AddNewRow = ({
             />
             <label
               tabIndex={0}
-              className="checkboxlabel"
+              className="checkboxlabel p-1"
               htmlFor={date}
               onClick={handleClick}
+              onKeyDown={handleClick}
               name={date}
+              role="checkbox"
+              aria-checked={availableDates.includes(date) ? "true" : "false"}
+              aria-label={availableDates.includes(date) ? "You can attend the event on " + convertTimeStampToDate(date) : "You cannot attend the event on " + convertTimeStampToDate(date)}
             >
-              {availableDates.includes(date) ? "Going" : "not going"}
+              {availableDates.includes(date) ? "Going" : "Not going"}
             </label>
           </td>
         );

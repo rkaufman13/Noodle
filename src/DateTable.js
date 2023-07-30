@@ -6,16 +6,16 @@ export const DateTable = (props) => {
   const datesArray = Object.keys(props.dates);
   return (
     <>
-      <Table responsive="lg" bordered>
-        <thead>
+      <Table aria-roledescription="Attendee Table" responsive="lg" bordered>
+        <tbody>
           <tr>
-            <td></td>
+            <th scope="col">Attendee Name</th>
             {datesArray.map((date) => {
-              return <td key={date}>{convertTimeStampToDate(date)}</td>;
+              return <th scope="col" key={date}>{convertTimeStampToDate(date)}</th>;
             })}
           </tr>
-        </thead>
-        <tbody>{props.children}</tbody>
+          {props.children}
+        </tbody>
       </Table>
     </>
   );
