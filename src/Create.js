@@ -54,7 +54,6 @@ export const Create = () => {
           if (!!payload.hostEmail) {
             sendConfirmationEmail(payload);
           }
-
           navigate("admin/" + secretUuid);
         },
         (error) => {

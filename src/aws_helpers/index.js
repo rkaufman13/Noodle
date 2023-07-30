@@ -20,14 +20,15 @@ export const sendConfirmationEmail = (vars) => {
     ReplyToAddresses: ["rkaufman13@gmail.com"],
   };
 
-  var sendPromise = ses.sendTemplatedEmail(params).promise();
-  sendPromise
-    .then(function (data) {
-      console.log(data);
-    })
-    .catch(function (err) {
-      console.error(err, err.stack);
-    });
+  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then((response) => response.json());
+  return result;
 };
 
 export const sendResponseEmail = (vars) => {

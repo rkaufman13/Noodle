@@ -7,6 +7,7 @@ import {
   Modal,
   Alert,
   Row,
+  Col,
   Container,
   Spinner,
 } from "react-bootstrap";
@@ -34,11 +35,14 @@ const AdminChild = () => {
 
   if (!finalAdminEvent) {
     return (
-      <p>
-        There's nothing here! Either you've entered in an incorrect URL, or
-        tried to access a Noodle after it was deleted, or something else went
-        wrong. If you think there should be something here, get in touch.
-      </p>
+      <>
+        <h1>Not Found</h1>
+        <p>
+          There's nothing here! Either you've entered in an incorrect URL, or
+          tried to access a Noodle after it was deleted, or something else went
+          wrong. If you think there should be something here, get in touch.
+        </p>
+      </>
     );
   }
 
@@ -90,75 +94,83 @@ const AdminChild = () => {
   return (
     <>
       <Row>
-        <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
-        {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
-      </Row>
+        <Col>
+          <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
+          {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
 
-      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+          {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
-      <Row>
-        This is your admin page for your Nood. You can visit this page at any
-        time by visiting this url:
-      </Row>
-      <Alert variant="info">
-        {" "}
-        {`${baseUrl}/admin/${finalAdminEvent.admin}`}
-      </Alert>
-      <Row>
-        <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
-      </Row>
-      <Row>
-        Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
-      </Row>
-      {shareUrlVisible && (
-        <>
-          <Container fluid>
-            <Row>
-              Share this link with your friends.
-              <input
-                type="text"
-                value={`${baseUrl}/event/${eventKey}`}
-                disabled
-              />
-              <Button variant="secondary" onClick={copyLink}>
-                {copyButtonText}
+          <div>
+            This is your admin page for your Nood. You can visit this page at
+            any time by visiting this url:
+          </div>
+          <Alert variant="info" className="mt-3">
+            {`${baseUrl}/admin/${finalAdminEvent.admin}`}
+          </Alert>
+          <div>
+            <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
+          </div>
+          <div>
+            Your Nood is currently{" "}
+            {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
+          </div>
+          {shareUrlVisible && (
+            <>
+              <Stack className="m-2 p-3 bg-primary text-dark rounded">
+                <p className="p-2">Share this link with your friends:</p>
+                <input
+                  type="text"
+                  value={`${baseUrl}/event/${eventKey}`}
+                  disabled
+                />
+                <Button variant="secondary" onClick={copyLink}>
+                  {copyButtonText}
+                </Button>
+              </Stack>
+            </>
+          )}
+          <div>
+            <p>From here you can:</p>
+            <Stack direction="horizontal" gap={3} className="m-2 mt-4">
+              <Button
+                variant="primary"
+                onClick={toggleShare}
+                className="ms-auto"
+              >
+                Share your Nood
               </Button>
-            </Row>
-          </Container>
-        </>
-      )}
-      <Row>
-        From here you can:
-        <Stack direction="horizontal" gap={3}>
-          <Button variant="primary" onClick={toggleShare} className="ms-auto">
-            Share your Nood
-          </Button>
-          <Button
-            variant="primary"
-            onClick={toggleClose}
-            disabled={finalAdminEvent.active === false}
-          >
-            Close Your Nood
-          </Button>
-          <Button variant="primary" onClick={toggleDelete} className="me-auto">
-            Delete your Nood
-          </Button>
-        </Stack>
-      </Row>
-      <hr className="p-2 invisible" />
-      <Row>
-        {Object.keys(participants).length > 0 ? (
-          <>
-            <h2>Your Nood So Far</h2>
-            <DateTable
-              participants={participants}
-              dates={finalAdminEvent.dates}
-              eventUUID={finalAdminEvent.uuid}
-            />
-          </>
-        ) : (
-          <EmptyEvent dates={finalAdminEvent.dates} />
-        )}
+              <Button
+                variant="primary"
+                onClick={toggleClose}
+                disabled={finalAdminEvent.active === false}
+              >
+                Close Your Nood
+              </Button>
+              <Button
+                variant="primary"
+                onClick={toggleDelete}
+                className="me-auto"
+              >
+                Delete your Nood
+              </Button>
+            </Stack>
+          </div>
+          <hr className="p-2 invisible" />
+          <div>
+            {Object.keys(participants).length > 0 ? (
+              <>
+                <h2>Your Nood So Far</h2>
+                <DateTable
+                  participants={participants}
+                  dates={finalAdminEvent.dates}
+                  eventUUID={finalAdminEvent.uuid}
+                />
+              </>
+            ) : (
+              <EmptyEvent dates={finalAdminEvent.dates} />
+            )}
+          </div>
+        </Col>
       </Row>
       <Modal
         show={closeModalVisible}

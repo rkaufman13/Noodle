@@ -22,14 +22,19 @@ function App() {
       {errorMessage && (
         <Container>
           <Alert variant="info">
-            It may seem impastable, but something's gone wrong.
+            <Alert.Heading>
+              It may seem impastable, but something's gone wrong.
+            </Alert.Heading>
             <p>{errorMessage}</p>
           </Alert>
         </Container>
       )}
       {successMessage && (
         <Container>
-          <Alert variant={"success"}>{successMessage}</Alert>
+          <Alert variant={"success"}>
+            <Alert.Heading>Well done, you!</Alert.Heading>
+            {successMessage}
+          </Alert>
         </Container>
       )}
       <main>
