@@ -20,6 +20,8 @@ export const sendConfirmationEmail = (vars) => {
     ReplyToAddresses: ["rkaufman13@gmail.com"],
   };
 
+  console.log(JSON.stringify(params));
+
   const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
     method: "POST",
     headers: {
@@ -27,7 +29,9 @@ export const sendConfirmationEmail = (vars) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then((response) => response.json());
+  }).then((response) => {
+    return response;
+  });
   return result;
 };
 
