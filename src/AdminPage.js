@@ -112,7 +112,7 @@ const AdminChild = () => {
       <Row>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
       </Row>
-      {shareUrlVisible && (
+      {finalAdminEvent.active && (
         <>
           <Container fluid>
             <Row>
@@ -132,31 +132,34 @@ const AdminChild = () => {
       <Row>
         From here you can:
         <Stack direction="horizontal" gap={3}>
-          <Button variant="primary" onClick={toggleShare} className="ms-auto">
-            Share your Nood
-          </Button>
           <Button
             variant="primary"
             onClick={toggleClose}
             disabled={finalAdminEvent.active === false}
+            className="ms-auto"
           >
             Close Your Nood
           </Button>
-          <Button variant="primary" onClick={toggleDelete} className="me-auto">
+          <Button
+            variant="primary"
+            onClick={toggleDelete}
+            disabled={finalAdminEvent.deleteAt < Math.floor(new Date() / 1000)}
+            className="me-auto"
+          >
             Delete your Nood
           </Button>
         </Stack>
       </Row>
       <hr className="p-2 invisible" />
       <Row>
-        {Object.keys(participants).length > 0 ? (
-          <>
-            <h2>Your Nood So Far</h2>
-            <DateTable
-              participants={participants}
-              dates={datesArray}
-              eventUUID={finalAdminEvent.uuid}
-            >
+        <h2>Your Nood So Far</h2>
+        <DateTable
+          participants={participants}
+          dates={datesArray}
+          eventUUID={finalAdminEvent.uuid}
+        >
+          {Object.keys(participants).length > 0 ? (
+            <>
               {" "}
               <Participants
                 participants={participants}
@@ -164,11 +167,11 @@ const AdminChild = () => {
                 activePerson={null}
               />
               <BestDay dates={finalAdminEvent.dates} />
-            </DateTable>
-          </>
-        ) : (
-          <EmptyEvent dates={finalAdminEvent.dates} />
-        )}
+            </>
+          ) : (
+            <EmptyEvent dates={finalAdminEvent.dates} />
+          )}
+        </DateTable>
       </Row>
       <Modal
         show={closeModalVisible}

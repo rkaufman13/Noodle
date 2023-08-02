@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { convertTimeStampToDate } from "./util";
+import { convertTimeStampToFormattedDate } from "./util";
 
 export const DateTable = (props) => {
   return (
@@ -10,7 +10,9 @@ export const DateTable = (props) => {
           <tr>
             <td></td>
             {props.dates.map((date) => {
-              return <td key={date}>{convertTimeStampToDate(date)}</td>;
+              return (
+                <td key={date}>{convertTimeStampToFormattedDate(date)}</td>
+              );
             })}
           </tr>
         </thead>

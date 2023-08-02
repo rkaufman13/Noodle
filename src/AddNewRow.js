@@ -1,5 +1,6 @@
 import React from "react";
 import key from "ally.js/when/key";
+import { Form } from "react-bootstrap";
 
 export const AddNewRow = ({
   dates,
@@ -26,21 +27,25 @@ export const AddNewRow = ({
     }
   };
   key({
-    space: (e) => { handleKey(e) },
-    enter: (e) => { handleKey(e) }
+    space: (e) => {
+      handleKey(e);
+    },
+    enter: (e) => {
+      handleKey(e);
+    },
   });
 
   return (
     <tr id="addnewrow">
       <td>
-        <input
+        <Form.Control
           name="attendeename"
           type="text"
           placeholder="Your Name"
           onChange={handleNameUpdate}
           value={name || ""}
           required
-        ></input>
+        />
       </td>
       {dates.map((date) => {
         return (
