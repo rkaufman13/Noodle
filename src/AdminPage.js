@@ -12,6 +12,8 @@ import {
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
+import { Participants } from "./Participants";
+import { BestDay } from "./BestDay";
 import {
   reverseObject,
   convertTimeStampToDate,
@@ -44,6 +46,7 @@ const AdminChild = () => {
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const participants = reverseObject(finalAdminEvent);
+  const datesArray = Object.keys(finalAdminEvent.dates);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
@@ -56,7 +59,7 @@ const AdminChild = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
     setSuccessMessage("Noodle successfully closed.");
-    setTabFocus('.modal');
+    setTabFocus(".modal");
   };
 
   const toggleDelete = () => {
@@ -86,7 +89,6 @@ const AdminChild = () => {
       setCopyButtonText("Copied!");
     });
   };
-
   return (
     <>
       <Row>
@@ -152,9 +154,17 @@ const AdminChild = () => {
             <h2>Your Nood So Far</h2>
             <DateTable
               participants={participants}
-              dates={finalAdminEvent.dates}
+              dates={datesArray}
               eventUUID={finalAdminEvent.uuid}
-            />
+            >
+              {" "}
+              <Participants
+                participants={participants}
+                dates={datesArray}
+                activePerson={null}
+              />
+              <BestDay dates={finalAdminEvent.dates} />
+            </DateTable>
           </>
         ) : (
           <EmptyEvent dates={finalAdminEvent.dates} />
