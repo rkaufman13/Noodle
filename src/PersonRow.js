@@ -1,4 +1,6 @@
 import React from "react";
+import { GoingIcon } from "./resources/GoingIcon";
+import { NotGoingIcon } from "./resources/NotGoingIcon";
 
 export const PersonRow = (props) => {
   return (
@@ -19,7 +21,7 @@ export const PersonRow = (props) => {
             }
             key={idx}
           >
-            {selected ? "Going" : "Not going"}
+            {selected ? <GoingIcon /> : <NotGoingIcon />}
           </td>
         );
       })}
