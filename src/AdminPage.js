@@ -113,45 +113,37 @@ const AdminChild = () => {
   };
   return (
     <>
-      <Row>
+      <div>
         <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
-      </Row>
+      </div>
 
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
-      <Row>
+      <div>
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
-      </Row>
+      </div>
       <Alert variant="info">
         {" "}
         {`${baseUrl}/admin/${finalAdminEvent.admin}`}
       </Alert>
-      <Row>
+      <div>
         <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
-      </Row>
-      <Row>
+      </div>
+      <div>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
-      </Row>
+      </div>
       {finalAdminEvent.active && (
         <>
-          <Container fluid>
-            <Row>
-              Share this link with your friends.
-              <input
-                type="text"
-                value={`${baseUrl}/event/${eventKey}`}
-                disabled
-              />
-              <Button variant="secondary" onClick={copyLink}>
-                {copyButtonText}
-              </Button>
-            </Row>
-          </Container>
+          Share this link with your friends.
+          <input type="text" value={`${baseUrl}/event/${eventKey}`} disabled />
+          <Button variant="secondary" onClick={copyLink}>
+            {copyButtonText}
+          </Button>
         </>
       )}
-      <Row>
+      <div>
         From here you can:
         <Stack direction="horizontal" gap={3}>
           <Button
@@ -171,9 +163,9 @@ const AdminChild = () => {
             Delete your Nood
           </Button>
         </Stack>
-      </Row>
+      </div>
       <hr className="p-2 invisible" />
-      <Row>
+      <div>
         <h2>Your Nood So Far</h2>
         <DateTable
           participants={participants}
@@ -194,7 +186,7 @@ const AdminChild = () => {
             <EmptyEvent dates={finalAdminEvent.dates} />
           )}
         </DateTable>
-      </Row>
+      </div>
       <div>
         Getting too much email about this event?{" "}
         <Button variant="primary" onClick={toggleEmail} size="sm">
