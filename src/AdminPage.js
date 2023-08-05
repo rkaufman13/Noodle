@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { getSingleAdminEvent, closeEvent, deleteEvent } from "./firebase";
+import {
+  getSingleAdminEvent,
+  closeEvent,
+  deleteEvent,
+  deleteEmail,
+} from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
 import {
   Button,
@@ -8,11 +13,12 @@ import {
   Alert,
   Row,
   Col,
-  Container,
   Spinner,
 } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
+import { Participants } from "./Participants";
+import { BestDay } from "./BestDay";
 import {
   reverseObject,
   convertTimeStampToDate,
@@ -29,6 +35,7 @@ const AdminChild = () => {
   const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
   const [finalAdminEvent, eventKey] = useAsyncValue();
@@ -48,6 +55,7 @@ const AdminChild = () => {
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const participants = reverseObject(finalAdminEvent);
+  const datesArray = Object.keys(finalAdminEvent.dates);
 
   const toggleShare = () => {
     setShareUrlVisible(!shareUrlVisible);
@@ -59,12 +67,21 @@ const AdminChild = () => {
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
+    setEmailModalVisible(false);
     setSuccessMessage("Noodle successfully closed.");
     setTabFocus(".modal");
   };
 
   const toggleDelete = () => {
     setDeleteModalVisible(!deleteModalVisible);
+    setCloseModalVisible(false);
+    setEmailModalVisible(false);
+    setTabFocus(".modal");
+  };
+
+  const toggleEmail = () => {
+    setEmailModalVisible(!emailModalVisible);
+    setDeleteModalVisible(false);
     setCloseModalVisible(false);
     setTabFocus(".modal");
   };
@@ -85,12 +102,18 @@ const AdminChild = () => {
     );
   };
 
+  const handleDeleteEmailEvent = () => {
+    setEmailModalVisible(false);
+    deleteEmail(eventKey);
+    clearTabFocus();
+    setSuccessMessage("No more emails!");
+  };
+
   const copyLink = () => {
     navigator.clipboard.writeText(`${baseUrl}/event/${eventKey}`).then(() => {
       setCopyButtonText("Copied!");
     });
   };
-
   return (
     <>
       <Row>
@@ -172,6 +195,12 @@ const AdminChild = () => {
           </div>
         </Col>
       </Row>
+      <div>
+        Getting too much email about this event?{" "}
+        <Button variant="primary" onClick={toggleEmail} size="sm">
+          Stop emailing me about this event
+        </Button>
+      </div>
       <Modal
         show={closeModalVisible}
         onHide={() => {
@@ -230,6 +259,42 @@ const AdminChild = () => {
           </Button>
           <Button variant="primary" onClick={handleDeleteEvent}>
             DELETE
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={emailModalVisible}
+        onHide={() => {
+          setEmailModalVisible(false);
+          clearTabFocus();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Stop emailing me!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Getting too many email RSVPs for this event, but don't want to close
+            it yet?
+          </p>
+          <p>
+            We won't send you another email about RSVPs if you click this
+            button. You'll need to use the admin link on this page (save it!) to
+            track RSVPs going forward.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setDeleteModalVisible(false);
+              clearTabFocus();
+            }}
+          >
+            Never Mind
+          </Button>
+          <Button variant="primary" onClick={handleDeleteEmailEvent}>
+            Okay
           </Button>
         </Modal.Footer>
       </Modal>

@@ -122,3 +122,13 @@ export const deleteEvent = (eventId) => {
 
   return update(singleEventRef, updates);
 };
+
+//delete an admin email from an event
+export const deleteEmail = (eventId) => {
+  const database = getDatabase();
+  const singleEventRef = ref(database, "event/" + eventId);
+  const updates = {};
+  updates["/hostEmail"] = null;
+
+  return update(singleEventRef, updates);
+};
