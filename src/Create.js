@@ -9,7 +9,7 @@ import {
 } from "./util";
 import { useNavigate, useOutletContext } from "react-router";
 import { submitNewEvent } from "./firebase";
-import { sendConfirmationEmail } from "./aws_helpers";
+import { sendConfirmationEmail } from "./sg_helpers";
 
 export const Create = () => {
   const [eventName, setEventName] = useState("");
