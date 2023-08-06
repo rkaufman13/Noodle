@@ -136,15 +136,22 @@ const AdminChild = () => {
       </div>
       {finalAdminEvent.active && (
         <>
-          Share this link with your friends.
-          <input type="text" value={`${baseUrl}/event/${eventKey}`} disabled />
-          <Button variant="secondary" onClick={copyLink}>
-            {copyButtonText}
-          </Button>
+          <Stack>
+            To get responses for your Nood, share this link with your friends.
+            <input
+              type="text"
+              value={`${baseUrl}/event/${eventKey}`}
+              disabled
+            />
+            <Button variant="secondary" onClick={copyLink}>
+              {copyButtonText}
+            </Button>
+          </Stack>
         </>
       )}
+      <hr className="p-2 invisible" />
       <div>
-        From here you can:
+        From here you can also:
         <Stack direction="horizontal" gap={3}>
           <Button
             variant="primary"
@@ -187,6 +194,7 @@ const AdminChild = () => {
           )}
         </DateTable>
       </div>
+      <hr className="p-2 invisible" />
       <div>
         Getting too much email about this event?{" "}
         <Button variant="primary" onClick={toggleEmail} size="sm">

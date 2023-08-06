@@ -1,6 +1,8 @@
 import React from "react";
 import key from "ally.js/when/key";
 import { Form } from "react-bootstrap";
+import { GoingIcon } from "./resources/GoingIcon";
+import { NotGoingIcon } from "./resources/NotGoingIcon";
 
 export const AddNewRow = ({
   dates,
@@ -13,7 +15,7 @@ export const AddNewRow = ({
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
     targetDate = parseInt(targetDate);
-    if (!availableDates.includes(targetDate)) {
+    if (!availableDates.includes(targetDate) && !isNaN(targetDate)) {
       newArray = [...availableDates, targetDate];
     } else {
       newArray = availableDates.filter((item) => item !== targetDate);
@@ -49,10 +51,11 @@ export const AddNewRow = ({
       </td>
       {dates.map((date) => {
         return (
-          <td key={date} className="checkboxlabel">
+          <td key={date} className="checkboxlabel checkbox-circle">
             <input
               type="checkbox"
               name={date}
+              id={date}
               onChange={handleClick}
               checked={availableDates.includes(date)}
             />
@@ -63,7 +66,7 @@ export const AddNewRow = ({
               onClick={handleClick}
               name={date}
             >
-              {availableDates.includes(date) ? "Going" : "not going"}
+              {availableDates.includes(date) ? <GoingIcon /> : <NotGoingIcon />}
             </label>
           </td>
         );

@@ -5,7 +5,7 @@ import { convertTimeStampToFormattedDate } from "./util";
 export const DateTable = (props) => {
   return (
     <>
-      <Table responsive="lg" bordered>
+      <Table responsive="lg" bordered className="p-2">
         <thead>
           <tr>
             <td></td>

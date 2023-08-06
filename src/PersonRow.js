@@ -11,16 +11,7 @@ export const PersonRow = (props) => {
       {props.dates.map((date, idx) => {
         const selected = props.participant.dates[date] === "yes";
         return (
-          <td
-            className={
-              props.active
-                ? "activated"
-                : selected
-                ? "goingPrimary"
-                : "notGoing"
-            }
-            key={idx}
-          >
+          <td className={props.active ? "activated" : ""} key={idx}>
             {selected ? <GoingIcon /> : <NotGoingIcon />}
           </td>
         );

@@ -73,7 +73,8 @@ const EventChild = () => {
     setName(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (participantsArray.includes(name)) {
       setErrorMessage("Looks like you already registered for this event!");
     } else if (availableDates.length === 0) {
