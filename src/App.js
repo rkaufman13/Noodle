@@ -50,7 +50,7 @@ function App() {
               ></path>
             </svg>
             It may seem impastable, but something's gone wrong.
-            {/* <p>{errorMessage}</p> */}
+            <p>{errorMessage}</p>
           </Alert>
         </Container>
       )}
