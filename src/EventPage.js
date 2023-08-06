@@ -108,6 +108,11 @@ const EventChild = () => {
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
+      <p>
+        {resolvedSingleEvent.hostName ?? "Someone"} invited you to respond to
+        this Noodle. Add your name and the dates you're available below, and let
+        the fun start!
+      </p>
       <Stack>
         <Form onSubmit={handleSubmit}>
           <DateTable
