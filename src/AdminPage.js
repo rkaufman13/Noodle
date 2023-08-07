@@ -6,15 +6,7 @@ import {
   deleteEmail,
 } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import {
-  Button,
-  Stack,
-  Modal,
-  Alert,
-  Row,
-  Col,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Stack, Modal, Alert, Spinner } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
