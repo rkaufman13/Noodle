@@ -10,7 +10,7 @@ import {
   limitToLast,
   update,
 } from "firebase/database";
-import { sendResponseEmail } from "../aws_helpers";
+import { sendResponseEmail } from "../sg_helpers";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

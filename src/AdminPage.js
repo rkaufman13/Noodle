@@ -6,15 +6,7 @@ import {
   deleteEmail,
 } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import {
-  Button,
-  Stack,
-  Modal,
-  Alert,
-  Row,
-  Container,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Stack, Modal, Alert, Spinner } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
@@ -42,11 +34,14 @@ const AdminChild = () => {
 
   if (!finalAdminEvent) {
     return (
-      <p>
-        There's nothing here! Either you've entered in an incorrect URL, or
-        tried to access a Noodle after it was deleted, or something else went
-        wrong. If you think there should be something here, get in touch.
-      </p>
+      <>
+        <h1>Not Found</h1>
+        <p>
+          There's nothing here! Either you've entered in an incorrect URL, or
+          tried to access a Noodle after it was deleted, or something else went
+          wrong. If you think there should be something here, get in touch.
+        </p>
+      </>
     );
   }
 
