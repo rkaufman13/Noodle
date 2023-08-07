@@ -1,17 +1,18 @@
 import React from "react";
 import { Table } from "react-bootstrap";
-import { convertTimeStampToDate } from "./util";
+import { convertTimeStampToFormattedDate } from "./util";
 
 export const DateTable = (props) => {
-  const datesArray = Object.keys(props.dates);
   return (
     <>
-      <Table aria-roledescription="Attendee Table" responsive="lg" bordered>
+      <Table aria-roledescription="Attendee Table" responsive="lg" bordered striped className="p-2">
         <tbody>
           <tr>
-            <th scope="col">Attendee Name</th>
-            {datesArray.map((date) => {
-              return <th scope="col" key={date}>{convertTimeStampToDate(date)}</th>;
+            <th scope="col"><span className="visually-hidden">Attendee Name</span></th>
+            {props.dates.map((date) => {
+              return (
+                <th scope="col" key={date}>{convertTimeStampToFormattedDate(date)}</th>
+              );
             })}
           </tr>
           {props.children}

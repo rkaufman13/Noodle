@@ -1,0 +1,19 @@
+{
+  "Template": {
+    "TemplateName": "RsvpTemplate",
+    "SubjectPart": "Hey {{name}}, {{respondee}} just filled out your Noodle!",
+    "TextPart": "Dear {{name}},\r\n{{respondee}} just filled out your Noodle, {{eventName}}.\r\nGo see what dates they chose at {{eventAdminUrl}}.\r\nFrom there, you can also choose to close the Noodle to new RSVPs if you've selected a final date!\r\n\n Thank you for using Noodle!\r\n\n\nToo many emails? Turn these off by visiting the URL above and choosing 'Stop emailing me.'",
+    "HtmlPart": "<h1>{{respondee}} just filled out your Noodle</h1><p>Go see what dates they chose at {{eventAdminUrl}}.</p><p>From there, you can also choose to close the Noodle to new RSVPs if you've selected a final date!</p><p>Thank you for using Noodle!</p><p>Too many emails? Turn them off by visiting the URL above and choosing 'Stop emailing me.'</p>"
+  }
+}
+
+
+
+{
+    "Template": {
+        "TemplateName": "EventCreatedTemplate",
+        "SubjectPart": "{{name}}, your Nood, {{eventName}}, has been created!",
+        "TextPart": "{{eventName}} Created\r\nYour event can be viewed/edited at {{eventAdminUrl}}.\r\nDO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.\r\n\n Thank you for using Noodle!",
+        "HtmlPart": "<h1>{{eventName}} Created</h1><p>Your event can be viewed/edited at {{eventAdminUrl}}.</p><p><b>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</b></p><p>Thank you for using Noodle!</p>"
+    }
+}

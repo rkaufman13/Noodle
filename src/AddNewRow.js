@@ -1,5 +1,8 @@
 import React from "react";
 import { convertTimeStampToDate } from "./util";
+import { Form } from "react-bootstrap";
+import { GoingIcon } from "./resources/GoingIcon";
+import { NotGoingIcon } from "./resources/NotGoingIcon";
 
 export const AddNewRow = ({
   dates,
@@ -15,7 +18,7 @@ export const AddNewRow = ({
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
     targetDate = parseInt(targetDate);
-    if (!availableDates.includes(targetDate)) {
+    if (!availableDates.includes(targetDate) && !isNaN(targetDate)) {
       newArray = [...availableDates, targetDate];
     } else {
       newArray = availableDates.filter((item) => item !== targetDate);
@@ -27,23 +30,24 @@ export const AddNewRow = ({
     <tr id="addnewrow">
       <td>
         <label for="attendeename" className="visually-hidden">Enter your name</label>
-        <input
+        <Form.Control
           name="attendeename"
-          id="attendeename"
           type="text"
           placeholder="Your Name"
           onChange={handleNameUpdate}
           value={name || ""}
-          className="rounded p-1"
+          className="form-control rounded p-1"
+          aria-labelledby="attendeename"
           required
-        ></input>
+        />
       </td>
       {dates.map((date) => {
         return (
-          <td key={date} className="checkboxlabel">
+          <td key={date} className="checkboxlabel checkbox-circle">
             <input
               type="checkbox"
               name={date}
+              id={date}
               onChange={handleClick}
               checked={availableDates.includes(date)}
             />
@@ -56,9 +60,13 @@ export const AddNewRow = ({
               name={date}
               role="checkbox"
               aria-checked={availableDates.includes(date) ? "true" : "false"}
-              aria-label={availableDates.includes(date) ? "You can attend the event on " + convertTimeStampToDate(date) : "You cannot attend the event on " + convertTimeStampToDate(date)}
+              aria-label={availableDates.includes(date) ? 
+                "You can attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP no."
+                : 
+                "You cannot attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP yes."
+              }
             >
-              {availableDates.includes(date) ? "Going" : "Not going"}
+              {availableDates.includes(date) ? <GoingIcon /> : <NotGoingIcon />}
             </label>
           </td>
         );

@@ -4,9 +4,9 @@ import { DateTable } from "./DateTable";
 import { reverseObject } from "./util";
 import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
-import { useNavigate } from "react-router";
+import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
-import { Button, Stack, Alert, Spinner } from "react-bootstrap";
+import { Button, Stack, Alert, Spinner, Form } from "react-bootstrap";
 
 import {
   useLoaderData,
@@ -24,7 +24,9 @@ export const loader = ({ params }) => {
 const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
-  const navigate = useNavigate();
+  const [activePerson, setActivePerson] = useState("");
+  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage] =
+    useOutletContext();
   const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
@@ -59,44 +61,71 @@ const EventChild = () => {
   });
 
   const clearForm = () => {
+    setActivePerson(name);
     setName("");
     setAvailableDates([]);
-    //refresh the page
-    navigate(0);
+    const successMessage =
+      "You've successfully RSVPed to " + resolvedSingleEvent.eventname + "!";
+    setSuccessMessage(successMessage);
   };
 
   const handleNameUpdate = (e) => {
     setName(e.target.value);
   };
 
-  const handleSubmit = () => {
-    //todo disallow duplicates
-    for (let selectedDate of availableDates) {
-      resolvedSingleEvent.dates[selectedDate].participants.push(name);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (participantsArray.includes(name)) {
+      setErrorMessage("Looks like you already registered for this event!");
+    } else if (availableDates.length === 0) {
+      setErrorMessage("You must select at least one date.");
+    } else if (!name) {
+      setErrorMessage("Your name can't be blank.");
+    } else {
+      for (let selectedDate of availableDates) {
+        resolvedSingleEvent.dates[selectedDate].participants.push(name);
+      }
+      const payload = {
+        eventUUID: params.eventUUID,
+        dates: resolvedSingleEvent.dates,
+        name,
+      };
+      submitPayload(payload);
+      clearForm();
     }
-    const payload = {
-      eventUUID: params.eventUUID,
-      dates: resolvedSingleEvent.dates,
-    };
-    submitPayload(payload);
-    clearForm();
   };
+
+  const formIsInvalid = () => {
+    return availableDates.length === 0 || !name;
+  };
+
   return (
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
-      <h2>{resolvedSingleEvent.eventDesc ?? ""}</h2>
+      {resolvedSingleEvent.eventDesc && (
+        <h2>{resolvedSingleEvent.eventDesc}</h2>
+      )}
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
+      <p>
+        {resolvedSingleEvent.hostName ?? "Someone"} invited you to respond to
+        this Noodle. Add your name and the dates you're available below, and let
+        the fun start!
+      </p>
       <Stack>
-        <form>
+        <Form onSubmit={handleSubmit}>
           <DateTable
             participants={participants}
-            dates={resolvedSingleEvent.dates}
+            dates={datesArray}
             eventUUID={params.eventUUID}
             resolvedSingleEvent={resolvedSingleEvent}
           >
-            <Participants participants={participants} dates={datesArray} />
+            <Participants
+              participants={participants}
+              dates={datesArray}
+              activePerson={activePerson}
+            />
             {resolvedSingleEvent.active && (
               <AddNewRow
                 dates={datesArray}
@@ -109,13 +138,13 @@ const EventChild = () => {
           </DateTable>
 
           {resolvedSingleEvent.active && (
-            <div id="submitButtonContainer">
-              <Button variant="primary" onClick={handleSubmit}>
+            <div className="text-center">
+              <Button type="submit" variant="primary" disabled={formIsInvalid()}>
                 Submit
               </Button>
             </div>
           )}
-        </form>
+        </Form>
       </Stack>
     </>
   );
@@ -128,9 +157,9 @@ export const EventPage = () => {
     <>
       <React.Suspense
         fallback={
-          <p>
+          <>
             <Spinner></Spinner>Loading...
-          </p>
+          </>
         }
       >
         <Await

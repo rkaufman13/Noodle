@@ -10,6 +10,7 @@ import {
   limitToLast,
   update,
 } from "firebase/database";
+import { sendResponseEmail } from "../sg_helpers";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -48,13 +49,12 @@ export const submitPayload = (payload) => {
     dates: payload.dates,
   });
   //retrieve email address of event host
-  const singleEventHostEmail = ref(
-    db,
-    "event/" + payload.eventUUID + "/hostEmail"
-  );
-  get(singleEventHostEmail).then((snapshot) => {
-    if (snapshot.exists() && snapshot.val() !== "") {
-      console.log("the host's email is " + snapshot.val());
+  const singleEvent = ref(db, "event/" + payload.eventUUID);
+
+  get(singleEvent).then((snapshot) => {
+    if (snapshot.exists() && snapshot.val().hostEmail !== "") {
+      const RsvpPayload = { respondee: payload.name, ...snapshot.val() };
+      sendResponseEmail(RsvpPayload);
     }
   });
 };
@@ -119,6 +119,16 @@ export const deleteEvent = (eventId) => {
   const singleEventRef = ref(database, "event/" + eventId);
   const updates = {};
   updates["/deleteAt"] = Math.floor(new Date() / 1000) - 10;
+
+  return update(singleEventRef, updates);
+};
+
+//delete an admin email from an event
+export const deleteEmail = (eventId) => {
+  const database = getDatabase();
+  const singleEventRef = ref(database, "event/" + eventId);
+  const updates = {};
+  updates["/hostEmail"] = null;
 
   return update(singleEventRef, updates);
 };
