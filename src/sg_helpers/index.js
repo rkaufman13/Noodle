@@ -19,7 +19,7 @@ export const sendResponseEmail = (vars) => {
     template_id: "d-6e89baf471ab478682b2757a40fbe4fe",
   };
 
-  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
+  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "send", {
     method: "POST",
     headers: {
       Accept: "application/json",
