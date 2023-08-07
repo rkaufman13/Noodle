@@ -47,6 +47,7 @@ export const AddNewRow = ({
           onChange={handleNameUpdate}
           value={name || ""}
           required
+          id="addName"
         />
       </td>
       {dates.map((date) => {
