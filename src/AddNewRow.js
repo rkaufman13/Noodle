@@ -1,5 +1,5 @@
 import React from "react";
-import key from "ally.js/when/key";
+import { convertTimeStampToDate } from "./util";
 import { Form } from "react-bootstrap";
 import { GoingIcon } from "./resources/GoingIcon";
 import { NotGoingIcon } from "./resources/NotGoingIcon";
@@ -12,6 +12,9 @@ export const AddNewRow = ({
   name,
 }) => {
   const handleClick = (e) => {
+    if (e.type === "keydown" && !(e.keyCode === 32 || e.keyCode === 13)) {
+      return;
+    };
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
     targetDate = parseInt(targetDate);
@@ -22,30 +25,19 @@ export const AddNewRow = ({
     }
     setAvailableDates(newArray);
   };
-  const handleKey = (e) => {
-    if (e.target.className === "checkboxlabel") {
-      e.preventDefault();
-      e.target.click(); // This is a dirty way to code this but I'm too lazy to figure out a better way right now and we can fix later
-    }
-  };
-  key({
-    space: (e) => {
-      handleKey(e);
-    },
-    enter: (e) => {
-      handleKey(e);
-    },
-  });
 
   return (
     <tr id="addnewrow">
       <td>
+        <label for="attendeename" className="visually-hidden">Enter your name</label>
         <Form.Control
           name="attendeename"
           type="text"
           placeholder="Your Name"
           onChange={handleNameUpdate}
           value={name || ""}
+          className="form-control rounded p-1"
+          aria-labelledby="attendeename"
           required
           id="addName"
         />
@@ -62,10 +54,18 @@ export const AddNewRow = ({
             />
             <label
               tabIndex={0}
-              className="checkboxlabel"
+              className="checkboxlabel p-1"
               htmlFor={date}
               onClick={handleClick}
+              onKeyDown={handleClick}
               name={date}
+              role="checkbox"
+              aria-checked={availableDates.includes(date) ? "true" : "false"}
+              aria-label={availableDates.includes(date) ? 
+                "You can attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP no."
+                : 
+                "You cannot attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP yes."
+              }
             >
               {availableDates.includes(date) ? <GoingIcon /> : <NotGoingIcon />}
             </label>

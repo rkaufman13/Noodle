@@ -138,8 +138,12 @@ const EventChild = () => {
           </DateTable>
 
           {resolvedSingleEvent.active && (
-            <div id="submitButtonContainer" className="my-3">
-              <Button type="submit" disabled={formIsInvalid()}>
+            <div className="text-center">
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={formIsInvalid()}
+              >
                 Submit
               </Button>
             </div>
