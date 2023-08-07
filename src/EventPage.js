@@ -113,7 +113,7 @@ const EventChild = () => {
         this Noodle. Add your name and the dates you're available below, and let
         the fun start!
       </p>
-      <Stack>
+      <Stack className="overflow-auto container-lg">
         <Form onSubmit={handleSubmit}>
           <DateTable
             participants={participants}
@@ -139,7 +139,11 @@ const EventChild = () => {
 
           {resolvedSingleEvent.active && (
             <div className="text-center">
-              <Button type="submit" variant="primary" disabled={formIsInvalid()}>
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={formIsInvalid()}
+              >
                 Submit
               </Button>
             </div>

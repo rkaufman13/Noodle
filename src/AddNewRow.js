@@ -39,6 +39,7 @@ export const AddNewRow = ({
           className="form-control rounded p-1"
           aria-labelledby="attendeename"
           required
+          id="addName"
         />
       </td>
       {dates.map((date) => {
