@@ -16,12 +16,12 @@ export const About = () => {
         you don't want.
       </p>
       <p>
-        Noodle was made by
+        Noodle was made by{" "}
         <a href="https://github.com/rkaufman13">Rachel Kaufman</a>, with lots of
-        help from
+        help from{" "}
         <a href="https://www.linkedin.com/in/sarah-tonsager-9837b139/">
           Sarah Tonsager
-        </a>
+        </a>{" "}
         and <a href="https://chriscombs.net">Chris Combs</a>.
       </p>
     </>
