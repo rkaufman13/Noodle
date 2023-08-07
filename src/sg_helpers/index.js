@@ -16,7 +16,7 @@ export const sendConfirmationEmail = (vars) => {
         },
       },
     ],
-    template_id: "d-6e89baf471ab478682b2757a40fbe4fe",
+    template_id: "d-1c0fd3f9eb674287b5eb839deb958cf0",
   };
 
   const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
@@ -48,7 +48,7 @@ export const sendResponseEmail = async (vars) => {
         },
       },
     ],
-    template_id: "d-1c0fd3f9eb674287b5eb839deb958cf0",
+    template_id: "d-6e89baf471ab478682b2757a40fbe4fe",
   };
 
   const response = await fetch(
