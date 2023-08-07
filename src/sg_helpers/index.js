@@ -52,7 +52,7 @@ export const sendResponseEmail = async (vars) => {
   };
 
   const response = await fetch(
-    process.env.REACT_APP_BASE_BACKEND_URL + "/send/",
+    process.env.REACT_APP_BASE_BACKEND_URL + "api/send/",
     {
       method: "POST",
       headers: {
