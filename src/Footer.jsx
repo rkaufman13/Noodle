@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <Row>
       <Col>
-        <p>Copyright 2023</p>
+        <p>&copy; 2023</p>
       </Col>
       <Col sm="auto">
         <Link to="/about">About</Link>
