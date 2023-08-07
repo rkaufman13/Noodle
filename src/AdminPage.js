@@ -113,72 +113,74 @@ const AdminChild = () => {
   };
   return (
     <>
-      <Row>
+      <div>
         <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
-      </Row>
+      </div>
 
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
 
-      <Row>
+      <div>
         This is your admin page for your Nood. You can visit this page at any
         time by visiting this url:
-      </Row>
+      </div>
       <Alert variant="info">
         {" "}
         {`${baseUrl}/admin/${finalAdminEvent.admin}`}
       </Alert>
-      <Row>
+      <div>
         <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
-      </Row>
-      <Row>
+      </div>
+      <div>
         Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
-      </Row>
-      {shareUrlVisible && (
+      </div>
+      {finalAdminEvent.active && (
         <>
-          <Container fluid>
-            <Row>
-              Share this link with your friends.
-              <input
-                type="text"
-                value={`${baseUrl}/event/${eventKey}`}
-                disabled
-              />
-              <Button variant="secondary" onClick={copyLink}>
-                {copyButtonText}
-              </Button>
-            </Row>
-          </Container>
+          <Stack>
+            To get responses for your Nood, share this link with your friends.
+            <input
+              type="text"
+              value={`${baseUrl}/event/${eventKey}`}
+              disabled
+            />
+            <Button variant="secondary" onClick={copyLink}>
+              {copyButtonText}
+            </Button>
+          </Stack>
         </>
       )}
-      <Row>
-        From here you can:
+      <hr className="p-2 invisible" />
+      <div>
+        From here you can also:
         <Stack direction="horizontal" gap={3}>
-          <Button variant="primary" onClick={toggleShare} className="ms-auto">
-            Share your Nood
-          </Button>
           <Button
             variant="primary"
             onClick={toggleClose}
             disabled={finalAdminEvent.active === false}
+            className="ms-auto"
           >
             Close Your Nood
           </Button>
-          <Button variant="primary" onClick={toggleDelete} className="me-auto">
+          <Button
+            variant="primary"
+            onClick={toggleDelete}
+            disabled={finalAdminEvent.deleteAt < Math.floor(new Date() / 1000)}
+            className="me-auto"
+          >
             Delete your Nood
           </Button>
         </Stack>
-      </Row>
+      </div>
       <hr className="p-2 invisible" />
-      <Row>
-        {Object.keys(participants).length > 0 ? (
-          <>
-            <h2>Your Nood So Far</h2>
-            <DateTable
-              participants={participants}
-              dates={datesArray}
-              eventUUID={finalAdminEvent.uuid}
-            >
+      <div>
+        <h2>Your Nood So Far</h2>
+        <DateTable
+          participants={participants}
+          dates={datesArray}
+          eventUUID={finalAdminEvent.uuid}
+        >
+          {Object.keys(participants).length > 0 ? (
+            <>
               {" "}
               <Participants
                 participants={participants}
@@ -186,12 +188,13 @@ const AdminChild = () => {
                 activePerson={null}
               />
               <BestDay dates={finalAdminEvent.dates} />
-            </DateTable>
-          </>
-        ) : (
-          <EmptyEvent dates={finalAdminEvent.dates} />
-        )}
-      </Row>
+            </>
+          ) : (
+            <EmptyEvent dates={finalAdminEvent.dates} />
+          )}
+        </DateTable>
+      </div>
+      <hr className="p-2 invisible" />
       <div>
         Getting too much email about this event?{" "}
         <Button variant="primary" onClick={toggleEmail} size="sm">

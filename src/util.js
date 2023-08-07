@@ -49,6 +49,23 @@ export const convertTimeStampToDateString = (timestamp) => {
   );
 };
 
+export const convertTimeStampToFormattedDate = (timestamp) => {
+  const newDate = new Date(parseInt(timestamp * 1000));
+  return (
+    <>
+      <div className="weekday text-center text-uppercase">
+        {weekdays[newDate.getDay()]}
+      </div>
+      <div className="month text-center text-uppercase text-lg fs-5">
+        {months[newDate.getMonth()]}
+      </div>
+      <div className="date text-center text-uppercase text-lg fs-3">
+        {newDate.getDate()}
+      </div>
+    </>
+  );
+};
+
 export const convertDateToTimestamp = (date) => {
   return Math.floor(new Date(date).getTime() / 1000);
 };
