@@ -225,11 +225,8 @@ $grid-breakpoints: (
 // scss-docs-start container-max-widths
 $container-max-widths: (
   sm: 540px,
-  md: 720px,
-  lg: 960px,
-  xl: 1140px,
-  xxl: 1320px
-) !default;
+  md: 720px
+);
 // scss-docs-end container-max-widths
 
 @include _assert-ascending($container-max-widths, "$container-max-widths");
@@ -281,6 +278,19 @@ $input-border-color:        transparent;
 $input-focus-border-color:  transparent;
 
 // Other overrides
+*:focus {
+  outline: $orange solid 3px;
+}
+
+a:focus {
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+input, input.form-control, input.form-control:focus {
+  border: none;
+}
+
 #error-page {
   margin:auto;
   width: 30%;
@@ -294,18 +304,12 @@ label.checkboxlabel {
   display: inline-block;
   width:100%;
   height:100%;
-}
+  border-radius: $border-radius-sm;
+  cursor: pointer;
 
-input[type=checkbox]:checked + .checkboxlabel{
-  color:#000;
-  
-}
-  
-#submitButtonContainer {
-  width:100%;
-  margin:auto;
-  display: flex;
-  justify-content: center;
+  input[type=checkbox]:checked + & {
+    color: $black;
+  }
 }
 
 .dateTableIcons {

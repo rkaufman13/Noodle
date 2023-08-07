@@ -12,9 +12,9 @@ function App() {
     <div className="App">
       <header>
         <Container>
-          <Row className="justify-content-center">
-            <Col xl={8} className="border-bottom">
-              <p className="h1 mt-3">
+          <Row>
+            <Col className="border-bottom">
+              <p className="h1 py-3">
                 <Link to="/">Noodle</Link>
               </p>
               <p>Scheduling events should be easy. That's using your Noodle.</p>
@@ -50,9 +50,9 @@ function App() {
                   stroke-linejoin="round"
                 ></path>
               </svg>
-              It may seem impastable, but something's gone wrong.
+              <p className="m-0">It may seem impastable, but something's gone wrong.</p>
             </Alert.Heading>
-            <p>{errorMessage}</p>
+            <p className="m-0">{errorMessage}</p>
           </Alert>
         </Container>
       )}
@@ -67,8 +67,8 @@ function App() {
       )}
       <main>
         <Container className="py-3">
-          <Row className="justify-content-center">
-            <Col xl={8}>
+          <Row>
+            <Col>
               <Outlet
                 context={[
                   errorMessage,
@@ -82,7 +82,7 @@ function App() {
         </Container>
       </main>
       <footer>
-        <Container className="pt-5">
+        <Container className="py-3">
           <Footer />
         </Container>
       </footer>

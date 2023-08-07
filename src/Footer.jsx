@@ -11,7 +11,7 @@ export const Footer = () => {
       <Col sm="auto">
         <Link to="/about">About</Link>
       </Col>
-      <Col sm="auto" align="end">
+      <Col sm="auto">
         <Link to="/">Home</Link>
       </Col>
     </Row>

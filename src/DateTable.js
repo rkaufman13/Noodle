@@ -5,18 +5,18 @@ import { convertTimeStampToFormattedDate } from "./util";
 export const DateTable = (props) => {
   return (
     <>
-      <Table responsive="lg" bordered className="p-2">
-        <thead>
+      <Table aria-roledescription="Attendee Table" responsive="lg" bordered striped className="p-2">
+        <tbody>
           <tr>
-            <td></td>
+            <th scope="col"><span className="visually-hidden">Attendee Name</span></th>
             {props.dates.map((date) => {
               return (
-                <td key={date}>{convertTimeStampToFormattedDate(date)}</td>
+                <th scope="col" key={date}>{convertTimeStampToFormattedDate(date)}</th>
               );
             })}
           </tr>
-        </thead>
-        <tbody>{props.children}</tbody>
+          {props.children}
+        </tbody>
       </Table>
     </>
   );
