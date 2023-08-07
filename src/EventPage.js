@@ -6,7 +6,7 @@ import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
 import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
-import { Button, Stack, Alert, Spinner } from "react-bootstrap";
+import { Button, Stack, Alert, Spinner, Form } from "react-bootstrap";
 
 import {
   useLoaderData,
@@ -73,11 +73,14 @@ const EventChild = () => {
     setName(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (participantsArray.includes(name)) {
       setErrorMessage("Looks like you already registered for this event!");
     } else if (availableDates.length === 0) {
       setErrorMessage("You must select at least one date.");
+    } else if (!name) {
+      setErrorMessage("Your name can't be blank.");
     } else {
       for (let selectedDate of availableDates) {
         resolvedSingleEvent.dates[selectedDate].participants.push(name);
@@ -91,6 +94,11 @@ const EventChild = () => {
       clearForm();
     }
   };
+
+  const formIsInvalid = () => {
+    return availableDates.length === 0 || !name;
+  };
+
   return (
     <>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
@@ -100,8 +108,13 @@ const EventChild = () => {
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
+      <p>
+        {resolvedSingleEvent.hostName ?? "Someone"} invited you to respond to
+        this Noodle. Add your name and the dates you're available below, and let
+        the fun start!
+      </p>
       <Stack>
-        <form>
+        <Form onSubmit={handleSubmit}>
           <DateTable
             participants={participants}
             dates={datesArray}
@@ -126,12 +139,12 @@ const EventChild = () => {
 
           {resolvedSingleEvent.active && (
             <div id="submitButtonContainer">
-              <Button variant="primary" onClick={handleSubmit}>
+              <Button type="submit" disabled={formIsInvalid()}>
                 Submit
               </Button>
             </div>
           )}
-        </form>
+        </Form>
       </Stack>
     </>
   );

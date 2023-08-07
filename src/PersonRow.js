@@ -1,4 +1,6 @@
 import React from "react";
+import { GoingIcon } from "./resources/GoingIcon";
+import { NotGoingIcon } from "./resources/NotGoingIcon";
 
 export const PersonRow = (props) => {
   return (
@@ -9,17 +11,8 @@ export const PersonRow = (props) => {
       {props.dates.map((date, idx) => {
         const selected = props.participant.dates[date] === "yes";
         return (
-          <td
-            className={
-              props.active
-                ? "activated"
-                : selected
-                ? "goingPrimary"
-                : "notGoing"
-            }
-            key={idx}
-          >
-            {selected ? "Going" : "Not going"}
+          <td className={props.active ? "activated" : ""} key={idx}>
+            {selected ? <GoingIcon /> : <NotGoingIcon />}
           </td>
         );
       })}
