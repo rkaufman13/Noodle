@@ -1,6 +1,6 @@
-export const sendConfirmationEmail = (vars) => {
+export const sendResponseEmail = (vars) => {
   //todo DRY out the param builder
-  const fullURL = `${process.env.REACT_APP_BASE_URL}/admin/${vars.secretUuid}`;
+  const fullURL = `${process.env.REACT_APP_BASE_URL}/admin/${vars.admin}`;
   var params = {
     from: {
       email: "noodle@noodleapp.cool",
@@ -19,7 +19,7 @@ export const sendConfirmationEmail = (vars) => {
     template_id: "d-6e89baf471ab478682b2757a40fbe4fe",
   };
 
-  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "/send/", {
+  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "send", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -32,7 +32,7 @@ export const sendConfirmationEmail = (vars) => {
   return result;
 };
 
-export const sendResponseEmail = async (vars) => {
+export const sendConfirmationEmail = async (vars) => {
   const fullURL = `${process.env.REACT_APP_BASE_URL}/admin/${vars.secretUuid}`;
   var params = {
     from: {
@@ -52,7 +52,7 @@ export const sendResponseEmail = async (vars) => {
   };
 
   const response = await fetch(
-    process.env.REACT_APP_BASE_BACKEND_URL + "/send/",
+    process.env.REACT_APP_BASE_BACKEND_URL + "send",
     {
       method: "POST",
       headers: {
