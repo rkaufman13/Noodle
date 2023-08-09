@@ -189,13 +189,18 @@ const AdminChild = () => {
           )}
         </DateTable>
       </div>
-      <hr className="p-2 invisible" />
-      <div>
-        Getting too much email about this event?{" "}
-        <Button variant="primary" onClick={toggleEmail} size="sm">
-          Stop emailing me about this event
-        </Button>
-      </div>
+      {finalAdminEvent.hostEmail && (
+        <>
+          {" "}
+          <hr className="p-2 invisible" />
+          <div>
+            Getting too much email about this event?{" "}
+            <Button variant="primary" onClick={toggleEmail} size="sm">
+              Stop emailing me about this event
+            </Button>
+          </div>
+        </>
+      )}
       <Modal
         show={closeModalVisible}
         onHide={() => {
