@@ -105,6 +105,14 @@ const EventChild = () => {
       {resolvedSingleEvent.eventDesc && (
         <h2>{resolvedSingleEvent.eventDesc}</h2>
       )}
+      {resolvedSingleEvent.eventLocation && (
+        <>
+          <p>
+            <span className="h4">Location:</span>{" "}
+            {resolvedSingleEvent.eventLocation}
+          </p>
+        </>
+      )}
       {!resolvedSingleEvent.active && (
         <Alert variant="warning">This Noodle is closed.</Alert>
       )}
