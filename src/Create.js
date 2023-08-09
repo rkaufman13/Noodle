@@ -92,6 +92,7 @@ export const Create = () => {
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             required
+            maxlength="100"
           />
         </Form.Group>
         <Form.Group controlId="eventDesc">
@@ -100,6 +101,7 @@ export const Create = () => {
             type="text"
             value={eventDesc}
             onChange={(e) => setEventDesc(e.target.value)}
+            maxlength="100"
           />
         </Form.Group>
         <Form.Group controlId="eventLocation">
@@ -109,6 +111,7 @@ export const Create = () => {
             value={eventLocation}
             placeholder="Where's your Nood"
             onChange={(e) => setEventLocation(e.target.value)}
+            maxlength="100"
           />
         </Form.Group>
         <Form.Group controlId="hostName">
@@ -119,6 +122,7 @@ export const Create = () => {
             placeholder="Your name; no impastas, please"
             onChange={(e) => setHostName(e.target.value)}
             required
+            maxlength="100"
           />
         </Form.Group>
         <Form.Group controlId="hostContact">
@@ -132,6 +136,7 @@ export const Create = () => {
             value={hostEmail}
             placeholder="you@mail.com"
             onChange={(e) => setHostEmail(e.target.value)}
+            maxlength="100"
           />
         </Form.Group>
         <Form.Group controlId="dates">
