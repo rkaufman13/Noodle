@@ -24,8 +24,6 @@ test("renders and looks the same as before", () => {
   expect(tree).toMatchSnapshot();
 });
 
-const context = ["", () => {}, "", () => {}];
-
 test("doesn't let you submit form until required fields are filled out", async () => {
   //this will never work until the calendar is a11y, so we'll get to it later
   //   render(
