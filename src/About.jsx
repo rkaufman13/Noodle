@@ -1,8 +1,12 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
 export const About = () => {
   return (
     <>
+      <Helmet>
+        <title>Noodle Scheduling ~ About Noodle</title>
+      </Helmet>
       <h2>About Noodle</h2>
 
       <p>

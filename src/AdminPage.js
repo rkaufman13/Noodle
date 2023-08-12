@@ -17,6 +17,7 @@ import {
   setTabFocus,
   clearTabFocus,
 } from "./util";
+import { Helmet } from "react-helmet";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -108,6 +109,10 @@ const AdminChild = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Noodle Scheduling ~ {finalAdminEvent.eventname ?? "Untitled event"}</title>
+        <meta name="description" content={"Admin page for " + finalAdminEvent.eventname ?? "Admin page"} />
+      </Helmet>
       <div>
         <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}

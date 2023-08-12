@@ -7,6 +7,7 @@ import { AddNewRow } from "./AddNewRow";
 import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
 import { Button, Stack, Alert, Spinner, Form } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 
 import {
   useLoaderData,
@@ -101,6 +102,10 @@ const EventChild = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Noodle Scheduling ~ {resolvedSingleEvent.eventname ?? "Untitled Event"}</title>
+        <meta name="description" content={resolvedSingleEvent.hostName + " sent you a Nood!" ?? "Someone sent you a Nood!"} />
+      </Helmet>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
       {resolvedSingleEvent.eventDesc && (
         <h2>{resolvedSingleEvent.eventDesc}</h2>
