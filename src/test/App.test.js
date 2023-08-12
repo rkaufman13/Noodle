@@ -1,20 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import App from "../App";
 import renderer from "react-test-renderer";
-import { MemoryRouter, Route, Routes, Outlet } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
-
-const RenderRouteWithOutletContext = ({ context, children }) => {
-  return (
-    <MemoryRouter>
-      <Routes>
-        <Route path="/" element={<Outlet context={context} />}>
-          <Route index element={children} />
-        </Route>
-      </Routes>
-    </MemoryRouter>
-  );
-};
+import App from "../App";
+import { MemoryRouter } from "react-router-dom";
 
 test("renders", () => {
   render(
