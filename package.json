@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "ally.js": "^1.4.1",
     "aws-sdk": "^2.1415.0",
@@ -48,6 +47,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/react": "^14.0.0",
+    "react-test-renderer": "^18.2.0",
     "sass": "^1.63.6"
   }
 }
