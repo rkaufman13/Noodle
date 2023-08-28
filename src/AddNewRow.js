@@ -14,7 +14,7 @@ export const AddNewRow = ({
   const handleClick = (e) => {
     if (e.type === "keydown" && !(e.keyCode === 32 || e.keyCode === 13)) {
       return;
-    };
+    }
     let newArray = [];
     let targetDate = e.target.name ?? e.target.htmlFor;
     targetDate = parseInt(targetDate);
@@ -29,7 +29,9 @@ export const AddNewRow = ({
   return (
     <tr id="addnewrow">
       <td>
-        <label for="attendeename" className="visually-hidden">Enter your name</label>
+        <label for="attendeename" className="visually-hidden">
+          Enter your name
+        </label>
         <Form.Control
           name="attendeename"
           type="text"
@@ -40,6 +42,7 @@ export const AddNewRow = ({
           aria-labelledby="attendeename"
           required
           id="addName"
+          maxlength="100"
         />
       </td>
       {dates.map((date) => {
@@ -61,10 +64,14 @@ export const AddNewRow = ({
               name={date}
               role="checkbox"
               aria-checked={availableDates.includes(date) ? "true" : "false"}
-              aria-label={availableDates.includes(date) ? 
-                "You can attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP no."
-                : 
-                "You cannot attend the event on " + convertTimeStampToDate(date) + ". Check this box to RSVP yes."
+              aria-label={
+                availableDates.includes(date)
+                  ? "You can attend the event on " +
+                    convertTimeStampToDate(date) +
+                    ". Check this box to RSVP no."
+                  : "You cannot attend the event on " +
+                    convertTimeStampToDate(date) +
+                    ". Check this box to RSVP yes."
               }
             >
               {availableDates.includes(date) ? <GoingIcon /> : <NotGoingIcon />}

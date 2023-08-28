@@ -3,6 +3,7 @@ import { Alert, Container, Row, Col } from "react-bootstrap";
 import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import { Footer } from "./Footer";
+import { Helmet } from "react-helmet";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -10,6 +11,10 @@ function App() {
 
   return (
     <div className="App">
+      <Helmet>
+        <title>Noodle Scheduling</title>
+        <meta name="description" content="Get your noodles together" />
+      </Helmet>
       <header>
         <Container>
           <Row>
@@ -50,7 +55,9 @@ function App() {
                   stroke-linejoin="round"
                 ></path>
               </svg>
-              <p className="m-0">It may seem impastable, but something's gone wrong.</p>
+              <p className="m-0">
+                It may seem impastable, but something's gone wrong.
+              </p>
             </Alert.Heading>
             <p className="m-0">{errorMessage}</p>
           </Alert>

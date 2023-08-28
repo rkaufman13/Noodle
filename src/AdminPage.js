@@ -17,6 +17,7 @@ import {
   setTabFocus,
   clearTabFocus,
 } from "./util";
+import { Helmet } from "react-helmet";
 
 export const adminLoader = ({ params }) => {
   const singleEventPromise = getSingleAdminEvent(params.secretUUID);
@@ -24,13 +25,15 @@ export const adminLoader = ({ params }) => {
 };
 
 const AdminChild = () => {
-  const [shareUrlVisible, setShareUrlVisible] = useState(false);
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+
   const [finalAdminEvent, eventKey] = useAsyncValue();
+
+  const [noodIsActive, setNoodIsActive] = useState(finalAdminEvent.active);
 
   if (!finalAdminEvent) {
     return (
@@ -49,18 +52,10 @@ const AdminChild = () => {
   const participants = reverseObject(finalAdminEvent);
   const datesArray = Object.keys(finalAdminEvent.dates);
 
-  const toggleShare = () => {
-    setShareUrlVisible(!shareUrlVisible);
-    if (shareUrlVisible) {
-      setCopyButtonText("Copy Link");
-    }
-  };
-
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
     setDeleteModalVisible(false);
     setEmailModalVisible(false);
-    setSuccessMessage("Noodle successfully closed.");
     setTabFocus(".modal");
   };
 
@@ -81,6 +76,7 @@ const AdminChild = () => {
   const handleCloseEvent = () => {
     setCloseModalVisible(false);
     closeEvent(eventKey);
+    setNoodIsActive(false);
     clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
   };
@@ -108,6 +104,17 @@ const AdminChild = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>
+          Noodle Scheduling ~ {finalAdminEvent.eventname ?? "Untitled event"}
+        </title>
+        <meta
+          name="description"
+          content={
+            "Admin page for " + finalAdminEvent.eventname ?? "Admin page"
+          }
+        />
+      </Helmet>
       <div>
         <h1>{finalAdminEvent.eventname ?? "Untitled event"}</h1>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
@@ -126,10 +133,8 @@ const AdminChild = () => {
       <div>
         <p>DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</p>
       </div>
-      <div>
-        Your Nood is currently {finalAdminEvent.active ? "ACTIVE" : "CLOSED"}.{" "}
-      </div>
-      {finalAdminEvent.active && (
+      <div>Your Nood is currently {noodIsActive ? "ACTIVE" : "CLOSED"}. </div>
+      {noodIsActive && (
         <>
           <Stack>
             To get responses for your Nood, share this link with your friends.
@@ -151,7 +156,7 @@ const AdminChild = () => {
           <Button
             variant="primary"
             onClick={toggleClose}
-            disabled={finalAdminEvent.active === false}
+            disabled={noodIsActive === false}
             className="ms-auto"
           >
             Close Your Nood
@@ -168,7 +173,7 @@ const AdminChild = () => {
       </div>
       <hr className="p-2 invisible" />
       <div>
-        <h2>Your Nood So Far</h2>
+        <h2>Your Nood{noodIsActive && " So Far"}</h2>
         <DateTable
           participants={participants}
           dates={datesArray}
@@ -189,13 +194,18 @@ const AdminChild = () => {
           )}
         </DateTable>
       </div>
-      <hr className="p-2 invisible" />
-      <div>
-        Getting too much email about this event?{" "}
-        <Button variant="primary" onClick={toggleEmail} size="sm">
-          Stop emailing me about this event
-        </Button>
-      </div>
+      {finalAdminEvent.hostEmail && (
+        <>
+          {" "}
+          <hr className="p-2 invisible" />
+          <div>
+            Getting too much email about this event?{" "}
+            <Button variant="primary" onClick={toggleEmail} size="sm">
+              Stop emailing me about this event
+            </Button>
+          </div>
+        </>
+      )}
       <Modal
         show={closeModalVisible}
         onHide={() => {

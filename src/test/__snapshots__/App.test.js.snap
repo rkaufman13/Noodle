@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders and looks the same as before 1`] = `
+<div
+  className="App"
+>
+  <header>
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="border-bottom col"
+        >
+          <p
+            className="h1 py-3"
+          >
+            <a
+              href="/"
+              onClick={[Function]}
+            >
+              Noodle
+            </a>
+          </p>
+          <p>
+            Scheduling events should be easy. That's using your Noodle.
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div
+      className="py-3 container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col"
+        />
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div
+      className="py-3 container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col"
+        >
+          <p>
+            © 2023
+          </p>
+        </div>
+        <div
+          className="col-sm-auto"
+        >
+          <a
+            href="/about"
+            onClick={[Function]}
+          >
+            About
+          </a>
+        </div>
+        <div
+          className="col-sm-auto"
+        >
+          <a
+            href="/"
+            onClick={[Function]}
+          >
+            Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;

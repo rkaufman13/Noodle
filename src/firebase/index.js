@@ -98,7 +98,6 @@ export const getSingleAdminEvent = (eventID) => {
       ) {
         return [snapshot.val()[eventKey], eventKey];
       }
-      console.log(eventWeWant.deleteAt, Math.floor(Date.now() / 1000));
       return [null, null];
     }
   });
