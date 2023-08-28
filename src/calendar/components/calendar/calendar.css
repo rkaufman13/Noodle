@@ -71,6 +71,9 @@
   cursor: pointer;
   position: relative;
   color: black;
+    background: transparent;
+  border: none;
+  border-radius: 50%;
 }
 
 .rmdp-week-day {
@@ -435,4 +438,6 @@
   .rmdp-full-year {
     grid-template-columns: 1fr 1fr;
   }
+
+
 }
