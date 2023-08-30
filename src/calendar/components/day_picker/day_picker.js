@@ -134,7 +134,8 @@ export default function DayPicker({
                           onMouseEnter={() =>
                             rangeHover && setDateHovered(object.date)
                           }
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             if (!mustDisplayDay(object) || object.disabled)
                               return;
 
