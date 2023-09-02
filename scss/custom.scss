@@ -333,6 +333,10 @@ label.checkboxlabel {
   background-color: $highlight;
 }
 
+.statusTag {
+  top: -.5em;
+}
+
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
 $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
