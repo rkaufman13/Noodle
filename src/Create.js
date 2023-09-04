@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Calendar } from "react-multi-date-picker";
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import { Calendar } from "./calendar";
+import DatePanel from "./calendar/plugins/date_panel/date_panel";
 import { Button, Form } from "react-bootstrap";
 import {
   convertDateToTimestamp,
