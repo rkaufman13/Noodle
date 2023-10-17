@@ -9,6 +9,10 @@ export const Footer = () => {
         <p>&copy; 2023</p>
       </Col>
       <Col sm="auto">
+        <Link to="/kofi">Buy me a coffee</Link>
+      </Col>
+
+      <Col sm="auto">
         <Link to="/about">About</Link>
       </Col>
       <Col sm="auto">
