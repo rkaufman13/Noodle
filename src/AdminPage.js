@@ -174,25 +174,27 @@ const AdminChild = () => {
       <hr className="p-2 invisible" />
       <div>
         <h2>Your Nood{noodIsActive && " So Far"}</h2>
-        <DateTable
-          participants={participants}
-          dates={datesArray}
-          eventUUID={finalAdminEvent.uuid}
-        >
-          {Object.keys(participants).length > 0 ? (
-            <>
-              {" "}
-              <Participants
-                participants={participants}
-                dates={datesArray}
-                activePerson={null}
-              />
-              <BestDay dates={finalAdminEvent.dates} />
-            </>
-          ) : (
-            <EmptyEvent dates={finalAdminEvent.dates} />
-          )}
-        </DateTable>
+        <Stack className="overflow-auto container-lg">
+          <DateTable
+            participants={participants}
+            dates={datesArray}
+            eventUUID={finalAdminEvent.uuid}
+          >
+            {Object.keys(participants).length > 0 ? (
+              <>
+                {" "}
+                <Participants
+                  participants={participants}
+                  dates={datesArray}
+                  activePerson={null}
+                />
+                <BestDay dates={finalAdminEvent.dates} />
+              </>
+            ) : (
+              <EmptyEvent dates={finalAdminEvent.dates} />
+            )}
+          </DateTable>
+        </Stack>
       </div>
       {finalAdminEvent.hostEmail && (
         <>
