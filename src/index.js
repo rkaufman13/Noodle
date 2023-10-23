@@ -4,6 +4,7 @@ import App from "./App";
 import ErrorPage from "./error-page";
 import { Create } from "./Create";
 import { About } from "./About";
+import { KoFiPage } from "./KoFiPage";
 import { EventPage, loader as eventLoader } from "./EventPage";
 import { AdminPage, adminLoader } from "./AdminPage";
 import reportWebVitals from "./reportWebVitals";
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <Create /> },
       { path: "/about", element: <About /> },
+      { path: "/kofi", element: <KoFiPage /> },
       {
         path: "/event/:eventUUID",
         element: <EventPage />,
