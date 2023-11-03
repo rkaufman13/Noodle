@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Alert, Container, Row, Col } from "react-bootstrap";
-import { Alerts } from "./Alert";
+import { Container, Row, Col } from "react-bootstrap";
+import { Alerts as Alert } from "./Alert";
 import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import { Footer } from "./Footer";
@@ -21,16 +21,20 @@ function App() {
         <Container>
           <Row>
             <Col className="pt-3">
-              <Link className="h1 mb-3" to="/">Noodle</Link>
-              <p className="border-bottom pb-3">Scheduling events should be easy. That's using your Noodle.</p>
+              <Link className="h1 mb-3" to="/">
+                Noodle
+              </Link>
+              <p className="border-bottom pb-3">
+                Scheduling events should be easy. That's using your Noodle.
+              </p>
             </Col>
           </Row>
         </Container>
       </header>
-      <span  />
+      <span />
       {errorMessage && (
         <Container>
-          <Alerts
+          <Alert
             alertRef={alertRef}
             variant="danger"
             heading="It may seem impastable, but something's gone wrong."
@@ -40,7 +44,7 @@ function App() {
       )}
       {successMessage && (
         <Container>
-          <Alerts
+          <Alert
             alertRef={alertRef}
             variant="success"
             heading="Well done, you!"
@@ -58,7 +62,7 @@ function App() {
                   setErrorMessage,
                   successMessage,
                   setSuccessMessage,
-                  alertRef
+                  alertRef,
                 ]}
               />
             </Col>

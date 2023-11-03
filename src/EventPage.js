@@ -7,7 +7,7 @@ import { AddNewRow } from "./AddNewRow";
 import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
 import { Button, Stack, Spinner, Form } from "react-bootstrap";
-import { Alerts } from "./Alert";
+import { Alerts as Alert } from "./Alert";
 
 import {
   useLoaderData,
@@ -26,8 +26,13 @@ const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
   const [activePerson, setActivePerson] = useState("");
-  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage, alertRef] =
-    useOutletContext();
+  const [
+    errorMessage,
+    setErrorMessage,
+    successMessage,
+    setSuccessMessage,
+    alertRef,
+  ] = useOutletContext();
   const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
@@ -64,7 +69,7 @@ const EventChild = () => {
   const handleAlert = () => {
     if (alertRef.current !== undefined) {
       alertRef.current.focus();
-    };
+    }
   };
 
   const clearForm = () => {
@@ -125,10 +130,7 @@ const EventChild = () => {
         </>
       )}
       {!resolvedSingleEvent.active && (
-        <Alerts
-          variant="warning"
-          heading="This Noodle is closed."
-        />
+        <Alert variant="warning" heading="This Noodle is closed." />
       )}
       <p>
         {resolvedSingleEvent.hostName ?? "Someone"} invited you to respond to

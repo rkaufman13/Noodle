@@ -6,7 +6,7 @@ import {
   deleteEmail,
 } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
-import { Button, Stack, Modal, Alert, Spinner } from "react-bootstrap";
+import { Button, Stack, Modal, Spinner } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
@@ -17,7 +17,7 @@ import {
   setTabFocus,
   clearTabFocus,
 } from "./util";
-import { Alerts } from "./Alert";
+import { Alerts as Alert } from "./Alert";
 import { Helmet } from "react-helmet";
 
 export const adminLoader = ({ params }) => {
@@ -117,28 +117,52 @@ const AdminChild = () => {
         />
       </Helmet>
       <div>
-        <h1 className="d-inline">{finalAdminEvent.eventname ?? "Untitled event"}</h1>
+        <h1 className="d-inline">
+          {finalAdminEvent.eventname ?? "Untitled event"}
+        </h1>
         {/* Curious on your thoughts on this */}
-        <span className={`p-2 ms-3 position-relative rounded statusTag ${noodIsActive ? "bg-success" : "bg-danger"}`}>{noodIsActive ? "ACTIVE" : "CLOSED"}</span>
+        <span
+          className={`p-2 ms-3 position-relative rounded statusTag ${
+            noodIsActive ? "bg-success" : "bg-danger"
+          }`}
+        >
+          {noodIsActive ? "ACTIVE" : "CLOSED"}
+        </span>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
       </div>
 
-      {successMessage && <Alerts variant="success" message={successMessage}/>}
+      {successMessage && <Alert variant="success" message={successMessage} />}
 
       <div>
-        <p className="mb-0">This is your admin page for your Nood. You can visit this page at any
-        time by visiting this url:
-        <br /><span class="fw-bold">DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.</span></p>
+        <p className="mb-0">
+          This is your admin page for your Nood. You can visit this page at any
+          time by visiting this url:
+          <br />
+          <span class="fw-bold">
+            DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
+          </span>
+        </p>
       </div>
       <div className="bg-primary p-3 my-2 text-dark rounded">
         {`${baseUrl}/admin/${finalAdminEvent.admin}`}
       </div>
-      <div className="pt-3 pb-4">Your Nood is currently <span className={`p-2 rounded ${noodIsActive ? "bg-success" : "bg-danger"}`}>{noodIsActive ? "ACTIVE" : "CLOSED"}</span></div>
+      <div className="pt-3 pb-4">
+        Your Nood is currently{" "}
+        <span
+          className={`p-2 rounded ${noodIsActive ? "bg-success" : "bg-danger"}`}
+        >
+          {noodIsActive ? "ACTIVE" : "CLOSED"}
+        </span>
+      </div>
       {noodIsActive && (
         <>
           <Stack>
-            <p>To get responses for your Nood, share this link with your friends:</p>
-            <p className="fw-semibold fs-5 mb-0 text-break">{baseUrl}/event/{eventKey}</p>
+            <p>
+              To get responses for your Nood, share this link with your friends:
+            </p>
+            <p className="fw-semibold fs-5 mb-0 text-break">
+              {baseUrl}/event/{eventKey}
+            </p>
             <Button variant="secondary" onClick={copyLink}>
               {copyButtonText}
             </Button>
