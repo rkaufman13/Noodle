@@ -6,8 +6,8 @@ import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
 import { useOutletContext } from "react-router";
 import { submitPayload } from "./firebase/index";
-import { Button, Stack, Alert, Spinner, Form } from "react-bootstrap";
-import { Helmet } from "react-helmet";
+import { Button, Stack, Spinner, Form } from "react-bootstrap";
+import { Alerts as Alert } from "./Alert";
 
 import {
   useLoaderData,
@@ -26,8 +26,13 @@ const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
   const [activePerson, setActivePerson] = useState("");
-  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage] =
-    useOutletContext();
+  const [
+    errorMessage,
+    setErrorMessage,
+    successMessage,
+    setSuccessMessage,
+    alertRef,
+  ] = useOutletContext();
   const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
@@ -61,6 +66,12 @@ const EventChild = () => {
     });
   });
 
+  const handleAlert = () => {
+    if (alertRef.current !== undefined) {
+      alertRef.current.focus();
+    }
+  };
+
   const clearForm = () => {
     setActivePerson(name);
     setName("");
@@ -68,6 +79,7 @@ const EventChild = () => {
     const successMessage =
       "You've successfully RSVPed to " + resolvedSingleEvent.eventname + "!";
     setSuccessMessage(successMessage);
+    handleAlert();
   };
 
   const handleNameUpdate = (e) => {
@@ -78,10 +90,13 @@ const EventChild = () => {
     e.preventDefault();
     if (participantsArray.includes(name)) {
       setErrorMessage("Looks like you already registered for this event!");
+      handleAlert();
     } else if (availableDates.length === 0) {
       setErrorMessage("You must select at least one date.");
+      handleAlert();
     } else if (!name) {
       setErrorMessage("Your name can't be blank.");
+      handleAlert();
     } else {
       for (let selectedDate of availableDates) {
         resolvedSingleEvent.dates[selectedDate].participants.push(name);
@@ -102,10 +117,6 @@ const EventChild = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Noodle Scheduling ~ {resolvedSingleEvent.eventname ?? "Untitled Event"}</title>
-        <meta name="description" content={resolvedSingleEvent.hostName + " sent you a Nood!" ?? "Someone sent you a Nood!"} />
-      </Helmet>
       <h1>{resolvedSingleEvent.eventname ?? "Untitled Event"}</h1>
       {resolvedSingleEvent.eventDesc && (
         <h2>{resolvedSingleEvent.eventDesc}</h2>
@@ -119,14 +130,14 @@ const EventChild = () => {
         </>
       )}
       {!resolvedSingleEvent.active && (
-        <Alert variant="warning">This Noodle is closed.</Alert>
+        <Alert variant="warning" heading="This Noodle is closed." />
       )}
       <p>
         {resolvedSingleEvent.hostName ?? "Someone"} invited you to respond to
         this Noodle. Add your name and the dates you're available below, and let
         the fun start!
       </p>
-      <Stack className="overflow-auto container-lg">
+      <Stack className="overflow-auto">
         <Form onSubmit={handleSubmit}>
           <DateTable
             participants={participants}

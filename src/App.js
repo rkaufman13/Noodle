@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Alert, Container, Row, Col } from "react-bootstrap";
+import React, { useState, useRef } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { Alerts as Alert } from "./Alert";
 import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import { Footer } from "./Footer";
@@ -8,6 +9,7 @@ import { Helmet } from "react-helmet";
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const alertRef = useRef();
 
   return (
     <div className="App">
@@ -18,70 +20,49 @@ function App() {
       <header>
         <Container>
           <Row>
-            <Col className="border-bottom">
-              <p className="h1 py-3">
-                <Link to="/">Noodle</Link>
+            <Col className="pt-3">
+              <Link className="h1 mb-3" to="/">
+                Noodle
+              </Link>
+              <p className="border-bottom pb-3">
+                Scheduling events should be easy. That's using your Noodle.
               </p>
-              <p>Scheduling events should be easy. That's using your Noodle.</p>
             </Col>
           </Row>
         </Container>
       </header>
+      <span />
       {errorMessage && (
         <Container>
-          <Alert variant="danger" data-bs-theme="dark" className="my-3">
-            <Alert.Heading>
-              <svg
-                width="24px"
-                height="24px"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                color="currentColor"
-                class="me-2"
-              >
-                <path
-                  d="M20.043 21H3.957c-1.538 0-2.5-1.664-1.734-2.997l8.043-13.988c.77-1.337 2.699-1.337 3.468 0l8.043 13.988C22.543 19.336 21.58 21 20.043 21zM12 9v4"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                ></path>
-                <path
-                  d="M12 17.01l.01-.011"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
-              <p className="m-0">
-                It may seem impastable, but something's gone wrong.
-              </p>
-            </Alert.Heading>
-            <p className="m-0">{errorMessage}</p>
-          </Alert>
+          <Alert
+            alertRef={alertRef}
+            variant="danger"
+            heading="It may seem impastable, but something's gone wrong."
+            message={errorMessage}
+          />
         </Container>
       )}
-
       {successMessage && (
         <Container>
-          <Alert variant={"success"} className="my-3">
-            <Alert.Heading>Well done, you!</Alert.Heading>
-            {successMessage}
-          </Alert>
+          <Alert
+            alertRef={alertRef}
+            variant="success"
+            heading="Well done, you!"
+            message={successMessage}
+          />
         </Container>
       )}
       <main>
-        <Container className="py-3">
+        <Container>
           <Row>
-            <Col>
+            <Col className="py-3">
               <Outlet
                 context={[
                   errorMessage,
                   setErrorMessage,
                   successMessage,
                   setSuccessMessage,
+                  alertRef,
                 ]}
               />
             </Col>

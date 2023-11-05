@@ -20,13 +20,19 @@ export const Create = () => {
   const [eventDates, setEventDates] = useState([]);
   const navigate = useNavigate();
 
-  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage] =
+  const [errorMessage, setErrorMessage, successMessage, setSuccessMessage, alertRef] =
     useOutletContext();
+  const handleAlert = () => {
+    if (alertRef.current !== undefined) {
+      alertRef.current.focus();
+    };
+  };
   const handleSubmit = (e) => {
     setErrorMessage("");
     e.preventDefault();
     if (!eventDates.length >= 2) {
       setErrorMessage("You must select at least two dates!");
+      handleAlert();
     } else {
       const convertedEventDates = eventDates.map((date) =>
         convertDateToTimestamp(date)
@@ -37,6 +43,7 @@ export const Create = () => {
         )
       ) {
         setErrorMessage("Dates must be in the future!");
+        handleAlert();
       } else {
         const dateEntries = convertedEventDates.map((date) => {
           const participantObj = { participants: [0] }; //we have to add a truthy-but-falsy value here or firebase loses its mind
@@ -65,10 +72,10 @@ export const Create = () => {
             navigate("admin/" + secretUuid);
           },
           (error) => {
-            console.log(error);
             setErrorMessage(
               "An unknown error occurred; please wait a few minutes and try again!"
             );
+            handleAlert();
           }
         );
       }
@@ -93,6 +100,7 @@ export const Create = () => {
             onChange={(e) => setEventName(e.target.value)}
             required
             maxLength="100"
+
           />
         </Form.Group>
         <Form.Group controlId="eventDesc">

@@ -29,7 +29,7 @@ export const AddNewRow = ({
   return (
     <tr id="addnewrow">
       <td>
-        <label for="attendeename" className="visually-hidden">
+        <label htmlFor="attendeename" className="visually-hidden">
           Enter your name
         </label>
         <Form.Control
@@ -42,7 +42,7 @@ export const AddNewRow = ({
           aria-labelledby="attendeename"
           required
           id="addName"
-          maxlength="100"
+          maxLength="100"
         />
       </td>
       {dates.map((date) => {
