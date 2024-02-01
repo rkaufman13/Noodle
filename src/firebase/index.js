@@ -54,7 +54,6 @@ export const submitPayload = (payload) => {
   get(singleEvent).then((snapshot) => {
     if (snapshot.exists() && snapshot.val().hostEmail !== "") {
       const RsvpPayload = { respondee: payload.name, ...snapshot.val() };
-      console.log(RsvpPayload);
       sendResponseEmail(RsvpPayload);
     }
   });
