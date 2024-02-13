@@ -5,18 +5,21 @@ export const sendResponseEmail = (vars) => {
     ...vars,
     fullURL,
   };
-
-  const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "send/rsvp", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-  }).then((response) => {
-    return response;
-  });
-  return result;
+  try {
+    const result = fetch(process.env.REACT_APP_BASE_BACKEND_URL + "send/rsvp", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    }).then((response) => {
+      return response;
+    });
+    return result;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const sendConfirmationEmail = async (vars) => {
@@ -26,18 +29,22 @@ export const sendConfirmationEmail = async (vars) => {
     fullURL,
   };
 
-  const response = await fetch(
-    process.env.REACT_APP_BASE_BACKEND_URL + "send",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-    }
-  ).then((response) => {
+  try {
+    const response = await fetch(
+      process.env.REACT_APP_BASE_BACKEND_URL + "send",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      }
+    ).then((response) => {
+      return response;
+    });
     return response;
-  });
-  return response;
+  } catch (e) {
+    console.log(e);
+  }
 };

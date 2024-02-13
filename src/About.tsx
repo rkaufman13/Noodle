@@ -28,19 +28,19 @@ export const About = () => {
         </a>{" "}
         and <a href="https://chriscombs.net">Chris Combs</a>.
       </p>
-      <hr class="py-2" />
+      <hr className="py-2" />
       <h3>Praise for Noodle</h3>
-      <blockquote class="blockquote text-end">
+      <blockquote className="blockquote text-end">
         <p>"So easy to use and ad-free"</p>
-        <footer class="blockquote-footer">Rachel Kaufman</footer>
+        <footer className="blockquote-footer">Rachel Kaufman</footer>
       </blockquote>
-      <blockquote class="blockquote">
+      <blockquote className="blockquote">
         <p>"Healthy market competition in the *oodle scheduling space"</p>
-        <footer class="blockquote-footer">Anonymous user</footer>
+        <footer className="blockquote-footer">Anonymous user</footer>
       </blockquote>
-      <blockquote class="blockquote text-end">
+      <blockquote className="blockquote text-end">
         <p>"Oh that's nice"</p>
-        <footer class="blockquote-footer">Rachel's mom</footer>
+        <footer className="blockquote-footer">Rachel's mom</footer>
       </blockquote>
     </>
   );

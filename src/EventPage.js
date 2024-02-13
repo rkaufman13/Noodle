@@ -79,6 +79,7 @@ const EventChild = () => {
     const successMessage =
       "You've successfully RSVPed to " + resolvedSingleEvent.eventname + "!";
     setSuccessMessage(successMessage);
+    setErrorMessage("");
     handleAlert();
   };
 

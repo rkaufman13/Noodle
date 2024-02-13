@@ -20,11 +20,10 @@ export const KoFiPage = () => {
         on Ko-Fi.
       </p>
       <p>
-        <a href="https://ko-fi.com/S6S3OWUA1" target="_blank">
+        <a href="https://ko-fi.com/S6S3OWUA1" target="_blank" rel="noreferrer">
           <img
             height="36"
             src="https://storage.ko-fi.com/cdn/kofi2.png?v=3"
-            border="0"
             alt="Buy Me a Coffee at ko-fi.com"
           />
         </a>
