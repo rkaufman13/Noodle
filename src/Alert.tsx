@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { ErrorIcon } from "./resources/ErrorIcon";
 
-export const Alerts = ({ alertRef, variant, message, heading }: { alertRef: any, variant: string, message: string, heading: string }) => {
+export const Alerts = ({ alertRef, variant, message, heading }: { alertRef: any, variant: string, message: string, heading?: string }) => {
   useEffect(() => {
     // Focus on the alert the first time it's rendered--maybe there's a better way to do this and you can teach me
     alertRef.current.focus();

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getSingleEvent } from "./firebase";
 import { DateTable } from "./DateTable";
-import { reverseObject } from "./util";
+import { reverseObject, handleAlert } from "./util";
 import { Participants } from "./Participants";
 import { AddNewRow } from "./AddNewRow";
 import { useOutletContext } from "react-router";
@@ -66,12 +66,6 @@ const EventChild = () => {
     });
   });
 
-  const handleAlert = () => {
-    if (alertRef.current !== undefined) {
-      alertRef.current.focus();
-    }
-  };
-
   const clearForm = () => {
     setActivePerson(name);
     setName("");
@@ -80,7 +74,7 @@ const EventChild = () => {
       "You've successfully RSVPed to " + resolvedSingleEvent.eventname + "!";
     setSuccessMessage(successMessage);
     setErrorMessage("");
-    handleAlert();
+    handleAlert(alertRef);
   };
 
   const handleNameUpdate = (e) => {
@@ -91,13 +85,13 @@ const EventChild = () => {
     e.preventDefault();
     if (participantsArray.includes(name)) {
       setErrorMessage("Looks like you already registered for this event!");
-      handleAlert();
+      handleAlert(alertRef);
     } else if (availableDates.length === 0) {
       setErrorMessage("You must select at least one date.");
-      handleAlert();
+      handleAlert(alertRef);
     } else if (!name) {
       setErrorMessage("Your name can't be blank.");
-      handleAlert();
+      handleAlert(alertRef);
     } else {
       for (let selectedDate of availableDates) {
         resolvedSingleEvent.dates[selectedDate].participants.push(name);

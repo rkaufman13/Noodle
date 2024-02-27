@@ -5,11 +5,14 @@ import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import { Footer } from "./Footer";
 import { Helmet } from "react-helmet";
+import { NoodleContext } from "./types";
 
 function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const alertRef = useRef();
+
+
 
   return (
     <div className="App">
@@ -57,13 +60,14 @@ function App() {
           <Row>
             <Col className="py-3">
               <Outlet
-                context={[
+                context={{
+
                   errorMessage,
                   setErrorMessage,
                   successMessage,
                   setSuccessMessage,
                   alertRef,
-                ]}
+                } satisfies NoodleContext}
               />
             </Col>
           </Row>

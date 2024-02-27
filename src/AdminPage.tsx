@@ -5,7 +5,7 @@ import {
   deleteEvent,
   deleteEmail,
 } from "./firebase";
-import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
+import { useLoaderData, Await, defer, useAsyncValue, useOutletContext } from "react-router-dom";
 import { Button, Stack, Modal, Spinner } from "react-bootstrap";
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
@@ -16,20 +16,30 @@ import {
   convertTimeStampToDate,
   setTabFocus,
   clearTabFocus,
+  handleAlert
 } from "./util";
 import { Alerts as Alert } from "./Alert";
 import { Helmet } from "react-helmet";
+import { NoodleContext } from './types';
 
-export const adminLoader = ({ params }) => {
-  const singleEventPromise = getSingleAdminEvent(params.secretUUID);
+type AdminParams = {
+  params: {
+    secretUUID: string
+  }
+}
+
+export const adminLoader = ({ params }: AdminParams) => {
+  const singleEventPromise: any = getSingleAdminEvent(params.secretUUID);
   return defer({ singleEvent: singleEventPromise });
 };
+
 
 const AdminChild = () => {
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const { successMessage, setSuccessMessage, alertRef } =
+    useOutletContext<NoodleContext>();
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
 
   const [finalAdminEvent, eventKey] = useAsyncValue();
@@ -80,6 +90,7 @@ const AdminChild = () => {
     setNoodIsActive(false);
     clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
+    handleAlert(alertRef);
   };
 
   const handleDeleteEvent = () => {
@@ -89,6 +100,7 @@ const AdminChild = () => {
     setSuccessMessage(
       "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
     );
+    handleAlert(alertRef);
   };
 
   const handleDeleteEmailEvent = () => {
@@ -96,6 +108,7 @@ const AdminChild = () => {
     deleteEmail(eventKey);
     clearTabFocus();
     setSuccessMessage("No more emails!");
+    handleAlert(alertRef);
   };
 
   const copyLink = () => {
@@ -122,23 +135,22 @@ const AdminChild = () => {
         </h1>
         {/* Curious on your thoughts on this */}
         <span
-          className={`p-2 ms-3 position-relative rounded statusTag ${
-            noodIsActive ? "bg-success" : "bg-danger"
-          }`}
+          className={`p-2 ms-3 position-relative rounded statusTag ${noodIsActive ? "bg-success" : "bg-danger"
+            }`}
         >
           {noodIsActive ? "ACTIVE" : "CLOSED"}
         </span>
         {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
       </div>
 
-      {successMessage && <Alert variant="success" message={successMessage} />}
+      {successMessage && <Alert variant="success" message={successMessage} alertRef={alertRef} />}
 
       <div>
         <p className="mb-0">
           This is your admin page for your Nood. You can visit this page at any
           time by visiting this url:
           <br />
-          <span class="fw-bold">
+          <span className="fw-bold">
             DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
           </span>
         </p>
@@ -184,7 +196,7 @@ const AdminChild = () => {
           <Button
             variant="primary"
             onClick={toggleDelete}
-            disabled={finalAdminEvent.deleteAt < Math.floor(new Date() / 1000)}
+            disabled={finalAdminEvent.deleteAt < Math.floor(Number(new Date()) / 1000)}
             className="me-auto"
           >
             Delete your Nood

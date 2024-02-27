@@ -16,7 +16,7 @@ export const BestDay = ({ dates }) => {
 
   return (
     <tr>
-      <td colSpan="100">
+      <td colSpan={100}>
         {bestDay.length === 1 ? (
           <p>
             The people have spoken. The best day for your event is{" "}
