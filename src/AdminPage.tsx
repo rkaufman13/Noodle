@@ -5,7 +5,7 @@ import {
   deleteEvent,
   deleteEmail,
 } from "./firebase";
-import { useLoaderData, Await, defer, useAsyncValue, useOutletContext } from "react-router-dom";
+import { useLoaderData, Await, defer, useAsyncValue, useOutletContext, LoaderFunctionArgs } from "react-router-dom";
 import { Button, Stack, Modal, Spinner } from "react-bootstrap";
 
 import { DateTable } from "./DateTable";
@@ -36,7 +36,7 @@ type AdminLoaderData = {
 }
 
 //todo don't use Any
-export const adminLoader = ({ params }: AdminParams): any => {
+export const adminLoader = ({ params }: LoaderFunctionArgs & AdminParams): any => {
   const singleEventPromise: any = getSingleAdminEvent(params.secretUUID);
   return defer({ singleEvent: singleEventPromise });
 };
