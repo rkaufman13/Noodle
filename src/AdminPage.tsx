@@ -7,6 +7,7 @@ import {
 } from "./firebase";
 import { useLoaderData, Await, defer, useAsyncValue, useOutletContext } from "react-router-dom";
 import { Button, Stack, Modal, Spinner } from "react-bootstrap";
+
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
@@ -20,7 +21,7 @@ import {
 } from "./util";
 import { Alerts as Alert } from "./Alert";
 import { Helmet } from "react-helmet";
-import { NoodleContext } from './types';
+import { NoodleContext, AdminEvent } from './types';
 
 type AdminParams = {
   params: {
@@ -28,7 +29,14 @@ type AdminParams = {
   }
 }
 
-export const adminLoader = ({ params }: AdminParams) => {
+type AdminLoaderData = {
+
+  singleEvent?: any
+
+}
+
+//todo don't use Any
+export const adminLoader = ({ params }: AdminParams): any => {
   const singleEventPromise: any = getSingleAdminEvent(params.secretUUID);
   return defer({ singleEvent: singleEventPromise });
 };
@@ -42,7 +50,8 @@ const AdminChild = () => {
     useOutletContext<NoodleContext>();
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
 
-  const [finalAdminEvent, eventKey] = useAsyncValue();
+  const finalAdminEvent = useAsyncValue() as AdminEvent;
+  const eventKey = finalAdminEvent.eventKey;
 
   const [noodIsActive, setNoodIsActive] = useState(finalAdminEvent.active);
 
@@ -223,7 +232,7 @@ const AdminChild = () => {
                 <BestDay dates={finalAdminEvent.dates} />
               </>
             ) : (
-              <EmptyEvent dates={finalAdminEvent.dates} />
+              <EmptyEvent />
             )}
           </DateTable>
         </Stack>
@@ -342,7 +351,7 @@ const AdminChild = () => {
 };
 
 export const AdminPage = () => {
-  const data = useLoaderData();
+  const data = useLoaderData() as AdminLoaderData;
 
   return (
     <React.Suspense
