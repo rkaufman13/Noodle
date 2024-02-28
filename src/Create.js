@@ -21,13 +21,11 @@ export const Create = () => {
   const [eventDates, setEventDates] = useState([]);
   const navigate = useNavigate();
 
-  const [
-    errorMessage,
+  const {
     setErrorMessage,
-    successMessage,
-    setSuccessMessage,
+
     alertRef,
-  ] = useOutletContext();
+  } = useOutletContext();
 
   const handleSubmit = (e) => {
     setErrorMessage("");
