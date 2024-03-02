@@ -26,13 +26,7 @@ const EventChild = () => {
   const [name, setName] = useState("");
   const [availableDates, setAvailableDates] = useState([]);
   const [activePerson, setActivePerson] = useState("");
-  const [
-    errorMessage,
-    setErrorMessage,
-    successMessage,
-    setSuccessMessage,
-    alertRef,
-  ] = useOutletContext();
+  const { setErrorMessage, setSuccessMessage, alertRef } = useOutletContext();
   const params = useParams();
   const resolvedSingleEvent = useAsyncValue(); //this gives us an object organized by date
   //the below gives us an array of objects organized by participant
@@ -101,7 +95,11 @@ const EventChild = () => {
         dates: resolvedSingleEvent.dates,
         name,
       };
-      submitPayload(payload);
+      try {
+        submitPayload(payload);
+      } catch (e) {
+        //do nothing
+      }
       clearForm();
     }
   };

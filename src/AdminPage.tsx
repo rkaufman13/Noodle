@@ -30,8 +30,14 @@ type AdminParams = {
 }
 
 type AdminLoaderData = {
+  singleEvent: Promise<AdminLoadedData>,
 
-  singleEvent?: any
+}
+
+type AdminLoadedData = {
+  finalAdminEvent:
+  AdminEvent,
+  eventKey: string,
 
 }
 
@@ -41,21 +47,10 @@ export const adminLoader = ({ params }: LoaderFunctionArgs & AdminParams): any =
   return defer({ singleEvent: singleEventPromise });
 };
 
+const AdminParent = () => {
+  const eventAndKey = useAsyncValue() as AdminLoadedData;
+  if (!eventAndKey) {
 
-const AdminChild = () => {
-  const [closeModalVisible, setCloseModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [emailModalVisible, setEmailModalVisible] = useState(false);
-  const { successMessage, setSuccessMessage, alertRef } =
-    useOutletContext<NoodleContext>();
-  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
-
-  const finalAdminEvent = useAsyncValue() as AdminEvent;
-  const eventKey = finalAdminEvent.eventKey;
-
-  const [noodIsActive, setNoodIsActive] = useState(finalAdminEvent.active);
-
-  if (!finalAdminEvent) {
     return (
       <>
         <h1>Not Found</h1>
@@ -66,7 +61,25 @@ const AdminChild = () => {
         </p>
       </>
     );
+
   }
+
+  const finalAdminEvent = eventAndKey.finalAdminEvent;
+  const eventKey = eventAndKey.eventKey;
+  return <AdminChild finalAdminEvent={finalAdminEvent} eventKey={eventKey}></AdminChild>
+}
+
+const AdminChild = ({ finalAdminEvent, eventKey }: AdminLoadedData) => {
+  const [closeModalVisible, setCloseModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+  const { successMessage, setSuccessMessage, alertRef } =
+    useOutletContext<NoodleContext>();
+  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+
+
+  const [noodIsActive, setNoodIsActive] = useState(finalAdminEvent.active);
+
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const participants = reverseObject(finalAdminEvent);
@@ -362,7 +375,7 @@ export const AdminPage = () => {
       }
     >
       <Await resolve={data.singleEvent} errorElement={<p>An error occurred</p>}>
-        <AdminChild />
+        <AdminParent />
       </Await>
     </React.Suspense>
   );

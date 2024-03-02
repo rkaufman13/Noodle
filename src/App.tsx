@@ -5,6 +5,7 @@ import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import { Footer } from "./Footer";
 import { Helmet } from "react-helmet";
+
 import { NoodleContext } from "./types";
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Container>
           <Row>
             <Col className="py-3">
+
               <Outlet
                 context={{
 
@@ -69,6 +71,7 @@ function App() {
                   alertRef,
                 } satisfies NoodleContext}
               />
+
             </Col>
           </Row>
         </Container>
