@@ -1,10 +1,10 @@
 import React from "react";
 import { convertTimeStampToDateString } from "./util";
 
-export const BestDay = ({ dates }) => {
+export const BestDay = ({ dates }: any) => {
   const datesArray = Object.keys(dates);
   let mostVotes = 0;
-  let bestDay = [];
+  let bestDay: string[] = [];
   for (let date of datesArray) {
     if (dates[date].participants.length > mostVotes) {
       bestDay = [date];
@@ -16,7 +16,7 @@ export const BestDay = ({ dates }) => {
 
   return (
     <tr>
-      <td colSpan="100">
+      <td colSpan={100}>
         {bestDay.length === 1 ? (
           <p>
             The people have spoken. The best day for your event is{" "}

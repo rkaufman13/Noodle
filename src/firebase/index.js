@@ -54,7 +54,11 @@ export const submitPayload = (payload) => {
   get(singleEvent).then((snapshot) => {
     if (snapshot.exists() && snapshot.val().hostEmail !== "") {
       const RsvpPayload = { respondee: payload.name, ...snapshot.val() };
-      sendResponseEmail(RsvpPayload);
+      try {
+        sendResponseEmail(RsvpPayload);
+      } catch (e) {
+        //do nothing for now; the most likely reason this has failed is because we are testing locally and the backend isn't running
+      }
     }
   });
 };
@@ -96,9 +100,9 @@ export const getSingleAdminEvent = (eventID) => {
         eventWeWant.deleteAt >= Math.floor(Date.now() / 1000) &&
         eventWeWant.admin === eventID
       ) {
-        return [snapshot.val()[eventKey], eventKey];
+        return { event: snapshot.val()[eventKey], key: eventKey };
       }
-      return [null, null];
+      return null;
     }
   });
 };

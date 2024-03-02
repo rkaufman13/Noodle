@@ -114,3 +114,9 @@ export const setTabFocus = (element) => {
 export const clearTabFocus = () => {
   tabTrap.disengage();
 };
+
+export const handleAlert = (alertRef) => {
+  if (alertRef.current !== undefined) {
+    alertRef.current.focus();
+  }
+};
