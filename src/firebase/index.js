@@ -9,6 +9,7 @@ import {
   endAt,
   limitToLast,
   update,
+  connectDatabaseEmulator,
 } from "firebase/database";
 import { sendResponseEmail } from "../sg_helpers";
 
@@ -25,11 +26,14 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getDatabase();
+if (process.env.NODE_ENV === "development") {
+  connectDatabaseEmulator(db, "localhost", 9000);
+}
 
 //get an event
 export const getSingleEvent = (eventID) => {
-  const database = getDatabase();
-  const singleEventRef = ref(database, "event/" + eventID);
+  const singleEventRef = ref(db, "event/" + eventID);
   return get(singleEventRef).then((snapshot) => {
     if (
       snapshot.exists() &&
@@ -44,7 +48,7 @@ export const getSingleEvent = (eventID) => {
 //submit a response to an existing event
 export const submitPayload = (payload) => {
   //todo only update the dates that have had updates
-  const db = getDatabase();
+
   update(ref(db, "event/" + payload.eventUUID), {
     dates: payload.dates,
   });
@@ -79,8 +83,7 @@ export const submitNewEvent = (payload) => {
 
 //retrieve the event via secret ID
 export const getSingleAdminEvent = (eventID) => {
-  const database = getDatabase();
-  const dbRef = ref(database, "event");
+  const dbRef = ref(db, "event");
   const queryRef = query(
     dbRef,
     orderByChild("admin"),
@@ -105,8 +108,7 @@ export const getSingleAdminEvent = (eventID) => {
 
 //close an event
 export const closeEvent = (eventId) => {
-  const database = getDatabase();
-  const singleEventRef = ref(database, "event/" + eventId);
+  const singleEventRef = ref(db, "event/" + eventId);
   const updates = {};
   updates["/active/"] = false;
   return update(singleEventRef, updates);
@@ -114,8 +116,7 @@ export const closeEvent = (eventId) => {
 
 //soft-delete an event
 export const deleteEvent = (eventId) => {
-  const database = getDatabase();
-  const singleEventRef = ref(database, "event/" + eventId);
+  const singleEventRef = ref(db, "event/" + eventId);
   const updates = {};
   updates["/deleteAt"] = Math.floor(new Date() / 1000) - 10;
 
@@ -124,8 +125,7 @@ export const deleteEvent = (eventId) => {
 
 //delete an admin email from an event
 export const deleteEmail = (eventId) => {
-  const database = getDatabase();
-  const singleEventRef = ref(database, "event/" + eventId);
+  const singleEventRef = ref(db, "event/" + eventId);
   const updates = {};
   updates["/hostEmail"] = null;
 
