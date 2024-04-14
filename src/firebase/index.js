@@ -103,10 +103,11 @@ export const getSingleAdminEvent = (eventID) => {
         eventWeWant.deleteAt >= Math.floor(Date.now() / 1000) &&
         eventWeWant.admin === eventID
       ) {
-        return { event: snapshot.val()[eventKey], key: eventKey };
+        return { event: snapshot.val()[eventKey], key: eventKey[0] };
       }
       return null;
     }
+    return null;
   });
 };
 
@@ -123,6 +124,7 @@ export const deleteEvent = (eventId) => {
   const singleEventRef = ref(db, "event/" + eventId);
   const updates = {};
   updates["/deleteAt"] = Math.floor(new Date() / 1000) - 10;
+  updates["/active/"] = false;
 
   return update(singleEventRef, updates);
 };
