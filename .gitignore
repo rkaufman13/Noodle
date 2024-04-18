@@ -26,3 +26,8 @@ TODO
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#firebase
+database-debug.log*
+database.rules.json
+ui-debug.log
