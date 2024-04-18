@@ -5,8 +5,9 @@ import {
   deleteEvent,
   deleteEmail,
 } from "./firebase";
-import { useLoaderData, Await, defer, useAsyncValue } from "react-router-dom";
+import { useLoaderData, Await, defer, useAsyncValue, useOutletContext, LoaderFunctionArgs } from "react-router-dom";
 import { Button, Stack, Modal, Spinner } from "react-bootstrap";
+
 import { DateTable } from "./DateTable";
 import { EmptyEvent } from "./EmptyEvent";
 import { Participants } from "./Participants";
@@ -16,27 +17,45 @@ import {
   convertTimeStampToDate,
   setTabFocus,
   clearTabFocus,
+  handleAlert
 } from "./util";
-import { Alerts as Alert } from "./Alert";
-import { Helmet } from "react-helmet";
 
-export const adminLoader = ({ params }) => {
-  const singleEventPromise = getSingleAdminEvent(params.secretUUID);
+import { Helmet } from "react-helmet";
+import { NoodleContext, AdminEvent } from './types';
+
+type AdminParams = {
+  params: {
+    secretUUID: string
+  }
+}
+
+type AdminLoaderData = {
+  singleEvent: Promise<AdminLoadedData>,
+
+}
+
+type AdminLoadedData = {
+  event:
+  AdminEvent,
+  key: string,
+}
+
+//duplicative of the data return type above but something about the sharing of this type is causing issues, fix later
+type AdminChildProps = {
+  event: AdminEvent,
+  eventKey: string,
+}
+
+//todo don't use Any
+export const adminLoader = ({ params }: LoaderFunctionArgs & AdminParams): any => {
+  const singleEventPromise: any = getSingleAdminEvent(params.secretUUID);
   return defer({ singleEvent: singleEventPromise });
 };
 
-const AdminChild = () => {
-  const [closeModalVisible, setCloseModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [emailModalVisible, setEmailModalVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+const AdminParent = () => {
+  const eventAndKey = useAsyncValue() as AdminLoadedData;
+  if (!eventAndKey) {
 
-  const [finalAdminEvent, eventKey] = useAsyncValue();
-
-  const [noodIsActive, setNoodIsActive] = useState(finalAdminEvent.active);
-
-  if (!finalAdminEvent) {
     return (
       <>
         <h1>Not Found</h1>
@@ -47,11 +66,25 @@ const AdminChild = () => {
         </p>
       </>
     );
+
   }
+  return <AdminChild event={eventAndKey.event} eventKey={eventAndKey.key}></AdminChild>
+}
+
+const AdminChild: React.FC<AdminChildProps> = ({ event, eventKey }) => {
+  const [closeModalVisible, setCloseModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+  const { successMessage, setSuccessMessage, alertRef } =
+    useOutletContext<NoodleContext>();
+  const [copyButtonText, setCopyButtonText] = useState("Copy Link");
+  const [hasBeenDeleted, setHasBeenDeleted] = useState(false);
+  const [noodIsActive, setNoodIsActive] = useState(event.active);
+
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const participants = reverseObject(finalAdminEvent);
-  const datesArray = Object.keys(finalAdminEvent.dates);
+  const participants = reverseObject(event);
+  const datesArray = Object.keys(event.dates);
 
   const toggleClose = () => {
     setCloseModalVisible(!closeModalVisible);
@@ -80,15 +113,18 @@ const AdminChild = () => {
     setNoodIsActive(false);
     clearTabFocus();
     setSuccessMessage("Noodle successfully closed.");
+    handleAlert(alertRef);
   };
 
   const handleDeleteEvent = () => {
     setDeleteModalVisible(false);
     deleteEvent(eventKey);
+    setHasBeenDeleted(true);
     clearTabFocus();
     setSuccessMessage(
       "Nood successfully deleted. Once you navigate away from this page it will be gone forever :("
     );
+    handleAlert(alertRef);
   };
 
   const handleDeleteEmailEvent = () => {
@@ -96,6 +132,7 @@ const AdminChild = () => {
     deleteEmail(eventKey);
     clearTabFocus();
     setSuccessMessage("No more emails!");
+    handleAlert(alertRef);
   };
 
   const copyLink = () => {
@@ -107,44 +144,42 @@ const AdminChild = () => {
     <>
       <Helmet>
         <title>
-          Noodle Scheduling ~ {finalAdminEvent.eventname ?? "Untitled event"}
+          Noodle Scheduling ~ {event.eventname ?? "Untitled event"}
         </title>
         <meta
           name="description"
           content={
-            "Admin page for " + finalAdminEvent.eventname ?? "Untitled event"
+            "Admin page for " + event.eventname ?? "Untitled event"
           }
         />
       </Helmet>
       <div>
         <h1 className="d-inline">
-          {finalAdminEvent.eventname ?? "Untitled event"}
+          {event.eventname ?? "Untitled event"}
         </h1>
         {/* Curious on your thoughts on this */}
         <span
-          className={`p-2 ms-3 position-relative rounded statusTag ${
-            noodIsActive ? "bg-success" : "bg-danger"
-          }`}
+          className={`p-2 ms-3 position-relative rounded statusTag ${noodIsActive ? "bg-success" : "bg-danger"
+            }`}
         >
           {noodIsActive ? "ACTIVE" : "CLOSED"}
         </span>
-        {finalAdminEvent.eventDesc && <h2>{finalAdminEvent.eventDesc}</h2>}
+        {event.eventDesc && <h2>{event.eventDesc}</h2>}
       </div>
 
-      {successMessage && <Alert variant="success" message={successMessage} />}
 
       <div>
         <p className="mb-0">
           This is your admin page for your Nood. You can visit this page at any
           time by visiting this url:
           <br />
-          <span class="fw-bold">
+          <span className="fw-bold">
             DO NOT LOSE THIS URL OR SHARE IT WITH ANYONE.
           </span>
         </p>
       </div>
       <div className="bg-primary p-3 my-2 text-dark rounded">
-        {`${baseUrl}/admin/${finalAdminEvent.admin}`}
+        {`${baseUrl}/admin/${event.admin}`}
       </div>
       <div className="pt-3 pb-4">
         Your Nood is currently{" "}
@@ -184,7 +219,7 @@ const AdminChild = () => {
           <Button
             variant="primary"
             onClick={toggleDelete}
-            disabled={finalAdminEvent.deleteAt < Math.floor(new Date() / 1000)}
+            disabled={hasBeenDeleted}
             className="me-auto"
           >
             Delete your Nood
@@ -198,7 +233,7 @@ const AdminChild = () => {
           <DateTable
             participants={participants}
             dates={datesArray}
-            eventUUID={finalAdminEvent.uuid}
+            eventUUID={event.uuid}
           >
             {Object.keys(participants).length > 0 ? (
               <>
@@ -208,15 +243,15 @@ const AdminChild = () => {
                   dates={datesArray}
                   activePerson={null}
                 />
-                <BestDay dates={finalAdminEvent.dates} />
+                <BestDay dates={event.dates} />
               </>
             ) : (
-              <EmptyEvent dates={finalAdminEvent.dates} />
+              <EmptyEvent />
             )}
           </DateTable>
         </Stack>
       </div>
-      {finalAdminEvent.hostEmail && (
+      {event.hostEmail && (
         <>
           {" "}
           <hr className="p-2 invisible" />
@@ -268,7 +303,7 @@ const AdminChild = () => {
         </Modal.Header>
         <Modal.Body>
           Your Nood will auto-delete on{" "}
-          {convertTimeStampToDate(finalAdminEvent.deleteAt)}.
+          {convertTimeStampToDate(event.deleteAt)}.
           <br />
           If you'd like to delete it sooner, you may do so below.
           <br />
@@ -330,7 +365,7 @@ const AdminChild = () => {
 };
 
 export const AdminPage = () => {
-  const data = useLoaderData();
+  const data = useLoaderData() as AdminLoaderData;
 
   return (
     <React.Suspense
@@ -341,7 +376,7 @@ export const AdminPage = () => {
       }
     >
       <Await resolve={data.singleEvent} errorElement={<p>An error occurred</p>}>
-        <AdminChild />
+        <AdminParent />
       </Await>
     </React.Suspense>
   );
