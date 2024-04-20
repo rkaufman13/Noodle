@@ -75,7 +75,7 @@ const AdminChild: React.FC<AdminChildProps> = ({ event, eventKey }) => {
   const [closeModalVisible, setCloseModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
-  const { successMessage, setSuccessMessage, alertRef } =
+  const { setSuccessMessage, alertRef } =
     useOutletContext<NoodleContext>();
   const [copyButtonText, setCopyButtonText] = useState("Copy Link");
   const [hasBeenDeleted, setHasBeenDeleted] = useState(false);

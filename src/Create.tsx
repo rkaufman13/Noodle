@@ -11,8 +11,10 @@ import {
 import { useNavigate, useOutletContext } from "react-router";
 import { submitNewEvent } from "./firebase";
 import { sendConfirmationEmail } from "./sg_helpers";
+import { NoodleContext } from './types';
 
 export const Create = () => {
+  //todo add formik or another library?
   const [eventName, setEventName] = useState("");
   const [eventDesc, setEventDesc] = useState("");
   const [eventLocation, setEventLocation] = useState("");
@@ -23,14 +25,13 @@ export const Create = () => {
 
   const {
     setErrorMessage,
-
     alertRef,
-  } = useOutletContext();
+  } = useOutletContext<NoodleContext>();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     setErrorMessage("");
     e.preventDefault();
-    if (!eventDates.length >= 2) {
+    if (!(eventDates.length >= 2)) {
       setErrorMessage("You must select at least two dates!");
       handleAlert(alertRef);
     } else {
@@ -39,7 +40,7 @@ export const Create = () => {
       );
       if (
         !convertedEventDates.every(
-          (date) => date > Math.floor(new Date() / 1000)
+          (date) => date > Math.floor(new Date().valueOf() / 1000)
         )
       ) {
         setErrorMessage("Dates must be in the future!");
@@ -83,7 +84,7 @@ export const Create = () => {
   };
 
   const formIsInvalid = () => {
-    return !eventDates.length > 0 || !eventName || !hostName;
+    return !(eventDates.length > 0) || !eventName || !hostName;
   };
 
   return (
@@ -99,7 +100,7 @@ export const Create = () => {
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
             required
-            maxLength="100"
+            maxLength={100}
           />
         </Form.Group>
         <Form.Group controlId="eventDesc">
@@ -108,7 +109,7 @@ export const Create = () => {
             type="text"
             value={eventDesc}
             onChange={(e) => setEventDesc(e.target.value)}
-            maxLength="100"
+            maxLength={100}
           />
         </Form.Group>
         <Form.Group controlId="eventLocation">
@@ -118,7 +119,7 @@ export const Create = () => {
             value={eventLocation}
             placeholder="Where's your Nood"
             onChange={(e) => setEventLocation(e.target.value)}
-            maxLength="100"
+            maxLength={100}
           />
         </Form.Group>
         <Form.Group controlId="hostName">
@@ -129,7 +130,7 @@ export const Create = () => {
             placeholder="Your name; no impastas, please"
             onChange={(e) => setHostName(e.target.value)}
             required
-            maxLength="100"
+            maxLength={100}
           />
         </Form.Group>
         <Form.Group controlId="hostContact">
@@ -143,7 +144,7 @@ export const Create = () => {
             value={hostEmail}
             placeholder="you@mail.com"
             onChange={(e) => setHostEmail(e.target.value)}
-            maxLength="100"
+            maxLength={100}
           />
         </Form.Group>
         <Form.Group controlId="dates">
@@ -153,6 +154,7 @@ export const Create = () => {
           <Calendar
             value={eventDates}
             onChange={setEventDates}
+            //@ts-ignore 
             plugins={[<DatePanel />]}
             multiple
             highlightToday={false}
