@@ -19,3 +19,7 @@ export type AdminEvent = {
   uuid: string;
   hostEmail: string;
 };
+
+export type ParticipantsObjType = {
+  [key: string]: any; //todo
+};
