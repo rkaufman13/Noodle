@@ -28,9 +28,12 @@ export const Create = () => {
     alertRef,
   } = useOutletContext<NoodleContext>();
 
+
   const handleSubmit = (e: React.FormEvent) => {
+
     setErrorMessage("");
     e.preventDefault();
+
     if (!(eventDates.length >= 2)) {
       setErrorMessage("You must select at least two dates!");
       handleAlert(alertRef);

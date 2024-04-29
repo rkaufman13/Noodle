@@ -32,16 +32,21 @@ export const AddNewRow: React.FC<AddNewRowProps> = ({
       return;
     }
 
-    let targetDate: string;
-    if (!(e.target instanceof HTMLInputElement) || !(e.target instanceof HTMLLabelElement)) {
+    let targetDate: string | undefined;
+    if (!(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLLabelElement)) {
       return;
     }
     if (e.target instanceof HTMLInputElement) {
-      targetDate = target.name
-    };
-    if (e.target instanceof HTMLLabelElement) {
-      targetDate = target.htmlFor;
+      targetDate = e.target.name
     }
+    else if (e.target instanceof HTMLLabelElement) {
+      targetDate = e.target.htmlFor;
+    }
+
+    if (targetDate === undefined) {
+      return;
+    }
+
     let newArray: number[] = [];
 
     const targetDateInt = parseInt(targetDate);

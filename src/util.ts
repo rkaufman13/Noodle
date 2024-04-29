@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import tabFocus from "ally.js/maintain/tab-focus";
 import { RefObject } from "react";
 import { ParticipantsObjType } from "./types";
+import DateObject from "react-date-object";
 
 export const months = [
   "January",
@@ -28,8 +29,13 @@ export const weekdays = [
   "Saturday",
 ];
 
-export const convertTimeStampToDate = (timestamp: string) => {
-  const newDate = new Date(parseInt(timestamp) * 1000);
+export const convertTimeStampToDate = (timestamp: string | number) => {
+  let newDate;
+  if (typeof timestamp == "string") {
+    newDate = new Date(parseInt(timestamp) * 1000);
+  } else {
+    newDate = new Date(timestamp * 1000);
+  }
   return (
     newDate.getMonth() +
     1 +
@@ -51,8 +57,8 @@ export const convertTimeStampToDateString = (timestamp: string) => {
   );
 };
 
-export const convertDateToTimestamp = (date: Date) => {
-  return Math.floor(date.getTime() / 1000);
+export const convertDateToTimestamp = (date: DateObject) => {
+  return date.unix;
 };
 
 export const generateUUID = () => {
@@ -90,7 +96,7 @@ export const generateExpirationDate = (timestampArray: number[]) => {
 // Ally Tab Trapping
 let tabTrap: any;
 
-export const setTabFocus = (element: Element) => {
+export const setTabFocus = (element: string) => {
   tabTrap = tabFocus({
     context: element,
   });
