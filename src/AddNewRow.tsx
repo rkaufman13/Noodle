@@ -27,8 +27,10 @@ export const AddNewRow: React.FC<AddNewRowProps> = ({
   }
 
   const handleClickEvent: EventHandler<SyntheticEvent> = (e: React.MouseEvent | React.ChangeEvent | React.KeyboardEvent | React.FormEvent) => {
-    if (e.type !== 'mousedown' && e.type !== 'keyboard') return;
-    if (isKeyboardEvent(e) && (e.key === " " || e.key === "Enter")) {
+
+    if (e.type !== 'click' && e.type !== 'keydown') return;
+
+    if (isKeyboardEvent(e) && (e.key !== " " && e.key !== "Enter")) {
       return;
     }
 
