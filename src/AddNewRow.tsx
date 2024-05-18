@@ -28,7 +28,7 @@ export const AddNewRow: React.FC<AddNewRowProps> = ({
 
   const handleClickEvent: EventHandler<SyntheticEvent> = (e: React.MouseEvent | React.ChangeEvent | React.KeyboardEvent | React.FormEvent) => {
 
-    if (e.type !== 'click' && e.type !== 'keydown') return;
+    if (e.type !== 'click' && e.type !== 'keydown' && e.type !== 'change') return;
 
     if (isKeyboardEvent(e) && (e.key !== " " && e.key !== "Enter")) {
       return;
@@ -93,7 +93,6 @@ export const AddNewRow: React.FC<AddNewRowProps> = ({
               tabIndex={0}
               className="checkboxlabel p-1"
               htmlFor={date.toString()}
-              onClick={handleClickEvent}
               onKeyDown={handleClickEvent}
               role="checkbox"
               aria-checked={availableDates.includes(date) ? "true" : "false"}
