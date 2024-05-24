@@ -1,11 +1,11 @@
 import React, { SetStateAction } from "react";
 
 export type NoodleContext = {
-  errorMessage?: string;
-  setErrorMessage?: React.Dispatch<SetStateAction<string>>;
-  successMessage?: string;
-  setSuccessMessage?: React.Dispatch<SetStateAction<string>>;
-  alertRef?: any;
+  errorMessage: string;
+  setErrorMessage: React.Dispatch<SetStateAction<string>>;
+  successMessage: string;
+  setSuccessMessage: React.Dispatch<SetStateAction<string>>;
+  alertRef: any;
 };
 
 export type AdminEvent = {
@@ -18,4 +18,8 @@ export type AdminEvent = {
   deleteAt: number;
   uuid: string;
   hostEmail: string;
+};
+
+export type ParticipantsObjType = {
+  [key: string]: any; //todo
 };
