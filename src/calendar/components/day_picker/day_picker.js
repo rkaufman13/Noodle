@@ -126,7 +126,7 @@ export default function DayPicker({
                   }
 
                   return (
-                    <>
+                    <div key={object.date.dayOfYear}>
                       {!parentClassName.includes("hidden") ? (
                         <button
                           key={i}
@@ -151,7 +151,7 @@ export default function DayPicker({
                       ) : (
                         <span key={i} className={parentClassName}></span>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>
