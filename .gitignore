@@ -29,6 +29,5 @@ yarn-error.log*
 
 #firebase
 database-debug.log*
-database.rules.json
 ui-debug.log
 firebase-debug.log
