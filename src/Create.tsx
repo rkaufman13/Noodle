@@ -10,7 +10,7 @@ import {
 } from "./util";
 import { useNavigate, useOutletContext } from "react-router";
 import { submitNewEvent } from "./firebase";
-import { sendConfirmationEmail } from "./sg_helpers";
+import { sendConfirmationEmail } from "./ms_helpers";
 import { NoodleContext } from './types';
 
 export const Create = () => {
