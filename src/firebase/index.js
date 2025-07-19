@@ -11,7 +11,7 @@ import {
   update,
   connectDatabaseEmulator,
 } from "firebase/database";
-import { sendResponseEmail } from "../sg_helpers";
+import { sendResponseEmail } from "../ms_helpers";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

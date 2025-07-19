@@ -28,7 +28,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "serve": "react-scripts start",
+    "firebase:serve": "firebase emulators:start",
+    "start": "concurrently --names \"REACT,FIREBASE\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run serve\" \"npm run firebase:serve\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -59,7 +61,8 @@
     "@types/uuid": "^9.0.8",
     "react-test-renderer": "^18.2.0",
     "sass": "^1.63.6",
-    "ts-loader": "^9.5.1"
+    "ts-loader": "^9.5.1",
+    "concurrently": "^9.1.0"
   },
   "overrides": {
     "typescript": "^5.0.3"
