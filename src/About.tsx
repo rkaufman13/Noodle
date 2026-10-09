@@ -25,8 +25,7 @@ export const About = () => {
         help from{" "}
         <a href="https://www.linkedin.com/in/sarah-tonsager-9837b139/">
           Sarah Tonsager
-        </a>{" "}
-        and <a href="https://chriscombs.net">Chris Combs</a>.
+        </a>.
       </p>
       <hr className="py-2" />
       <h3>Praise for Noodle</h3>
