@@ -51,7 +51,7 @@ export default function DayPicker({
       ref.current.date,
       showOtherDays,
       numberOfMonths,
-      weekStartDayIndex
+      weekStartDayIndex,
     );
     // eslint-disable-next-line
   }, [
@@ -143,13 +143,15 @@ export default function DayPicker({
                           }}
                         >
                           <span className={className} {...allProps}>
-                            {mustDisplayDay(object) && !object.hidden
-                              ? children ?? object.day
-                              : ""}
+                            {mustDisplayDay(object) &&
+                              !object.hidden &&
+                              (children ?? object.day)}
                           </span>
                         </button>
                       ) : (
-                        <span key={i} className={parentClassName}></span>
+                        <span key={i} className={parentClassName}>
+                          {" "}
+                        </span>
                       )}
                     </div>
                   );
@@ -171,7 +173,7 @@ export default function DayPicker({
   function selectDay(
     { date: dateObject, current },
     monthIndex,
-    numberOfMonths
+    numberOfMonths,
   ) {
     let { selectedDate, focused, date } = state,
       { hour, minute, second } = date;
@@ -244,7 +246,7 @@ export default function DayPicker({
 
         if (!multiple) {
           names = names.concat(
-            getRangeHoverClass(date, selectedDate, dateHovered, rangeHover)
+            getRangeHoverClass(date, selectedDate, dateHovered, rangeHover),
           );
         }
       }

@@ -74,6 +74,7 @@
     background: transparent;
   border: none;
   border-radius: 50%;
+  display:block
 }
 
 .rmdp-week-day {

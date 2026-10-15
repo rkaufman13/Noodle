@@ -96,7 +96,7 @@ export default function Header({
             .filter(
               (item) =>
                 (item === "MONTH" && !hideMonth) ||
-                (item === "YEAR" && !hideYear)
+                (item === "YEAR" && !hideYear),
             );
 
           if (items.length > 1) items = [items[0], getSeparator(), items[1]];
@@ -166,7 +166,8 @@ export default function Header({
   function getButton(direction) {
     let handleClick = (e) => {
         e.preventDefault();
-        if(document.activeElement.classList.contains('rmdp-arrow-container')) {
+        const clazz = e.target.classList.value;
+        if (clazz.includes("rmdp-arrow")) {
           increaseValue(direction === "right" ? 1 : -1);
         }
       },
